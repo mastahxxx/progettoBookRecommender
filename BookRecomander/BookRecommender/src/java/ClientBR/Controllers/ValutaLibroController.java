@@ -223,7 +223,7 @@ public class ValutaLibroController {
             ur.setUserId(SceneNavigator.getUserID());
             out.writeObject("CARICA LIBRI LIBRERIE CLIENT");
             out.writeObject(ur);
-            mieiLibri = (ObservableList<Libro>) in.readObject();
+            mieiLibri = (ObservableList<Libro>) in.readObject();//convertire
             boolean ok = (boolean) in.readObject(); // non usato
             out.close();
             in.close();

@@ -5,6 +5,8 @@ package ServerBR;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
 
 import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
@@ -49,8 +51,8 @@ public class DataBase {
     public synchronized List<Libro> cercaLibroPerAutore(Libro l){
     	String titolo = l.getTitolo();
     	String autore = l.getAutore();
-    	String anno = l.getAnnoPublicazione();
-    	List <libro> ris = new List();
+    	String anno = l.getAnnoPubblicazione();
+    	List <Libro> ris = new LinkedList();
     	if(titolo != "" && autore != "" && anno != "") {
     		ris = dbq.ceracaTitoloAutoreAnno(titolo, autore, anno);
     	}
@@ -78,7 +80,7 @@ public class DataBase {
     }
     
     public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u){
-    	List <libro> ris = new List();
+    	List <Libro> ris = new LinkedList();
     	String userId = u.getUserId();
     	ris = dbq.CaricaLibriDalleLibrerie(userId); //metodo che restituisce una lista contenente tutti i libri presenti in tutte le librerie del utente
     	return ris;
@@ -90,7 +92,7 @@ public class DataBase {
     	return esito;	
     }
     
-    public synchronized boolean controllaEmail(UtenteRegistrato u){
+    public synchronized boolean controllaUserId(UtenteRegistrato u){
     	String userId = u.getUserId();
     	boolean esito = dbq.controllaUserIDInDB(userId); //metodo che restituisce true se lo userId non è presente nel db
     	return esito;	
@@ -107,7 +109,7 @@ public class DataBase {
     }
     
     public synchronized boolean login(UtenteRegistrato u) {
-    	String mail = u.getmail();
+    	String mail = u.getMail();
     	String password = u.getPassoword();
     	boolean esito = dbq.loginMail(mail, password);;//metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
     	if(!esito) {
@@ -120,15 +122,15 @@ public class DataBase {
     public synchronized boolean iserisciValutazioni(Libro l) {
     	String titolo = l.getTitolo();
     	int contenuto = l.getContenuto();
-    	int stile = l.getTitolo();
-    	int gadevolezza = l.getgradevolezza();
+    	int stile = l.getStile();
+    	int gadevolezza = l.getGradevolezza();
     	int originalita = l.getOriginalita();
     	int edizione = l.getEdizione();
-    	String noteContenuto = l.getNoteStile();
-    	String noteStile = l.getNoteContenuto();
-    	String noteGradevolezza = l.getNoteGradevolezza();
-    	String noteOriginalita = l.getNoteOriginalità();
-    	String noteEdizione = l.getNoteEdizione();
+    	LinkedList noteContenuto = l.getNoteStile();
+    	LinkedList noteStile = l.getNoteContenuto();
+    	LinkedList noteGradevolezza = l.getNoteGradevolezza();
+    	LinkedList noteOriginalita = l.getNoteOriginalità();
+    	LinkedList noteEdizione = l.getNoteEdizione();
     	boolean controllo = dbi.inserisciValutazioneDb(titolo, contenuto, stile, gadevolezza, originalita, edizione, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
     	return controllo;

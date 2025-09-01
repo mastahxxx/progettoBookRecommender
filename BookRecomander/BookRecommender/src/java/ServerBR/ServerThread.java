@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.util.List;
 
 import ClassiCondivise.Libreria;
@@ -51,7 +52,7 @@ public class ServerThread extends Thread {
                 Libro l2 = new Libro();
                 Libreria libreria = new Libreria();
                 UtenteRegistrato u;
-                List <libro> ris = new List();
+                List <Libro> ris = new LinkedList();
                 boolean esito;
                 switch(request) {
                     case "END":

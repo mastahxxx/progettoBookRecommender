@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import ClassiCondivise.Libro;
@@ -32,7 +33,7 @@ public class SuggerimentiController {
     @FXML private ListView<Libro> lvSelezionati;
     @FXML private ListView<Libro> lvDisponibili;
     @FXML private Label lblErr;
-    private static final String USERID;
+    private static final String USERID = SceneNavigator.getUserID();;
 
     /** Numero massimo di suggerimenti consentiti per libro. */
     private static final int LIMITE = 3;
@@ -52,7 +53,6 @@ public class SuggerimentiController {
      */
     @FXML
     private void initialize() {
-    	USERID = SceneNavigator.getUserID();
         if (USERID == null) {
             SceneNavigator.logout();
             return;
@@ -77,6 +77,7 @@ public class SuggerimentiController {
     	Libro lib = cbLibro.getValue();
     	UtenteRegistrato ur = new UtenteRegistrato();
         ur.setUserId(USERID);
+        boolean ok = false;
     	try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
@@ -91,7 +92,7 @@ public class SuggerimentiController {
         } catch (Exception e) {
             System.out.println(1);
         }
-    	
+    	return ok;
     }
 
     /**
@@ -121,7 +122,7 @@ public class SuggerimentiController {
         if (scelti.isEmpty()) return;
 
         for (Libro l : scelti) {
-            if (selezionati.size() >= LIMITE) break;
+            if (selezionati.size() >= LIMITE)break;
             if (!selezionati.contains(l)) selezionati.add(l);
         }
 
@@ -158,9 +159,6 @@ public class SuggerimentiController {
             return;
         }
 
-        lib.getLibriConsigliati().clear();
-        lib.getLibriConsigliati().addAll(selezionati);
-
         boolean ok = false;
         try {
             InetAddress addr = InetAddress.getByName(null);
@@ -169,6 +167,9 @@ public class SuggerimentiController {
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
             out.writeObject("CONSIGLIA LIBRI");
             out.writeObject(lib);
+            List<Libro> normalList = new LinkedList<Libro>(selezionati);
+            normalList = (List<Libro>) in.readObject();
+            out.writeObject(selezionati);
             ok = (boolean) in.readObject();
             out.close();
             in.close();
@@ -226,12 +227,38 @@ public class SuggerimentiController {
             lblErr.setStyle("");
 
             selezionati.clear();
+            caricaSuggeriti(lib);
+            
+            
+            /*
             if (lib != null && lib.getLibriConsigliati() != null) {
                 for (Libro l : lib.getLibriConsigliati()) {
-                    if (selezionati.size() >= LIMITE) break;
+                	try {
+                        InetAddress addr = InetAddress.getByName(null);
+                        Socket socket = new Socket(addr, 8999);
+                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+                        ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
+                        UtenteRegistrato ur = new UtenteRegistrato();
+                        ur.setUserId(USERID);
+                        out.writeObject("RIEMPI SUGGERITI");
+                        out.writeObject(ur);
+                        out.writeObject(l);
+                        List<Libro> normalList = new LinkedList<Libro>(selezionati);
+                        normalList = (List<Libro>) in.readObject();
+                        selezionati = FXCollections.observableArrayList(normalList);
+                        out.close();
+                        in.close();
+                        socket.close();
+                    } catch (Exception e) {
+                        System.out.println(1);
+                    }
+                    if (selezionati.size() >= LIMITE) {
+                    	Helpers.showError("Hai già effettuato i suggerimenti per il libro");
+                    	break;
+                    }
                     if (!selezionati.contains(l)) selezionati.add(l);
                 }
-            }
+            }*/
             ultimoLibro = lib;
         }
 
@@ -243,6 +270,27 @@ public class SuggerimentiController {
         }
 
         refreshUI();
+    }
+    private void caricaSuggeriti(Libro l) {
+    	try {
+            InetAddress addr = InetAddress.getByName(null);
+            Socket socket = new Socket(addr, 8999);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
+            UtenteRegistrato ur = new UtenteRegistrato();
+            ur.setUserId(USERID);
+            out.writeObject("RIEMPI SUGGERITI");
+            out.writeObject(ur);
+            out.writeObject(l);
+            List<Libro> normalList = new LinkedList<Libro>(selezionati);
+            normalList = (List<Libro>) in.readObject();
+            selezionati = FXCollections.observableArrayList(normalList);
+            out.close();
+            in.close();
+            socket.close();
+        } catch (Exception e) {
+            System.out.println(1);
+        }
     }
 
     /** Aggiorna stato pulsante Salva (testo e abilitazione). */

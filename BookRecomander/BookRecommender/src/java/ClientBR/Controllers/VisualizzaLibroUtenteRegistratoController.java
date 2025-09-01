@@ -118,7 +118,12 @@ public class VisualizzaLibroUtenteRegistratoController {
         ));
 
         LinkedList<Libro> consigliati = libro.getLibriConsigliati();
-        consigliatiData.setAll(consigliati == null ? List.of() : consigliati);
+        LinkedList<Libro> nuovaLista = new LinkedList();
+        for(int i= 0; i<consigliati.size();i++) {
+        	if(!nuovaLista.contains(consigliati.get(i)))
+        		nuovaLista.add(consigliati.get(i));
+        }
+        consigliatiData.setAll(nuovaLista == null ? List.of() : nuovaLista);
     }
 
     /** Pulisce i campi quando non c’è un libro da mostrare. */
