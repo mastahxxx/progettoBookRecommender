@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="399.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientBR.Controllers.RegisterController">
+   <top>
+      <Label text="Registazione" textAlignment="CENTER" BorderPane.alignment="CENTER">
+         <font>
+            <Font name="System Bold" size="28.0" />
+         </font>
+         <BorderPane.margin>
+            <Insets top="20.0" />
+         </BorderPane.margin>
+      </Label>
+   </top>
+   <center>
+      <GridPane hgap="12.0" vgap="10.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="NEVER" minWidth="10.0" percentWidth="40.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="ALWAYS" minWidth="10.0" percentWidth="60.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="216.0" text="NOME" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="338.0" text="COGNOME" GridPane.columnIndex="1" />
+            <TextField fx:id="fNome" alignment="CENTER" promptText="&quot;nome&quot;" GridPane.rowIndex="1" />
+            <TextField fx:id="fCognome" alignment="CENTER" promptText="&quot;cognome&quot;" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="219.0" text="CODICE FISCALE" GridPane.rowIndex="2" />
+            <TextField fx:id="fCodiceFiscale" alignment="CENTER" promptText="&quot;codice fiscale&quot;" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="219.0" text="EMAL" GridPane.rowIndex="3" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="219.0" text="UserID" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="219.0" text="PASSWORD" GridPane.rowIndex="5" />
+            <TextField fx:id="fEmail" alignment="CENTER" promptText="&quot;nome@dominio.it&quot;" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="fUserID" alignment="CENTER" promptText="&quot;UserID&quot;" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="219.0" text="CONFERMA PASSWORD" GridPane.rowIndex="6" />
+            <PasswordField fx:id="pfPassword" alignment="CENTER" promptText="&quot;password&quot;" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <PasswordField fx:id="pfConfermaPassword" alignment="CENTER" promptText="&quot;conferma password&quot;" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="lblError" alignment="CENTER" prefHeight="17.0" prefWidth="560.0" textFill="RED" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+         </children>
+      </GridPane>
+   </center>
+   <bottom>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="100.0" BorderPane.alignment="CENTER_RIGHT">
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+         <children>
+            <Button fx:id="btnTorna" mnemonicParsing="false" onAction="#onHome" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #FF4D4D; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="HOME" />
+            <Button fx:id="btnAccedi" mnemonicParsing="false" onAction="#onAccedi" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Accedi" />
+            <Button fx:id="btnConferma" defaultButton="true" mnemonicParsing="false" onAction="#onConferma" prefHeight="27.0" prefWidth="90.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Conferma" />
+         </children>
+      </HBox>
+   </bottom>
+</BorderPane>

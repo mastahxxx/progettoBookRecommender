@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<BorderPane prefHeight="600" prefWidth="900" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ClientBR.Controllers.ValutaLibroController">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding:12;">
+            <children>
+                <Label text="Valuta libro:" />
+                <ComboBox fx:id="cbLibro" prefWidth="420" promptText="Seleziona un libro" />
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <GridPane hgap="14" style="-fx-padding:14;" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" prefWidth="160" />
+                <ColumnConstraints prefWidth="120" />
+                <ColumnConstraints hgrow="ALWAYS" />
+            </columnConstraints>
+
+            <children>
+                <Label text="Criterio" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label text="Voto (1–5)" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label text="Nota (facoltativa, max 256)" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+
+                <Label text="Contenuto" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <ComboBox fx:id="cbContenuto" promptText="—" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <TextArea fx:id="taContenuto" prefRowCount="3" promptText="Nota (facoltativa)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+
+                <Label text="Stile" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <ComboBox fx:id="cbStile" promptText="—" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <TextArea fx:id="taStile" prefRowCount="3" promptText="Nota (facoltativa)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+
+                <Label text="Gradevolezza" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <ComboBox fx:id="cbGradevolezza" promptText="—" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <TextArea fx:id="taGradevolezza" prefRowCount="3" promptText="Nota (facoltativa)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+
+                <Label text="Originalità" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <ComboBox fx:id="cbOriginalita" promptText="—" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <TextArea fx:id="taOriginalita" prefRowCount="3" promptText="Nota (facoltativa)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+
+                <Label text="Edizione" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <ComboBox fx:id="cbEdizione" promptText="—" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <TextArea fx:id="taEdizione" prefRowCount="3" promptText="Nota (facoltativa)" wrapText="true" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+
+                <Label text="Voto finale (media)" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                <TextField fx:id="tfVotoFinale" editable="false" prefHeight="25.0" prefWidth="115.0" promptText="—" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            </children>
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="10" style="-fx-padding:12;">
+            <children>
+                <Button onAction="#onLogout" style="-fx-background-color: #FF4D4D; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="LOGOUT" />
+                <Label fx:id="lblErr" text="" HBox.hgrow="ALWAYS" />
+            <Button onAction="#onAggiungiSuggerimenti" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Aggiungi suggerimenti" />
+                <Button onAction="#onAnnulla" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Annulla" />
+                <Button fx:id="btnSalva" defaultButton="true" disable="true" onAction="#onSalva" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Salva valutazione" />
+            </children>
+        </HBox>
+    </bottom>
+</BorderPane>
