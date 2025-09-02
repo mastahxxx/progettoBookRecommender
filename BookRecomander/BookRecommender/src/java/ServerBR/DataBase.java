@@ -165,14 +165,24 @@ public class DataBase {
     }
     
     //DA RIGUARDARE
-    public synchronized boolean InserisciConsigli(UtenteRegistrato u, String libriConsigliati) {
-    	String[] vettConsigliati = libriConsigliati.split(";"); //vettore che avrà max dim 4; in pos 0 contiene il tittolo del libro su cui l'utente starà effettuando i consigli mentre nelle rimanente ci saranno i libri consigliati
-    	boolean controllo = dbq.controllaLibroInLibreria(u, vettConsigliati[0]); //metodo che controlla se il libro è presente nelle librerie dell'utente; se è presente restituisce true altrimenti flase
-    	boolean esito = false;
-    	if(controllo) {
-    		esito = dbi.inserisciLibriConsigliatiInDb(u, vettConsigliati); //metodo che inserisce i libri consigliati nel db e restitusice true in caso di esito positivo altrimenti false 
-    	}
+    public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
+    	String titolo = corrente.getTitolo();
+    	String userId = ur.getUserId();
+    	//InserisciConsigliInDb() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla collonna dei libri suggeriti quelli selezionati dall'utente
+    	boolean esito = dbq.InserisciConsigliPerLibroInDb(titolo, suggeriti);
+    	//InserisciConsigliPerUtente() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla tabella suggeriti i libri consigliati dall'utente
+    	esito = dbq.InserisciConsigliPerUtente(titolo, titolo, suggeriti);
     	return esito;
     } 
+    
+    public synchronized LinkedList caricaSuggeriti(Libro corrente, UtenteRegistrato ur) {
+    	String titolo = corrente.getTitolo();
+    	String userId = ur.getUserId();
+    	//caricaSuggeritiDaDB() metodo che dati il titolo del libro corrente(ovvero il libro su cui l'utente 
+    	//sta effettuando i suggeritmenti) e lo userId dell'utente restituisce i libri consigliati da lui stesso per il libro corrente
+    	//Andre se non capisci scrivimi che ci colleghiamo su discord e te lo spiego meglio
+    	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(titolo, userId);
+    	return libriSuggeriti;	
+    }
     
 }
