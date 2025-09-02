@@ -165,11 +165,13 @@ public class SuggerimentiController {
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
+            UtenteRegistrato ur = new UtenteRegistrato();
+            ur.setUserId(USERID);
             out.writeObject("CONSIGLIA LIBRI");
+            out.writeObject(ur);
             out.writeObject(lib);
             List<Libro> normalList = new LinkedList<Libro>(selezionati);
-            normalList = (List<Libro>) in.readObject();
-            out.writeObject(selezionati);
+            out.writeObject(normalList);
             ok = (boolean) in.readObject();
             out.close();
             in.close();
@@ -193,10 +195,9 @@ public class SuggerimentiController {
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
             UtenteRegistrato ur = new UtenteRegistrato();
-            ur.setUserId(SceneNavigator.getUserID());
+            ur.setUserId(USERID);
             out.writeObject("CARICA LIBRI LIBRERIE CLIENT");
             out.writeObject(ur);
-
             @SuppressWarnings("unchecked")
             List<Libro> normalList = (List<Libro>) in.readObject();
             mieiLibri = FXCollections.observableArrayList(normalList);

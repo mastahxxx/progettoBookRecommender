@@ -53,6 +53,8 @@ public class ServerThread extends Thread {
                 Libreria libreria = new Libreria();
                 UtenteRegistrato u;
                 List <Libro> ris = new LinkedList();
+                Libro corrente = new Libro();
+                LinkedList <Libro> libroSuggeriti = new LinkedList();
                 boolean esito;
                 switch(request) {
                     case "END":
@@ -96,11 +98,18 @@ public class ServerThread extends Thread {
                         out.writeObject(esito);
                     case "CONSIGLIA LIBRI":
                     	//DA RIVEDERE
-                        Libro libriConsigliati = (Libro) in.readObject();
+                        corrente = (Libro) in.readObject();
                         u = (UtenteRegistrato) in.readObject();
-                        esito = db.InserisciConsigli(u, libriConsigliati);
+                        libroSuggeriti = (LinkedList <Libro>) in.readObject();
+                        esito = db.InserisciConsigli(u, corrente, libroSuggeriti);
                         out.writeObject(esito);
                         break;
+                    case "RIEMPI SUGGERITI":
+                    	 corrente = (Libro) in.readObject();
+                         u = (UtenteRegistrato) in.readObject();
+                         libroSuggeriti = db.caricaSuggeriti(l,u);
+                         out.writeObject(libroSuggeriti);
+                    	break;
                     case "CONTROLLA USERID":
                     	u = (UtenteRegistrato) in.readObject();
                     	esito = db.controllaUserId(u); 
