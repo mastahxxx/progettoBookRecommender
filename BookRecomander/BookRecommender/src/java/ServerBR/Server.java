@@ -12,13 +12,13 @@ public class Server {
     public static void main(String[] args) throws IOException {
         // TODO Auto-generated method stub
         ServerSocket server = new ServerSocket(NUM_PORT);
-       // DataBase database = new DataBase();
+        DataBase database = new DataBase();
 
         try {
             while(true) {
                 Socket socket = server.accept();
-                //new ServerThread(socket, database).start();
-                new ServerThread(socket).start();
+                new ServerThread(socket, database).start();
+                //new ServerThread(socket).start();
             }
 
         }finally {

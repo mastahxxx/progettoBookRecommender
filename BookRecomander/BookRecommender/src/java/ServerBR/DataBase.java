@@ -48,7 +48,7 @@ public class DataBase {
         }    
     }
     
-    public synchronized List<Libro> cercaLibroPerAutore(Libro l){
+    public synchronized List<Libro> cercaLibro(Libro l){
     	String titolo = l.getTitolo();
     	String autore = l.getAutore();
     	String anno = l.getAnnoPubblicazione();
