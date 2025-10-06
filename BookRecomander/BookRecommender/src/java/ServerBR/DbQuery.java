@@ -39,12 +39,12 @@ public class DbQuery extends DataBase {
 
     }
 
-    public String libriLibro(String param)
+    public List<Libro> libriLibro(String param)
     {
         ResultSet result;
         result = null;
         String query;
-        String metreturn = null;
+        List <Libro> metreturn = null;
         query = "select * from public.\"Libri\" where titolo = ? or autore = ?;"; 
 
         try {
@@ -55,25 +55,21 @@ public class DbQuery extends DataBase {
             result.next();
             System.out.println(result.getString(1));
             DbQuery classe = new DbQuery();
-            metreturn = classe.resultSetToString(result);
+            metreturn = classe.resultSetToLibri(result);
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
-        //fammi ritornare una stringa al posto di un oggetto di tipo ResultSet se possibile inoltre ogni attributo è separato da punto e virgola
-        //Se il libro eventualmente non essitesse fammi tornare una stringa vuota..
-        // matte questa è praticamente una lista, preferisci una stringa con il ; ????
-        //lista di tipo List così evitiamo di toccare il codice della gui
         return metreturn;
     }
     
-    public String libriLibroAA(String autore, int anno)
+    public List<Libro> libriLibroAA(String autore, int anno)
     {
         ResultSet result;
         result = null;
         String query;
-        String metreturn = null;
+        List<Libro> metreturn = null;
         query = "select titolo from public.\"Libri\" where autore = ? and anno_pubblicazione = ?;"; 
 
         try {
@@ -82,7 +78,7 @@ public class DbQuery extends DataBase {
             pstm.setInt(2, anno);
             result = statement.executeQuery(query);
             DbQuery classe = new DbQuery();
-            metreturn = classe.resultSetToString(result);
+            metreturn = classe.resultSetToLibri(result);
         }
         catch(Exception e)
         {

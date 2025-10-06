@@ -54,23 +54,23 @@ public class DataBase {
     	String anno = l.getAnnoPubblicazione();
     	List <Libro> ris = new LinkedList();
     	if(titolo != "" && autore != "" && anno != "") {
-    		ris = dbq.ceracaTitoloAutoreAnno(titolo, autore, anno);
+    		ris = dbq.ceracaTitoloAutoreAnno(titolo, autore, anno); //io devo fare il metodo e bisogna fare un casting ad int(anno)
     	}
     	else {
     		if(titolo != "" && anno != "") {
-        		ris = dbq.cercaTitoloAnno(titolo, anno);	
+        		ris = dbq.cercaTitoloAnno(titolo, anno);	//io devo fare il metodo e bisogna fare un casting ad int(anno)
         	}
     		else {
     			if(autore != "" && anno != "") {
-    				ris = dbq.cercaAuotreAnno(autore, anno);
+    				ris = dbq.libriLibroAA(autore, anno);//bisogna fare un casting ad int(anno)
     			}
     			else {
     				if(titolo != "") {
-    					ris = dbq.cercaTitolo(titolo);
+    					ris = dbq.libriLibro(titolo);
     				}
     				else {
     					if(titolo != "") {
-        					ris = dbq.cercaAuotre(autore);
+        					ris = dbq.libriLibro(autore);
         				}
     				}
     			}
@@ -88,13 +88,13 @@ public class DataBase {
     
     public synchronized boolean controllaEmail(UtenteRegistrato u){
     	String mail = u.getMail();
-    	boolean esito = dbq.controllaEmailInDB(mail); //metodo che restituisce true se la mail non è presente nel db
+    	boolean esito = dbq.UtentiRegistratiE(mail); //metodo che restituisce true se la mail non è presente nel db
     	return esito;	
     }
     
     public synchronized boolean controllaUserId(UtenteRegistrato u){
     	String userId = u.getUserId();
-    	boolean esito = dbq.controllaUserIDInDB(userId); //metodo che restituisce true se lo userId non è presente nel db
+    	boolean esito = dbq.UtentiRegistratiUser(userId); //metodo che restituisce true se lo userId non è presente nel db
     	return esito;	
     }
         
@@ -104,7 +104,7 @@ public class DataBase {
     	String mail = u.getmail();
     	String user = u.getUserId();
     	String password = u.getPassoword();
-    	boolean esito = dbi.inserisciUtente(nomeCognome, codiceFiscale, mail, user, password); l'utente viene inserito all'interno del db
+    	boolean esito = dbi.inserisciUtente(nomeCognome, codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
     	return esito;
     }
     
