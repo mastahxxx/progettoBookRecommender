@@ -24,15 +24,13 @@ public class DataBase {
     protected Statement statement;
     private DbQuery dbq;
     private DbInsert dbi;
-    private DbUpdate dbu;
-    private DbDelete dbd;
+    
 
 
     public DataBase(){
         dbq = new DbQuery();
         dbi = new DbInsert();
-        dbu = new DbUpdate();
-        dbd = new DbDelete();
+  
     	try {
 
             Connection connection = DriverManager.getConnection(url, user, password);
@@ -54,11 +52,11 @@ public class DataBase {
     	String anno = l.getAnnoPubblicazione();
     	List <Libro> ris = new LinkedList();
     	if(titolo != "" && autore != "" && anno != "") {
-    		ris = dbq.ceracaTitoloAutoreAnno(titolo, autore, anno); //io devo fare il metodo e bisogna fare un casting ad int(anno)
+    		ris = dbq.libriLibroTAA(titolo, autore, anno); //io devo fare il metodo e bisogna fare un casting ad int(anno)
     	}
     	else {
     		if(titolo != "" && anno != "") {
-        		ris = dbq.cercaTitoloAnno(titolo, anno);	//io devo fare il metodo e bisogna fare un casting ad int(anno)
+        		ris = dbq.libriLibroTA(titolo, anno);	//io devo fare il metodo e bisogna fare un casting ad int(anno)
         	}
     		else {
     			if(autore != "" && anno != "") {
@@ -97,6 +95,8 @@ public class DataBase {
     	boolean esito = dbq.UtentiRegistratiUser(userId); //metodo che restituisce true se lo userId non è presente nel db
     	return esito;	
     }
+    
+    //questo metodo devi guardalo matte. l'errore sul metodo u e la lista che devi passare al metodo di load della tabella che trovi nella db insert
         
     public synchronized boolean insertUtente(UtenteRegistrato u) {
     	String nomeCognome = u.getNomeCognome();
@@ -104,7 +104,7 @@ public class DataBase {
     	String mail = u.getmail();
     	String user = u.getUserId();
     	String password = u.getPassoword();
-    	boolean esito = dbi.inserisciUtente(nomeCognome, codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
+    	boolean esito = dbi.loadUtentiRegistrati(nomeCognome, codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
     	return esito;
     }
     
@@ -118,7 +118,7 @@ public class DataBase {
     	}
     	return esito;
     }
-    
+    //uguale per prima, guarda cosa chiede il metodo in in
     public synchronized boolean iserisciValutazioni(Libro l) {
     	String titolo = l.getTitolo();
     	int contenuto = l.getContenuto();
@@ -131,10 +131,14 @@ public class DataBase {
     	LinkedList noteGradevolezza = l.getNoteGradevolezza();
     	LinkedList noteOriginalita = l.getNoteOriginalità();
     	LinkedList noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.inserisciValutazioneDb(titolo, contenuto, stile, gadevolezza, originalita, edizione, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
+    	boolean controllo = dbi.loadValutazioni(titolo, contenuto, stile, gadevolezza, originalita, edizione, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
     	return controllo;
     }
+    
+    //questo metodo non ha senso lato db. non posso fare un sql che inserisce una lista bisogno. vorrebbe dire fare un metodo che prende libro linked list
+    //lo trasforma in string per il suo id e poi in seguito lo passi in insert per caricarlo. anche perchè l'utente immagino inserisca un libro alla volta
+    //quindi non ha senso passare una lista
     
     public synchronized boolean InserisciLibreria(UtenteRegistrato u, Libreria libreria) {
     	String nome = libreria.getNome();
@@ -147,6 +151,8 @@ public class DataBase {
     	return controllo;
     }
     
+    //da creare andrea
+    
     public synchronized boolean RinominaNomeLibreria(UtenteRegistrato u, Libreria libreria, String nomeVecchio) {
     	String nomeNuovo = libreria.getNome(); //nome che l'utente ha rinominato
     	//nomeVecchio è il nome che la libreira aveva prima della modifica
@@ -156,6 +162,8 @@ public class DataBase {
     	return controllo;
     }
     
+    //da creare andrea
+    
     public synchronized boolean EliminaLibreria(UtenteRegistrato u, Libreria libreria) {
     	String nome = libreria.getNome();
     	String userId = u.getUserId();
@@ -164,7 +172,10 @@ public class DataBase {
     	return controllo;
     }
     
-    //DA RIGUARDARE
+    //DA RIGUARDARE 
+    // anche questo metodo non è chiaro:
+    //come faccio a fare un associazione per titolo, mi state dicendo quindi che non possono esistere due libri con lo stesso titolo?
+    //va passata la pk che è cod libro
     public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
     	String titolo = corrente.getTitolo();
     	String userId = ur.getUserId();
@@ -181,6 +192,8 @@ public class DataBase {
     	//caricaSuggeritiDaDB() metodo che dati il titolo del libro corrente(ovvero il libro su cui l'utente 
     	//sta effettuando i suggeritmenti) e lo userId dell'utente restituisce i libri consigliati da lui stesso per il libro corrente
     	//Andre se non capisci scrivimi che ci colleghiamo su discord e te lo spiego meglio
+    	
+    	//ho capito cosa intendi ma anche qua non mi puoi passare il titolo per lo stesso principio di prima
     	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(titolo, userId);
     	return libriSuggeriti;	
     }

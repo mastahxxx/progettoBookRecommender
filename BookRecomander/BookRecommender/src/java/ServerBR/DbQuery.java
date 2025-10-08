@@ -64,18 +64,65 @@ public class DbQuery extends DataBase {
         return metreturn;
     }
     
-    public List<Libro> libriLibroAA(String autore, int anno)
+    public List<Libro> libriLibroAA(String autore, String anno)
     {
         ResultSet result;
         result = null;
         String query;
         List<Libro> metreturn = null;
-        query = "select titolo from public.\"Libri\" where autore = ? and anno_pubblicazione = ?;"; 
+        query = "select * from public.\"Libri\" where autore = ? and anno_pubblicazione = ?;"; 
 
         try {
             PreparedStatement pstm = connection.prepareStatement(query);
             pstm.setString(1, autore);
-            pstm.setInt(2, anno);
+            pstm.setString(2, anno);
+            result = statement.executeQuery(query);
+            DbQuery classe = new DbQuery();
+            metreturn = classe.resultSetToLibri(result);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return metreturn;  
+    }
+    
+    public List<Libro> libriLibroTAA(String titolo, String autore, String anno)
+    {
+        ResultSet result;
+        result = null;
+        String query;
+        List<Libro> metreturn = null;
+        query = "select * from public.\"Libri\" where autore = ? and anno_pubblicazione = ? and titolo = ?;"; 
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setString(1, autore);
+            pstm.setString(2, anno);
+            pstm.setString(3, titolo);
+            result = statement.executeQuery(query);
+            DbQuery classe = new DbQuery();
+            metreturn = classe.resultSetToLibri(result);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return metreturn;  
+    }
+    
+    public List<Libro> libriLibroTA(String titolo, String anno)
+    {
+        ResultSet result;
+        result = null;
+        String query;
+        List<Libro> metreturn = null;
+        query = "select * from public.\"Libri\" where anno_pubblicazione = ? and titolo = ?;"; 
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setString(1, anno);
+            pstm.setString(2, titolo);
             result = statement.executeQuery(query);
             DbQuery classe = new DbQuery();
             metreturn = classe.resultSetToLibri(result);
