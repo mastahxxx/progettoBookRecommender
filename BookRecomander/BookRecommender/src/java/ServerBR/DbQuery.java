@@ -483,6 +483,31 @@ public class DbQuery extends DataBase {
         return sb.toString();
     }
     
+    //da scrivere query per estrarre idlibro
+    public int  getCodiceLibro(Libro l)
+    {
+    	ResultSet result;
+        result = null;
+        String query;
+        List<Libro> metreturn = null;
+        query = "DELETE FROM public.\"Librerie\"\r\n"
+        		+ "WHERE nome_libreria = ? and id_codice_fiscale = ?";
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+           // pstm.setString(1, nomeLibreria);
+            //pstm.setString(2, cf);
+            result = statement.executeQuery(query);
+          //  return ;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+          
+    }
+    
     public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {
         List<Libro> libri = new ArrayList<>();   // Lista che conterrà i risultati
 
@@ -526,6 +551,7 @@ public class DbQuery extends DataBase {
         }
         return librerie; // Ritorna la lista (vuota se non ci sono risultati)
     }
+    
 
 
     

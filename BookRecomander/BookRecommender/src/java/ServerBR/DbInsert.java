@@ -15,7 +15,7 @@ public class DbInsert extends DataBase {
     }
 
 
-    public void loadUtentiRegistrati(String nome, String cognome, String cf, String email, String uid, String password)
+    public boolean loadUtentiRegistrati(String nome, String cognome, String cf, String email, String uid, String password)
     {
 
         try {
@@ -27,22 +27,22 @@ public class DbInsert extends DataBase {
             query = query + "'" + uid + "',";
             query = query + "'" + password + "')";
             statement.executeQuery(query);
+            return true;
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void loadLibri(String titolo, String autore, int annoP, String editore, String categoria, int codLibro) {
+    public void loadLibri(String titolo, String autore, int annoP, int codLibro) {
 
         try {
             query = "insert into public.\"Libri\" values (";
             query = query + "'" + titolo + "',";
             query = query + "'" + autore + "',";
             query = query + "'" + annoP + "',";
-            query = query + "'" + editore + "',";
-            query = query + "'" + categoria + "',";
             query = query + "'" + codLibro + "')";
             statement.executeQuery(query);
         }
@@ -66,23 +66,25 @@ public class DbInsert extends DataBase {
         }
     }
 
-    public void loadLibrerie(int codLibreria, String nomeLibreria, int idLibro, String idcf) {
+    // bisogna convertire userid a codice fiscale
+    public boolean loadLibrerie(String idcf,String nomeLibreria, int idLibro) {
 
         try {
             query = "insert into public.\"Librerie\" values (";
-            query = query + "'" + codLibreria + "',";
             query = query + "'" + nomeLibreria + "',";
             query = query + "'" + idLibro + "',";
             query = query + "'" + idcf + "')";
             statement.executeQuery(query);
+            return true;
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void loadValutazioni(int idLibro, String idcf, int stile, int contenuto, int gradevolezza, int originalita, int edizione, int votoF, String notaStile, String notaContenuto, String notaGradevolezza, String notaOriginalita, String notaEdizione) {
+    public boolean loadValutazioni(int idLibro, String idcf, int stile, int contenuto, int gradevolezza, int originalita, int edizione, int votoF, String notaStile, String notaContenuto, String notaGradevolezza, String notaOriginalita, String notaEdizione) {
 
         try {
             query = "insert into public.\"Valutazioni\" values (";
@@ -93,17 +95,18 @@ public class DbInsert extends DataBase {
             query = query + "'" + gradevolezza + "',";
             query = query + "'" + originalita + "',";
             query = query + "'" + edizione + "',";
-            query = query + "'" + votoF + "',";
             query = query + "'" + notaStile + "',";
             query = query + "'" + notaContenuto + "',";
             query = query + "'" + notaGradevolezza + "',";
             query = query + "'" + notaOriginalita + "',";
             query = query + "'" + notaEdizione + "')";
             statement.executeQuery(query);
+            return true;
         }
         catch(Exception e)
         {
             e.printStackTrace();
         }
+        return false;
     }
 }

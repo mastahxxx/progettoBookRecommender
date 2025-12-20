@@ -96,15 +96,15 @@ public class DataBase {
     	return esito;	
     }
     
-    //questo metodo devi guardalo matte. l'errore sul metodo u e la lista che devi passare al metodo di load della tabella che trovi nella db insert
         
     public synchronized boolean insertUtente(UtenteRegistrato u) {
     	String nomeCognome = u.getNomeCognome();
     	String codiceFiscale = u.getCodiceFiscale();
-    	String mail = u.getmail();
+    	String mail = u.getMail();
     	String user = u.getUserId();
     	String password = u.getPassoword();
-    	boolean esito = dbi.loadUtentiRegistrati(nomeCognome, codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
+    	String[] split = nomeCognome.split(" ");
+    	boolean esito = dbi.loadUtentiRegistrati(split[0],split[1], codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
     	return esito;
     }
     
@@ -134,6 +134,8 @@ public class DataBase {
     	boolean controllo = dbi.loadValutazioni(titolo, contenuto, stile, gadevolezza, originalita, edizione, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
     	return controllo;
+    	
+    	//Rifare tabelle separando note, metterle null le righe
     }
     
     //questo metodo non ha senso lato db. non posso fare un sql che inserisce una lista bisogno. vorrebbe dire fare un metodo che prende libro linked list
@@ -147,8 +149,15 @@ public class DataBase {
     	//MODIFICA METODO
     	//Ora il metodo InserisciLibreriaDb inserisce nella tabella librerie lo userId dell'utente che lha creata il nome che gli è stata assegnata 
     	//e i libri inseriti dentro e restituisce true in caso di sucesso altriment false
-    	boolean controllo = dbi.InserisciLibreriaDb(userId, nome, contenuto); 
-    	return controllo;
+    	for(int i=0; i<contenuto.size();i++)
+    	{
+    		Libro l = contenuto.get(i);
+    		int IdLibro = dbi.getCodiceLibro(l);
+    		boolean controllo = dbi.loadLibrerie(userId, nome, IdLibro); 
+    		//metodo che restituisce codice libro
+        	return controllo;
+    	}
+    	
     }
     
     //da creare andrea
