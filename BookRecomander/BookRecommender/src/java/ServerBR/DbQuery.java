@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ClassiCondivise.Libreria;
@@ -149,6 +150,52 @@ public class DbQuery extends DataBase {
             result = statement.executeQuery(query);
             DbQuery classe = new DbQuery();
             metreturn = classe.resultSetToString(result);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return metreturn;  
+    }
+    
+    public boolean UtentiRegistratiEPB(String email, String pass)
+    {
+        ResultSet result;
+        result = null;
+        String query;
+        boolean metreturn = false;
+        query = "select * from public.\"UtentiRegistrati\" where email = ? and password = ?";
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setString(1, email);
+            pstm.setString(2, pass);
+            result = statement.executeQuery(query);
+            DbQuery classe = new DbQuery();
+            metreturn = result.next();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return metreturn;  
+    }
+    
+    public boolean UtentiRegistratiUPB(String user, String pass)
+    {
+        ResultSet result;
+        result = null;
+        String query;
+        boolean metreturn = false;
+        query = "select * from public.\"UtentiRegistrati\" where userId = ? and password = ?";
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setString(1, user);
+            pstm.setString(2, pass);
+            result = statement.executeQuery(query);
+            DbQuery classe = new DbQuery();
+            metreturn = result.next();
         }
         catch(Exception e)
         {
@@ -484,28 +531,26 @@ public class DbQuery extends DataBase {
     }
     
     //da scrivere query per estrarre idlibro
-    public int  getCodiceLibro(Libro l)
+    public int getCodiceLibro(Libro libro)
     {
-    	ResultSet result;
+        ResultSet result;
         result = null;
         String query;
-        List<Libro> metreturn = null;
-        query = "DELETE FROM public.\"Librerie\"\r\n"
-        		+ "WHERE nome_libreria = ? and id_codice_fiscale = ?";
+        int metreturn = 0;
+        query = "select avg(stile), avg(contenuto), avg(gradevolezza), avg(originalità), avg(edizione) from public.\"Valutazioni\" where id_libro = ?";
 
         try {
             PreparedStatement pstm = connection.prepareStatement(query);
-           // pstm.setString(1, nomeLibreria);
-            //pstm.setString(2, cf);
+            pstm.setString(1, idLibro);
             result = statement.executeQuery(query);
-          //  return ;
+            DbQuery classe = new DbQuery();
+            metreturn = result.getInt(4);
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            return false;
         }
-          
+        return metreturn;  
     }
     
     public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {

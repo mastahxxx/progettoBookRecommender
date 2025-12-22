@@ -80,7 +80,7 @@ public class DataBase {
     public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u){
     	List <Libro> ris = new LinkedList();
     	String userId = u.getUserId();
-    	ris = dbq.CaricaLibriDalleLibrerie(userId); //metodo che restituisce una lista contenente tutti i libri presenti in tutte le librerie del utente
+    	ris = dbq.getLibroDaLibreria(userId); //metodo che restituisce una lista contenente tutti i libri presenti in tutte le librerie del utente
     	return ris;
     }
     
@@ -111,10 +111,10 @@ public class DataBase {
     public synchronized boolean login(UtenteRegistrato u) {
     	String mail = u.getMail();
     	String password = u.getPassoword();
-    	boolean esito = dbq.loginMail(mail, password);;//metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
+    	boolean esito = dbq.UtentiRegistratiEPB(mail, password);;//metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
     	if(!esito) {
     		String userId = u.getUserId();
-    		esito = dbq.loginUserId(userId, password);///metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
+    		esito = dbq.UtentiRegistratiUPB(userId, password);///metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
     	}
     	return esito;
     }
