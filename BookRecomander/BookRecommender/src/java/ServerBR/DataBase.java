@@ -80,7 +80,8 @@ public class DataBase {
     public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u){
     	List <Libro> ris = new LinkedList();
     	String userId = u.getUserId();
-    	ris = dbq.getLibroDaLibreria(userId); //metodo che restituisce una lista contenente tutti i libri presenti in tutte le librerie del utente
+    	String cf = dbq.getCFU(userId);
+    	ris = dbq.getLibroDaLibreria(cf); //metodo che restituisce una lista contenente tutti i libri presenti in tutte le librerie del utente
     	return ris;
     }
     
@@ -138,10 +139,8 @@ public class DataBase {
     	//Rifare tabelle separando note, metterle null le righe
     }
     
-    //questo metodo non ha senso lato db. non posso fare un sql che inserisce una lista bisogno. vorrebbe dire fare un metodo che prende libro linked list
-    //lo trasforma in string per il suo id e poi in seguito lo passi in insert per caricarlo. anche perchè l'utente immagino inserisca un libro alla volta
-    //quindi non ha senso passare una lista
-    
+
+    //matte devi verderlo tu perchè non ne conosco la logica
     public synchronized boolean InserisciLibreria(UtenteRegistrato u, Libreria libreria) {
     	String nome = libreria.getNome();
     	LinkedList<Libro> contenuto = libreria.getContenuto();
@@ -152,8 +151,9 @@ public class DataBase {
     	for(int i=0; i<contenuto.size();i++)
     	{
     		Libro l = contenuto.get(i);
-    		int IdLibro = dbi.getCodiceLibro(l);
-    		boolean controllo = dbi.loadLibrerie(userId, nome, IdLibro); 
+    		int IdLibro = dbq.getCodiceLibro(l);
+    		String cf = dbq.getCFU(userId);
+    		boolean controllo = dbi.loadLibrerie(cf, nome, IdLibro); 
     		//metodo che restituisce codice libro
         	return controllo;
     	}
@@ -167,7 +167,8 @@ public class DataBase {
     	//nomeVecchio è il nome che la libreira aveva prima della modifica
     	String userId = u.getUserId();
     	//metodo che aggiorna il nome della libreria e restituisce true in caso di successo, false altrimenti
-    	boolean controllo = dbu.rinominaLibreriaInDb(userId, nomeNuovo, nomeVecchio); 
+    	String cf = dbq.getCFU(userId);
+    	boolean controllo = dbq.aggiornaNomeLibreria(nomeVecchio, nomeNuovo, cf); 
     	return controllo;
     }
     
@@ -177,7 +178,8 @@ public class DataBase {
     	String nome = libreria.getNome();
     	String userId = u.getUserId();
     	//metodo che elimina la libreria dal Db e restituisce true in caso di successo altrimenti false
-    	boolean controllo = dbd.EliminaLibreriaInDb(userId, nome); 
+    	String cf=dbq.getCFU(userId);
+    	boolean controllo = dbq.eliminaLibreria(nome, cf); 
     	return controllo;
     }
     
