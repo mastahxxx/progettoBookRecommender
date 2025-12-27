@@ -137,12 +137,13 @@ public class DataBase {
     }
     
     private synchronized boolean inserisciNoteLibro(Libro l) {
+    	int idLibro = dbq.getCodiceLibro(l);
     	LinkedList noteContenuto = l.getNoteStile();
     	LinkedList noteStile = l.getNoteContenuto();
     	LinkedList noteGradevolezza = l.getNoteGradevolezza();
     	LinkedList noteOriginalita = l.getNoteOriginalità();
     	LinkedList noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.loadNote(noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
+    	boolean controllo = dbi.loadNote(idLibro,noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     }
     
 
