@@ -108,13 +108,13 @@ public class DbInsert extends DataBase {
         return false;
     }
     
-    public boolean loadConsigliPerLibroInDb(String titolo,LinkedList<Libro> suggeriti) {
+    public boolean loadConsigliPerLibroInDb(int idlibro ,String cf, int idlibroc) {
 
         try {
             query = "insert into public.\"Librerie\" values (";
-            query = query + "'" + nomeLibreria + "',";
-            query = query + "'" + idLibro + "',";
-            query = query + "'" + idcf + "')";
+            query = query + "'" + idlibro + "',";
+            query = query + "'" + cf + "',";
+            query = query + "'" + idlibroc + "')";
             statement.executeQuery(query);
             return true;
         }

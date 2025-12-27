@@ -142,11 +142,11 @@ public class DataBase {
     	int idLibro = dbq.getCodiceLibro(l);
     	String userId = u.getUserId();
     	String cf = dbq.getCFU(userId);
-    	LinkedList noteContenuto = l.getNoteStile();
-    	LinkedList noteStile = l.getNoteContenuto();
-    	LinkedList noteGradevolezza = l.getNoteGradevolezza();
-    	LinkedList noteOriginalita = l.getNoteOriginalità();
-    	LinkedList noteEdizione = l.getNoteEdizione();
+    	String noteContenuto = l.getNoteStile();
+    	String noteStile = l.getNoteContenuto();
+    	String noteGradevolezza = l.getNoteGradevolezza();
+    	String noteOriginalita = l.getNoteOriginalità();
+    	String noteEdizione = l.getNoteEdizione();
     	boolean controllo = dbi.loadValutazioniNote(idLibro, cf, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     }
     
@@ -199,24 +199,29 @@ public class DataBase {
     // anche questo metodo non è chiaro:
  
     public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
-    	String titolo = corrente.getTitolo();
+    	int idLibroCorrente = dbq.getCodiceLibro(corrente);
     	String userId = ur.getUserId();
+    	String cf = dbq.getCFU(userId);
+    	int idLibroSuggerito;
+    	boolean esito = false;
+    	Libro l;
     	//InserisciConsigliInDb() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla collonna dei libri suggeriti quelli selezionati dall'utente
-    	boolean esito = dbq.loadConsigliPerLibroInDb(titolo, suggeriti);
+    	for(int i=0; i<suggeriti.size(); i++)
+    	{
+    		l = suggeriti.get(i);
+    		idLibroSuggerito = dbq.getCodiceLibro(l);
+    		esito = dbi.loadConsigliPerLibroInDb(idLibroCorrente, cf, idLibroSuggerito );
+    	}
     	//InserisciConsigliPerUtente() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla tabella suggeriti i libri consigliati dall'utente
-    	esito = dbq.InserisciConsigliPerUtente(titolo, titolo, suggeriti);
     	return esito;
     } 
     
     public synchronized LinkedList caricaSuggeriti(Libro corrente, UtenteRegistrato ur) {
-    	String titolo = corrente.getTitolo();
+    	int idlibro = dbq.getCodiceLibro(corrente);
     	String userId = ur.getUserId();
-    	//caricaSuggeritiDaDB() metodo che dati il titolo del libro corrente(ovvero il libro su cui l'utente 
-    	//sta effettuando i suggeritmenti) e lo userId dell'utente restituisce i libri consigliati da lui stesso per il libro corrente
-    	//Andre se non capisci scrivimi che ci colleghiamo su discord e te lo spiego meglio
-    	
-    	//ho capito cosa intendi ma anche qua non mi puoi passare il titolo per lo stesso principio di prima
-    	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(titolo, userId);
+    	String cf = dbq.getCFU(userId);
+
+    	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(idlibro, cf);
     	return libriSuggeriti;	
     }
     
