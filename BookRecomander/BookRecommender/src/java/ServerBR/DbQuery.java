@@ -585,6 +585,30 @@ public class DbQuery extends DataBase {
         return metreturn;  
     }
     
+    public List<Libro> caricaSuggeritiDaDB(String cf)
+    {
+        ResultSet result;
+        result = null;
+        String query;
+        List<Libro> metreturn = null;
+        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalità, nota_edizione, b.id_codice_fiscale \r\n"
+        		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"UtentiRegistrati\" as c, public.\"Librerie\" as d\r\n"
+        		+ "where c.codice_fiscale = ? and c.codice_fiscale = d.id_codice_fiscale and d.id_libro = a.cod_libro \r\n"
+        		+ "and a.cod_libro = b.id_libro";
+
+        try {
+            PreparedStatement pstm = connection.prepareStatement(query);
+            pstm.setString(1, cf);
+            result = statement.executeQuery(query);
+            DbQuery classe = new DbQuery();
+            metreturn = classe.resultSetToLibri(result);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return metreturn;  
+    
     public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {
         List<Libro> libri = new ArrayList<>();   // Lista che conterrà i risultati
 
