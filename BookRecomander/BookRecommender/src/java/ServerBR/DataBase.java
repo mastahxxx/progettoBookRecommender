@@ -121,13 +121,13 @@ public class DataBase {
     }
     //uguale per prima, guarda cosa chiede il metodo in in
     public synchronized boolean iserisciValutazioni(Libro l) {
-    	String titolo = l.getTitolo();
+    	int idLibro = dbq.getCodiceLibro(l);
     	int contenuto = l.getContenuto();
     	int stile = l.getStile();
     	int gadevolezza = l.getGradevolezza();
     	int originalita = l.getOriginalita();
     	int edizione = l.getEdizione();
-    	boolean controlloValutazioni = dbi.loadValutazioni(titolo, contenuto, stile, gadevolezza, originalita, edizione);
+    	boolean controlloValutazioni = dbi.loadValutazioni(idLibro, contenuto, stile, gadevolezza, originalita, edizione);
     	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
     	boolean controlloNote = this.inserisciNoteLibro(l);
     	if(controlloValutazioni && controlloNote)
