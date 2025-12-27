@@ -137,14 +137,15 @@ public class DataBase {
     	//Rifare tabelle separando note, metterle null le righe
     }
     
-    private synchronized boolean inserisciNoteLibro(Libro l, u) {
+    private synchronized boolean inserisciNoteLibro(Libro l, UtenteRegistrato u) {
     	int idLibro = dbq.getCodiceLibro(l);
+    	String userId = u.getUserId();
     	LinkedList noteContenuto = l.getNoteStile();
     	LinkedList noteStile = l.getNoteContenuto();
     	LinkedList noteGradevolezza = l.getNoteGradevolezza();
     	LinkedList noteOriginalita = l.getNoteOriginalità();
     	LinkedList noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.loadNote(idLibro,noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
+    	boolean controllo = dbi.loadNote(idLibro, userId, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     }
     
 
