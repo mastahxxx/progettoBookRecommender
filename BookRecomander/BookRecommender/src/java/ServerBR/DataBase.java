@@ -121,22 +121,29 @@ public class DataBase {
     }
     //uguale per prima, guarda cosa chiede il metodo in in
     public synchronized boolean iserisciValutazioni(Libro l) {
-    	String titolo = l.getTitolo();
+    	int idLibro = dbq.getCodiceLibro(l);
     	int contenuto = l.getContenuto();
     	int stile = l.getStile();
     	int gadevolezza = l.getGradevolezza();
     	int originalita = l.getOriginalita();
     	int edizione = l.getEdizione();
+    	boolean controlloValutazioni = dbi.loadValutazioni(idLibro, contenuto, stile, gadevolezza, originalita, edizione);
+    	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
+    	boolean controlloNote = this.inserisciNoteLibro(l);
+    	if(controlloValutazioni && controlloNote)
+    		return true;
+    	return false;;
+    	//Rifare tabelle separando note, metterle null le righe
+    }
+    
+    private synchronized boolean inserisciNoteLibro(Libro l) {
+    	int idLibro = dbq.getCodiceLibro(l);
     	LinkedList noteContenuto = l.getNoteStile();
     	LinkedList noteStile = l.getNoteContenuto();
     	LinkedList noteGradevolezza = l.getNoteGradevolezza();
     	LinkedList noteOriginalita = l.getNoteOriginalità();
     	LinkedList noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.loadValutazioni(titolo, contenuto, stile, gadevolezza, originalita, edizione, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
-    	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
-    	return controllo;
-    	
-    	//Rifare tabelle separando note, metterle null le righe
+    	boolean controllo = dbi.loadNote(idLibro,noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     }
     
 
@@ -145,6 +152,7 @@ public class DataBase {
     	String nome = libreria.getNome();
     	LinkedList<Libro> contenuto = libreria.getContenuto();
     	String userId = u.getUserId();
+    	boolean controllo = false;
     	//MODIFICA METODO
     	//Ora il metodo InserisciLibreriaDb inserisce nella tabella librerie lo userId dell'utente che lha creata il nome che gli è stata assegnata 
     	//e i libri inseriti dentro e restituisce true in caso di sucesso altriment false
@@ -153,11 +161,11 @@ public class DataBase {
     		Libro l = contenuto.get(i);
     		int IdLibro = dbq.getCodiceLibro(l);
     		String cf = dbq.getCFU(userId);
-    		boolean controllo = dbi.loadLibrerie(cf, nome, IdLibro); 
+    		controllo = dbi.loadLibrerie(cf, nome, IdLibro); 
     		//metodo che restituisce codice libro
-        	return controllo;
+        	
     	}
-    	
+    	return controllo;
     }
     
     //da creare andrea
