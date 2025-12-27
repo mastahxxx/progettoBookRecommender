@@ -135,6 +135,9 @@ public class ValutaLibroController {
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
             out.writeObject("INSETISCI VALUTAZIONE");
             out.writeObject(l);
+            UtenteRegistrato u = new UtenteRegistrato();
+            u.setUserId(autore);
+            out.writeObject(u);
             ok = (boolean) in.readObject();
             out.close();
             in.close();
