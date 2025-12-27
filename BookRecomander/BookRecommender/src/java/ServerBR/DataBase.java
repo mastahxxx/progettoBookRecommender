@@ -127,16 +127,22 @@ public class DataBase {
     	int gadevolezza = l.getGradevolezza();
     	int originalita = l.getOriginalita();
     	int edizione = l.getEdizione();
+    	boolean controlloValutazioni = dbi.loadValutazioni(titolo, contenuto, stile, gadevolezza, originalita, edizione);
+    	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
+    	boolean controlloNote = this.inserisciNoteLibro(l);
+    	if(controlloValutazioni && controlloNote)
+    		return true;
+    	return false;;
+    	//Rifare tabelle separando note, metterle null le righe
+    }
+    
+    private synchronized boolean inserisciNoteLibro(Libro l) {
     	LinkedList noteContenuto = l.getNoteStile();
     	LinkedList noteStile = l.getNoteContenuto();
     	LinkedList noteGradevolezza = l.getNoteGradevolezza();
     	LinkedList noteOriginalita = l.getNoteOriginalità();
     	LinkedList noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.loadValutazioni(titolo, contenuto, stile, gadevolezza, originalita, edizione, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
-    	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
-    	return controllo;
-    	
-    	//Rifare tabelle separando note, metterle null le righe
+    	boolean controllo = dbi.loadNote(noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     }
     
 
