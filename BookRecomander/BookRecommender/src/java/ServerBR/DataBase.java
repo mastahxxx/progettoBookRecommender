@@ -194,13 +194,12 @@ public class DataBase {
     
     //DA RIGUARDARE 
     // anche questo metodo non è chiaro:
-    //come faccio a fare un associazione per titolo, mi state dicendo quindi che non possono esistere due libri con lo stesso titolo?
-    //va passata la pk che è cod libro
+ 
     public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
     	String titolo = corrente.getTitolo();
     	String userId = ur.getUserId();
     	//InserisciConsigliInDb() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla collonna dei libri suggeriti quelli selezionati dall'utente
-    	boolean esito = dbq.InserisciConsigliPerLibroInDb(titolo, suggeriti);
+    	boolean esito = dbq.loadConsigliPerLibroInDb(titolo, suggeriti);
     	//InserisciConsigliPerUtente() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla tabella suggeriti i libri consigliati dall'utente
     	esito = dbq.InserisciConsigliPerUtente(titolo, titolo, suggeriti);
     	return esito;
