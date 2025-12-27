@@ -145,6 +145,7 @@ public class DataBase {
     	String nome = libreria.getNome();
     	LinkedList<Libro> contenuto = libreria.getContenuto();
     	String userId = u.getUserId();
+    	boolean controllo = false;
     	//MODIFICA METODO
     	//Ora il metodo InserisciLibreriaDb inserisce nella tabella librerie lo userId dell'utente che lha creata il nome che gli è stata assegnata 
     	//e i libri inseriti dentro e restituisce true in caso di sucesso altriment false
@@ -153,11 +154,11 @@ public class DataBase {
     		Libro l = contenuto.get(i);
     		int IdLibro = dbq.getCodiceLibro(l);
     		String cf = dbq.getCFU(userId);
-    		boolean controllo = dbi.loadLibrerie(cf, nome, IdLibro); 
+    		controllo = dbi.loadLibrerie(cf, nome, IdLibro); 
     		//metodo che restituisce codice libro
-        	return controllo;
+        	
     	}
-    	
+    	return controllo;
     }
     
     //da creare andrea
