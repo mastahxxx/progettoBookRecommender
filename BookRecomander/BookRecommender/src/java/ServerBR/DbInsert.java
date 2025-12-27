@@ -2,6 +2,9 @@ package ServerBR;
 
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.LinkedList;
+
+import ClassiCondivise.Libro;
 
 public class DbInsert extends DataBase {
 
@@ -83,8 +86,46 @@ public class DbInsert extends DataBase {
         }
         return false;
     }
+    
+    public boolean loadValutazioniNote(int idLibro, String cf, String notaStile, String notaContenuto, String notaGradevolezza,String notaOriginalita, String notaEdizione ) {
 
-    public boolean loadValutazioni(int idLibro, String idcf, int stile, int contenuto, int gradevolezza, int originalita, int edizione, int votoF, String notaStile, String notaContenuto, String notaGradevolezza, String notaOriginalita, String notaEdizione) {
+        try {
+            query = "insert into public.\"Librerie\" values (";
+            query = query + "'" + notaStile + "',";
+            query = query + "'" + notaContenuto + "',";
+            query = query + "'" + notaGradevolezza + "',";
+            query = query + "'" + notaOriginalita + "',";
+            query = query + "'" + notaEdizione + "',";
+            query = query + "'" + cf + "',";
+            query = query + "'" + idLibro + "')";
+            statement.executeQuery(query);
+            return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean loadConsigliPerLibroInDb(String titolo,LinkedList<Libro> suggeriti) {
+
+        try {
+            query = "insert into public.\"Librerie\" values (";
+            query = query + "'" + nomeLibreria + "',";
+            query = query + "'" + idLibro + "',";
+            query = query + "'" + idcf + "')";
+            statement.executeQuery(query);
+            return true;
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean loadValutazioni(int idLibro, String idcf, int stile, int contenuto, int gradevolezza, int originalita, int edizione) {
 
         try {
             query = "insert into public.\"Valutazioni\" values (";
@@ -94,12 +135,7 @@ public class DbInsert extends DataBase {
             query = query + "'" + contenuto + "',";
             query = query + "'" + gradevolezza + "',";
             query = query + "'" + originalita + "',";
-            query = query + "'" + edizione + "',";
-            query = query + "'" + notaStile + "',";
-            query = query + "'" + notaContenuto + "',";
-            query = query + "'" + notaGradevolezza + "',";
-            query = query + "'" + notaOriginalita + "',";
-            query = query + "'" + notaEdizione + "')";
+            query = query + "'" + edizione + "')";
             statement.executeQuery(query);
             return true;
         }
