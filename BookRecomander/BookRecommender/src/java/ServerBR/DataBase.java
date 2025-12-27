@@ -123,12 +123,13 @@ public class DataBase {
     public synchronized boolean iserisciValutazioni(Libro l,UtenteRegistrato u) {
     	int idLibro = dbq.getCodiceLibro(l);
     	String userId = u.getUserId();
+    	String cf = dbq.getCFU(userId);
     	int contenuto = l.getContenuto();
     	int stile = l.getStile();
     	int gadevolezza = l.getGradevolezza();
     	int originalita = l.getOriginalita();
     	int edizione = l.getEdizione();
-    	boolean controlloValutazioni = dbi.loadValutazioni(idLibro, userId, contenuto, stile, gadevolezza, originalita, edizione);
+    	boolean controlloValutazioni = dbi.loadValutazioni(idLibro, cf, contenuto, stile, gadevolezza, originalita, edizione);
     	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
     	boolean controlloNote = this.inserisciNoteLibro(l);
     	if(controlloValutazioni && controlloNote)
@@ -140,12 +141,13 @@ public class DataBase {
     private synchronized boolean inserisciNoteLibro(Libro l, UtenteRegistrato u) {
     	int idLibro = dbq.getCodiceLibro(l);
     	String userId = u.getUserId();
+    	String cf = dbq.getCFU(userId);
     	LinkedList noteContenuto = l.getNoteStile();
     	LinkedList noteStile = l.getNoteContenuto();
     	LinkedList noteGradevolezza = l.getNoteGradevolezza();
     	LinkedList noteOriginalita = l.getNoteOriginalità();
     	LinkedList noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.loadNote(idLibro, userId, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
+    	boolean controllo = dbi.loadValutazioniNote(idLibro, cf, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
     }
     
 
