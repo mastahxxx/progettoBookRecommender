@@ -20,11 +20,11 @@ public class Libro implements Serializable {
     private int originalita;
     private int edizione;
 
-    private LinkedList<String> noteContenuto;
-    private LinkedList<String> noteStile;
-    private LinkedList<String> noteGradevolezza;
-    private LinkedList<String> noteOriginalita;
-    private LinkedList<String> noteEdizione;
+    private String noteContenuto;
+    private String noteStile;
+    private String noteGradevolezza;
+    private String noteOriginalita;
+    private String noteEdizione;
 
     private LinkedList<Libro> libriConsigliati;
     private boolean controllo;
@@ -33,12 +33,7 @@ public class Libro implements Serializable {
      * Costruttore predefinito. Inizializza le liste interne.
      */
     public Libro() {
-        this.libriConsigliati = new LinkedList<>();
-        this.noteContenuto = new LinkedList<>();
-        this.noteStile = new LinkedList<>();
-        this.noteGradevolezza = new LinkedList<>();
-        this.noteOriginalita = new LinkedList<>();
-        this.noteEdizione = new LinkedList<>();
+        this.libriConsigliati = new LinkedList();
     }
 
     //Getter
@@ -68,19 +63,19 @@ public class Libro implements Serializable {
     public int getEdizione() { return this.edizione; }
 
     /** @return note sullo stile */
-    public LinkedList<String> getNoteStile() { return this.noteStile; }
+    public String getNoteStile() { return this.noteStile; }
 
     /** @return note sul contenuto */
-    public LinkedList<String> getNoteContenuto() { return this.noteContenuto; }
+    public String getNoteContenuto() { return this.noteContenuto; }
 
     /** @return note sulla gradevolezza */
-    public LinkedList<String> getNoteGradevolezza() { return this.noteGradevolezza; }
+    public String getNoteGradevolezza() { return this.noteGradevolezza; }
 
     /** @return note sull'originalità */
-    public LinkedList<String> getNoteOriginalità() { return this.noteOriginalita; }
+    public String getNoteOriginalità() { return this.noteOriginalita; }
 
     /** @return note sull'edizione */
-    public LinkedList<String> getNoteEdizione() { return this.noteEdizione; }
+    public String getNoteEdizione() { return this.noteEdizione; }
 
     /** @return flag di controllo */
     public boolean getControllo() { return this.controllo; }
@@ -120,28 +115,28 @@ public class Libro implements Serializable {
     //Note
 
     /** Aggiunge una nota sullo stile. */
-    public void setNoteStile(String noteSt, String autore) {
-        noteStile.add("Note stile : " + autore + ": " + noteSt + ". ");
+    public void setNoteStile(String noteSt) {
+        noteStile = "Note stile : "+ noteSt + ". ";
     }
 
     /** Aggiunge una nota sul contenuto. */
-    public void setNoteContenuto(String noteCo, String autore) {
-        noteContenuto.add("Note contenuto : " + autore + ": " + noteCo + ". ");
+    public void setNoteContenuto(String noteCo) {
+        noteContenuto = "Note contenuto : "  + noteCo + ". ";
     }
 
     /** Aggiunge una nota sulla gradevolezza. */
-    public void setNoteGradevolezza(String noteGr, String autore) {
-        noteGradevolezza.add("Note gradevolezza : " + autore + ": " + noteGr + ". ");
+    public void setNoteGradevolezza(String noteGr) {
+        noteGradevolezza = "Note gradevolezza : " + noteGr + ". ";
     }
 
     /** Aggiunge una nota sull'originalità. */
-    public void setNoteOriginalita(String noteOr, String autore) {
-        noteOriginalita.add("Note originalità : " + autore + ": " + noteOr + ". ");
+    public void setNoteOriginalita(String noteOr) {
+        noteOriginalita = "Note originalità : "  + noteOr + ". ";
     }
 
     /** Aggiunge una nota sull'edizione. */
-    public void setNoteEdizione(String noteEd, String autore) {
-        noteEdizione.add("Note edizione : " + autore + ": " + noteEd + ". ");
+    public void setNoteEdizione(String noteEd) {
+        noteEdizione = "Note edizione : " + noteEd + ". ";
     }
 
 
