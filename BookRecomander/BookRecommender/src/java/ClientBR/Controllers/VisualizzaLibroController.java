@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /**
  * Controller per la visualizzazione dei dettagli di un libro e dei consigliati correlati.
- * <p>Mostra voti, note aggregate e consente di aprire un libro consigliato.</p>
+ * <p>Mostra voti, note aggregate e consente di aprire un altro libro consigliato.</p>
  */
 public class VisualizzaLibroController {
 
@@ -95,7 +95,7 @@ public class VisualizzaLibroController {
             Objects.toString(libro.getAutore(), "") + " (" +
             Objects.toString(libro.getAnnoPubblicazione(), "") + ")"
         );
-
+        //Mostro i voti
         stile.setText("voto stile: " + libro.getStile());
         contenuto.setText("voto contenuto: " + libro.getContenuto());
         gradevolezza.setText("voto gradevolezza: " + libro.getGradevolezza());
@@ -110,7 +110,7 @@ public class VisualizzaLibroController {
             libro.getNoteStile(),
             libro.getNoteContenuto(),
             libro.getNoteGradevolezza(),
-            libro.getNoteOriginalità(),  // metodo con accento nel tuo model
+            libro.getNoteOriginalita(),
             libro.getNoteEdizione()
         ));
 

@@ -120,11 +120,11 @@ public class ValutaLibroController {
 
         // salva note (se presenti)
         String autore = SceneNavigator.getUserID();
-        if (!isBlank(taContenuto.getText()))    l.setNoteContenuto(taContenuto.getText().trim(), autore);
-        if (!isBlank(taStile.getText()))        l.setNoteStile(taStile.getText().trim(), autore);
-        if (!isBlank(taGradevolezza.getText())) l.setNoteGradevolezza(taGradevolezza.getText().trim(), autore);
-        if (!isBlank(taOriginalita.getText()))  l.setNoteOriginalita(taOriginalita.getText().trim(), autore);
-        if (!isBlank(taEdizione.getText()))     l.setNoteEdizione(taEdizione.getText().trim(), autore);
+        if (!isBlank(taContenuto.getText()))    l.setNoteContenuto(taContenuto.getText().trim());
+        if (!isBlank(taStile.getText()))        l.setNoteStile(taStile.getText().trim());
+        if (!isBlank(taGradevolezza.getText())) l.setNoteGradevolezza(taGradevolezza.getText().trim());
+        if (!isBlank(taOriginalita.getText()))  l.setNoteOriginalita(taOriginalita.getText().trim());
+        if (!isBlank(taEdizione.getText()))     l.setNoteEdizione(taEdizione.getText().trim());
 
         // invio al db
         boolean ok = false;

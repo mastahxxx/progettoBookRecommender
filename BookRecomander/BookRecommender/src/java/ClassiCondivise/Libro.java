@@ -72,7 +72,7 @@ public class Libro implements Serializable {
     public String getNoteGradevolezza() { return this.noteGradevolezza; }
 
     /** @return note sull'originalità */
-    public String getNoteOriginalità() { return this.noteOriginalita; }
+    public String getNoteOriginalita() { return this.noteOriginalita; }
 
     /** @return note sull'edizione */
     public String getNoteEdizione() { return this.noteEdizione; }
