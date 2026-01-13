@@ -113,7 +113,7 @@ public class VisualizzaLibroUtenteRegistratoController {
             libro.getNoteStile(),
             libro.getNoteContenuto(),
             libro.getNoteGradevolezza(),
-            libro.getNoteOriginalità(),
+            libro.getNoteOriginalita(),
             libro.getNoteEdizione()
         ));
 
