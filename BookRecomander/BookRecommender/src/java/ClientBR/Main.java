@@ -16,7 +16,7 @@ public class Main extends Application {
      * Avvio dell'applicazione JavaFX.
      * @param primaryStage stage principale fornito dal runtime
      */
-    //@Override
+    @Override
     public void start(Stage primaryStage) {
         try {
             // passa lo Stage al navigator
@@ -29,7 +29,7 @@ public class Main extends Application {
             SceneNavigator.switchToHome();
 
             primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
-             //   @Override
+                @Override
                 public void handle(WindowEvent e) {
                     Platform.exit();
                 }
