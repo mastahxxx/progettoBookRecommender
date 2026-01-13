@@ -109,13 +109,13 @@ public class VisualizzaLibroUtenteRegistratoController {
                    + libro.getEdizione() + libro.getOriginalita()) / 5;
         votoFinale.setText("voto finale: " + media);
 
-        note.setText(concatenaNote(
+      /**   note.setText(concatenaNote(
             libro.getNoteStile(),
             libro.getNoteContenuto(),
             libro.getNoteGradevolezza(),
             libro.getNoteOriginalita(),
             libro.getNoteEdizione()
-        ));
+        )); */
 
         LinkedList<Libro> consigliati = libro.getLibriConsigliati();
         LinkedList<Libro> nuovaLista = new LinkedList();
@@ -144,7 +144,7 @@ public class VisualizzaLibroUtenteRegistratoController {
      * @param liste liste di note (per categoria)
      * @return testo unico con note concatenate
      */
-    private String concatenaNote(List<String>... liste) {
+   /**  private String concatenaNote(List<String>... liste) {
         StringBuilder sb = new StringBuilder();
         for (List<String> l : liste) {
             if (l == null) continue;
@@ -155,5 +155,5 @@ public class VisualizzaLibroUtenteRegistratoController {
             }
         }
         return sb.toString();
-    }
+    } */
 }

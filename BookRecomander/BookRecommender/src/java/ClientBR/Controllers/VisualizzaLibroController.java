@@ -106,13 +106,14 @@ public class VisualizzaLibroController {
                    + libro.getEdizione() + libro.getOriginalita()) / 5;
         votoFinale.setText("voto finale: " + media);
 
-        note.setText(concatenaNote(
-            libro.getNoteStile(),
-            libro.getNoteContenuto(),
-            libro.getNoteGradevolezza(),
-            libro.getNoteOriginalita(),
-            libro.getNoteEdizione()
-        ));
+       // note.setText(concatenaNote(
+         //   libro.getNoteStile(),
+          //  libro.getNoteContenuto(),
+          //  libro.getNoteGradevolezza(),
+          //  libro.getNoteOriginalita(),
+          //  libro.getNoteEdizione()
+          // ));
+        
 
         LinkedList<Libro> consigliati = libro.getLibriConsigliati();
         LinkedList<Libro> nuovaLista = new LinkedList();
@@ -141,7 +142,7 @@ public class VisualizzaLibroController {
      * @param liste liste di note
      * @return testo aggregato
      */
-    private String concatenaNote(List<String>... liste) {
+ /**    private String concatenaNote(List<String>... liste) {
         StringBuilder sb = new StringBuilder();
         for (List<String> l : liste) {
             if (l == null) continue;
@@ -152,5 +153,7 @@ public class VisualizzaLibroController {
             }
         }
         return sb.toString();
-    }
+    } */
+
+        
 }
