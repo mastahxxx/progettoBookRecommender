@@ -607,7 +607,8 @@ public class DbQuery extends DataBase {
         {
             e.printStackTrace();
         }
-        return metreturn;  
+        return metreturn;
+    }
     
     public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {
         List<Libro> libri = new ArrayList<>();   // Lista che conterrà i risultati
@@ -617,7 +618,7 @@ public class DbQuery extends DataBase {
         while (result.next()) {
             Libro libro = new Libro();          // Crea un nuovo oggetto Libro per ogni riga
 
-            libro.setTitolo(result.getString("titolo"));
+        /**    libro.setTitolo(result.getString("titolo"));
             libro.setAutore(result.getString("autore"));
             libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
             libro.setStile(result.getInt("stile"));
@@ -630,7 +631,7 @@ public class DbQuery extends DataBase {
             libro.setNoteGradevolezza(result.getString("nota_gradevolezza"), result.getString("id_codice_fiscale"));
             libro.setNoteOriginalita(result.getString("nota_originalità"), result.getString("id_codice_fiscale"));
             libro.setNoteEdizione(result.getString("nota_edizione"), result.getString("id_codice_fiscale"));
-            libro.setControllo(true);
+            libro.setControllo(true); **/
 
             libri.add(libro);                   // Aggiungi l’oggetto alla lista
         }

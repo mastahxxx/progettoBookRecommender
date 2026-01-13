@@ -22,17 +22,17 @@ public class ServerThread extends Thread {
     private ObjectOutputStream out;
     private Socket socket;
 
-    public ServerThread(Socket s, DataBase d) {
+ /**   public ServerThread(Socket s, DataBase d) {
         this.db = d;
         this.socket = s;
         try {
             this.in = new ObjectInputStream(socket.getInputStream());
             this.out = new ObjectOutputStream(socket.getOutputStream());
-        }catch(IOException e) {
+       }catch(IOException e) {
 
         }
-    }
-    /*
+    } */
+    
      public ServerThread(Socket s) {
         this.socket = s;
         try {
@@ -41,7 +41,7 @@ public class ServerThread extends Thread {
         }catch(IOException e) {
 
         }
-    }*/
+    }
     
     public void run() {
         try {

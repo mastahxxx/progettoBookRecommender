@@ -131,10 +131,11 @@ public class DataBase {
     	int edizione = l.getEdizione();
     	boolean controlloValutazioni = dbi.loadValutazioni(idLibro, cf, contenuto, stile, gadevolezza, originalita, edizione);
     	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
-    	boolean controlloNote = this.inserisciNoteLibro(l);
+    //	boolean controlloNote = this.inserisciNoteLibro(l);
+    	boolean controlloNote = true; //temporaneo
     	if(controlloValutazioni && controlloNote)
     		return true;
-    	return false;;
+    	return false;
     	//Rifare tabelle separando note, metterle null le righe
     }
     
@@ -145,9 +146,10 @@ public class DataBase {
     	String noteContenuto = l.getNoteStile();
     	String noteStile = l.getNoteContenuto();
     	String noteGradevolezza = l.getNoteGradevolezza();
-    	String noteOriginalita = l.getNoteOriginalità();
+    	String noteOriginalita = l.getNoteOriginalita();
     	String noteEdizione = l.getNoteEdizione();
     	boolean controllo = dbi.loadValutazioniNote(idLibro, cf, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
+    	return controllo;
     }
     
 
@@ -221,7 +223,8 @@ public class DataBase {
     	String userId = ur.getUserId();
     	String cf = dbq.getCFU(userId);
 
-    	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(idlibro, cf);
+    //	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(idlibro, cf);
+    	LinkedList<Libro> libriSuggeriti = new LinkedList<Libro>(); //da modificare
     	return libriSuggeriti;	
     }
     
