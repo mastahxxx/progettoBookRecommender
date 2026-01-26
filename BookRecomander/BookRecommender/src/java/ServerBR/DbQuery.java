@@ -2,10 +2,6 @@
 package ServerBR;
 
 import java.sql.*;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +9,7 @@ import java.util.List;
 import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
 
-public class DbQuery {
+public class DbQuery extends DataBase {
 
     private Connection connection = null;
 
@@ -28,7 +24,20 @@ public class DbQuery {
             System.err.println("Codice Errore Nativo: " + e.getErrorCode());
             
         } */
-        super();
+        
+    	try {
+
+            Connection connection = DriverManager.getConnection(url, user, password);
+            if(connection != null)
+            {
+                System.out.println("connessione eseguita con successo");
+                statement = connection.createStatement();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
 
 
 

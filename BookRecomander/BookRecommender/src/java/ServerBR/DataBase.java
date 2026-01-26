@@ -31,19 +31,19 @@ public class DataBase {
         dbq = new DbQuery();
         dbi = new DbInsert();
   
-    	try {
+    	/*try {
 
             Connection connection = DriverManager.getConnection(url, user, password);
             if(connection != null)
             {
                 System.out.println("connessione eseguita con successo");
                 statement = connection.createStatement();
-            }
+            } 
 
 
         } catch (Exception e) {
             e.printStackTrace();
-        }    
+        }    */
     }
     
     public synchronized List<Libro> cercaLibro(Libro l){

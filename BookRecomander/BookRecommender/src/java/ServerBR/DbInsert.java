@@ -1,5 +1,7 @@
 package ServerBR;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.LinkedList;
@@ -14,7 +16,19 @@ public class DbInsert extends DataBase {
 
     public DbInsert()
     {
-        super();
+    	try {
+
+            Connection connection = DriverManager.getConnection(url, user, password);
+            if(connection != null)
+            {
+                System.out.println("connessione eseguita con successo");
+                statement = connection.createStatement();
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }   
     }
 
 
