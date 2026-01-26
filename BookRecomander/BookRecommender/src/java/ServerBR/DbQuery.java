@@ -13,7 +13,7 @@ import java.util.List;
 import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
 
-public class DbQuery extends DataBase {
+public class DbQuery {
 
     private Connection connection = null;
 
