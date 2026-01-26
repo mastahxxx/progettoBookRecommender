@@ -22,7 +22,11 @@ public class DbQuery extends DataBase {
         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
-            e.printStackTrace();
+        	System.err.println("--- ERRORE DATABASE ---");
+            System.err.println("Messaggio: " + e.getMessage());
+            System.err.println("Codice SQLState: " + e.getSQLState());
+            System.err.println("Codice Errore Nativo: " + e.getErrorCode());
+            ;
         }
     }
 
@@ -274,7 +278,7 @@ public class DbQuery extends DataBase {
         result = null;
         String query;
         List<Libro> metreturn = null;
-        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalità, nota_edizione, b.id_codice_fiscale \r\n"
+        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalita, nota_edizione, b.id_codice_fiscale \r\n"
         		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b\r\n"
         		+ "where titolo = ? or autore = ? and cod_libro = id_libro";
 
@@ -299,7 +303,7 @@ public class DbQuery extends DataBase {
         result = null;
         String query;
         List<Libro> metreturn = null;
-        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalità, nota_edizione, b.id_codice_fiscale \r\n"
+        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalita, nota_edizione, b.id_codice_fiscale \r\n"
         		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b\r\n"
         		+ "where autore = ? and anno_pubblicazione = ? and cod_libro = id_libro";
 
@@ -324,7 +328,7 @@ public class DbQuery extends DataBase {
         result = null;
         String query;
         List<Libro> metreturn = null;
-        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalità, nota_edizione, b.id_codice_fiscale \r\n"
+        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalita, nota_edizione, b.id_codice_fiscale \r\n"
         		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b\r\n"
         		+ "where titolo = ? and autore = ? and anno_pubblicazione = ? and cod_libro = id_libro";
 
@@ -394,7 +398,7 @@ public class DbQuery extends DataBase {
         result = null;
         String query;
         List<Libro> metreturn = null;
-        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalità, nota_edizione, b.id_codice_fiscale \r\n"
+        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalita, nota_edizione, b.id_codice_fiscale \r\n"
         		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"UtentiRegistrati\" as c, public.\"Librerie\" as d\r\n"
         		+ "where c.codice_fiscale = ? and c.codice_fiscale = d.id_codice_fiscale and d.id_libro = a.cod_libro \r\n"
         		+ "and a.cod_libro = b.id_libro";
@@ -585,23 +589,23 @@ public class DbQuery extends DataBase {
         return metreturn;  
     }
     
-    public List<Libro> caricaSuggeritiDaDB(String cf)
+    public LinkedList<Libro> caricaSuggeritiDaDB(int idlibro, String cf)
     {
         ResultSet result;
         result = null;
         String query;
-        List<Libro> metreturn = null;
-        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalità, nota_edizione, b.id_codice_fiscale \r\n"
-        		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"UtentiRegistrati\" as c, public.\"Librerie\" as d\r\n"
-        		+ "where c.codice_fiscale = ? and c.codice_fiscale = d.id_codice_fiscale and d.id_libro = a.cod_libro \r\n"
-        		+ "and a.cod_libro = b.id_libro";
+        LinkedList<Libro> metreturn = null;
+        query = "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, nota_stile, nota_contenuto, nota_gradevolezza, nota_originalita, nota_edizione\r\n"
+        		+ "from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"NoteValutazioni\" as c\r\n"
+        		+ "where a.cod_libro = ? and a.cod_libro = b.id_libro and b.id_libro = c.id_libro and c.cf = ? and c.cf = b.id_codice_fiscale";
 
         try {
             PreparedStatement pstm = connection.prepareStatement(query);
-            pstm.setString(1, cf);
+            pstm.setInt(1, idlibro);
+            pstm.setString(2, cf);
             result = statement.executeQuery(query);
             DbQuery classe = new DbQuery();
-            metreturn = classe.resultSetToLibri(result);
+            metreturn = classe.resultSetToLibriL(result);
         }
         catch(Exception e)
         {
@@ -618,7 +622,7 @@ public class DbQuery extends DataBase {
         while (result.next()) {
             Libro libro = new Libro();          // Crea un nuovo oggetto Libro per ogni riga
 
-        /**    libro.setTitolo(result.getString("titolo"));
+            libro.setTitolo(result.getString("titolo"));
             libro.setAutore(result.getString("autore"));
             libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
             libro.setStile(result.getInt("stile"));
@@ -626,16 +630,44 @@ public class DbQuery extends DataBase {
             libro.setGradevolezza(result.getInt("gradevolezza"));
             libro.setOriginalita(result.getInt("originalità"));
             libro.setEdizione(result.getInt("edizione"));
-            libro.setNoteStile(result.getString("nota_stile"), result.getString("id_codice_fiscale"));
-            libro.setNoteContenuto(result.getString("nota_contenuto"), result.getString("id_codice_fiscale"));
-            libro.setNoteGradevolezza(result.getString("nota_gradevolezza"), result.getString("id_codice_fiscale"));
-            libro.setNoteOriginalita(result.getString("nota_originalità"), result.getString("id_codice_fiscale"));
-            libro.setNoteEdizione(result.getString("nota_edizione"), result.getString("id_codice_fiscale"));
-            libro.setControllo(true); **/
+            libro.setNoteStile(result.getString("nota_stile"));
+            libro.setNoteContenuto(result.getString("nota_contenuto"));
+            libro.setNoteGradevolezza(result.getString("nota_gradevolezza"));
+            libro.setNoteOriginalita(result.getString("nota_originalita"));
+            libro.setNoteEdizione(result.getString("nota_edizione"));
+            libro.setControllo(true); 
 
             libri.add(libro);                   // Aggiungi l’oggetto alla lista
         }
         return libri; // Ritorna la lista (vuota se non ci sono risultati)
+    }
+    
+    public static LinkedList<Libro> resultSetToLibriL(ResultSet result) throws SQLException {
+        LinkedList<Libro> libri = new LinkedList<>(); 
+
+        if (result == null) return libri; 
+
+        while (result.next()) {
+            Libro libro = new Libro();
+
+            libro.setTitolo(result.getString("titolo"));
+            libro.setAutore(result.getString("autore"));
+            libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
+            libro.setStile(result.getInt("stile"));
+            libro.setContenuto(result.getInt("contenuto"));
+            libro.setGradevolezza(result.getInt("gradevolezza"));
+            libro.setOriginalita(result.getInt("originalità"));
+            libro.setEdizione(result.getInt("edizione"));
+            libro.setNoteStile(result.getString("nota_stile"));
+            libro.setNoteContenuto(result.getString("nota_contenuto"));
+            libro.setNoteGradevolezza(result.getString("nota_gradevolezza"));
+            libro.setNoteOriginalita(result.getString("nota_originalita"));
+            libro.setNoteEdizione(result.getString("nota_edizione"));
+            libro.setControllo(true); 
+
+            libri.add(libro); 
+        }
+        return libri;
     }
     
     public static List<Libreria> resultSetToLibreria(ResultSet result) throws SQLException {
@@ -653,40 +685,5 @@ public class DbQuery extends DataBase {
         }
         return librerie; // Ritorna la lista (vuota se non ci sono risultati)
     }
-    
-
-
-    
-    //Andre utilizza questo metodo per impostare i libri
-    //matte se io ti passo una stringa poi lo richiami te nel server è inutile richiamarlo per ogni query che viene fatta incodizionalmente dal risultato
-    /* 
-    private Libro impostaParametriLibro(Libro l, String result) {
-    	Libro libro;
-    	String r = result.split(";");
-    	if(!result.eqauls("")) {
-    		//mancano i numeri della posizione del vettore perchè non so in che posizioone finiscono i vari valori
-    		libro.setTitolo(r[]);
-    		libro.setAutore(r[]);
-    		libro.setAnnoPublicazione(r[]);
-    		libro.setStile(r[])
-    		libro.setContenuto(r[]);
-    		libro.setGradevolezza(r[]);
-    		libro.setsetOriginalita(r[]);
-    		libro.setEdizione(r[]);
-    		libro.setNoteStile(r[]);
-    		libro.setNoteContenuto(r[]);
-    		libro.setNoteGradevolezza(r[]);
-    		libro.setNoteOriginalita(r[]);
-    		libro.setNoteEdizione(r[]);
-    		libro.setControllo(true);
-    		//bisogna gestire i libri consigliuati per il libro ricercato dal client
-    	}
-    	else {
-    		libro.setControllo(false);
-    	}
-		
-		return libro;
-    }
-
-*/
+   
 }

@@ -90,7 +90,7 @@ public class DbInsert extends DataBase {
     public boolean loadValutazioniNote(int idLibro, String cf, String notaStile, String notaContenuto, String notaGradevolezza,String notaOriginalita, String notaEdizione ) {
 
         try {
-            query = "insert into public.\"Librerie\" values (";
+            query = "insert into public.\"NoteValutazioni\" values (";
             query = query + "'" + notaStile + "',";
             query = query + "'" + notaContenuto + "',";
             query = query + "'" + notaGradevolezza + "',";

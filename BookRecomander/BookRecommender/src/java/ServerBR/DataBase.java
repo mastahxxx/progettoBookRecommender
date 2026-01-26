@@ -153,7 +153,7 @@ public class DataBase {
     }
     
 
-    //matte devi verderlo tu perchè non ne conosco la logica
+   
     public synchronized boolean InserisciLibreria(UtenteRegistrato u, Libreria libreria) {
     	String nome = libreria.getNome();
     	LinkedList<Libro> contenuto = libreria.getContenuto();
@@ -174,7 +174,7 @@ public class DataBase {
     	return controllo;
     }
     
-    //da creare andrea
+   
     
     public synchronized boolean RinominaNomeLibreria(UtenteRegistrato u, Libreria libreria, String nomeVecchio) {
     	String nomeNuovo = libreria.getNome(); //nome che l'utente ha rinominato
@@ -186,7 +186,7 @@ public class DataBase {
     	return controllo;
     }
     
-    //da creare andrea
+    
     
     public synchronized boolean EliminaLibreria(UtenteRegistrato u, Libreria libreria) {
     	String nome = libreria.getNome();
@@ -197,8 +197,7 @@ public class DataBase {
     	return controllo;
     }
     
-    //DA RIGUARDARE 
-    // anche questo metodo non è chiaro:
+   
  
     public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
     	int idLibroCorrente = dbq.getCodiceLibro(corrente);
@@ -223,8 +222,8 @@ public class DataBase {
     	String userId = ur.getUserId();
     	String cf = dbq.getCFU(userId);
 
-    //	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(idlibro, cf);
-    	LinkedList<Libro> libriSuggeriti = new LinkedList<Libro>(); //da modificare
+    	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(idlibro, cf);
+    //	LinkedList<Libro> libriSuggeriti = new LinkedList<Libro>(); //da modificare
     	return libriSuggeriti;	
     }
     
