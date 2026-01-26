@@ -2,165 +2,147 @@ package ServerBR;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.util.LinkedList;
+import java.sql.PreparedStatement;
 
-import ClassiCondivise.Libro;
+public class DbInsert {
 
-public class DbInsert extends DataBase {
+    // ==== CONFIG (coerente con DbQuery) ====
+    private static final String URL = "jdbc:postgresql://localhost:5432/bookRecommender";
+    private static final String USER = "postgres";
+    private static final String PASSWORD = "123";
 
+    private final Connection connection;
 
-    //private Statement statement = dbconnect.connect();
-    private String query;
-    protected String url = "jdbc:postgresql://localhost/bookReccomender";
-    protected String user = "postgres";
-    protected String password = "123";
-    protected Statement statement;
-
-    public DbInsert()
-    {
-    	try {
-
-            Connection connection = DriverManager.getConnection(url, user, password);
-            if(connection != null)
-            {
-                System.out.println("connessione eseguita con successo");
-                statement = connection.createStatement();
-            }
-
-
+    public DbInsert() {
+        try {
+            this.connection = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Connessione DB OK (DbInsert)");
         } catch (Exception e) {
             e.printStackTrace();
-        }   
-    }
-
-
-    public boolean loadUtentiRegistrati(String nome, String cognome, String cf, String email, String uid, String password)
-    {
-
-        try {
-            query = "insert into public.\"UtentiRegistrati\" values (";
-            query = query + "'" + nome + "',";
-            query = query + "'" + cognome + "',";
-            query = query + "'" + cf + "',";
-            query = query + "'" + email + "',";
-            query = query + "'" + uid + "',";
-            query = query + "'" + password + "')";
-            statement.executeQuery(query);
-            return true;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    public void loadLibri(String titolo, String autore, int annoP, int codLibro) {
-
-        try {
-            query = "insert into public.\"Libri\" values (";
-            query = query + "'" + titolo + "',";
-            query = query + "'" + autore + "',";
-            query = query + "'" + annoP + "',";
-            query = query + "'" + codLibro + "')";
-            statement.executeQuery(query);
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
+            throw new RuntimeException("Connessione DB fallita (DbInsert)", e);
         }
     }
 
-    public void loadConsigli(int idlibro, String idcf) {
+    public boolean loadUtentiRegistrati(String nome, String cognome, String cf, String email, String uid, String password) {
+        // Se la tabella ha colonne in ordine diverso, specifica le colonne esplicitamente!
+        String sql = "INSERT INTO public.\"UtentiRegistrati\" VALUES (?, ?, ?, ?, ?, ?)";
 
-        try {
-            query = "insert into public.\"Consigli\" values (";
-            query = query + "'" + idlibro + "',";
-            query = query + "'" + idcf + "')";
-            statement.executeQuery(query);
-        }
-        catch(Exception e)
-        {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nome);
+            ps.setString(2, cognome);
+            ps.setString(3, cf);
+            ps.setString(4, email);
+            ps.setString(5, uid);
+            ps.setString(6, password);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    // bisogna convertire userid a codice fiscale
-    public boolean loadLibrerie(String idcf,String nomeLibreria, int idLibro) {
+    public boolean loadLibri(String titolo, String autore, int annoP, int codLibro) {
+        String sql = "INSERT INTO public.\"Libri\" VALUES (?, ?, ?, ?)";
 
-        try {
-            query = "insert into public.\"Librerie\" values (";
-            query = query + "'" + nomeLibreria + "',";
-            query = query + "'" + idLibro + "',";
-            query = query + "'" + idcf + "')";
-            statement.executeQuery(query);
-            return true;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
-    }
-    
-    public boolean loadValutazioniNote(int idLibro, String cf, String notaStile, String notaContenuto, String notaGradevolezza,String notaOriginalita, String notaEdizione ) {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, titolo);
+            ps.setString(2, autore);
+            ps.setInt(3, annoP);
+            ps.setInt(4, codLibro);
 
-        try {
-            query = "insert into public.\"NoteValutazioni\" values (";
-            query = query + "'" + notaStile + "',";
-            query = query + "'" + notaContenuto + "',";
-            query = query + "'" + notaGradevolezza + "',";
-            query = query + "'" + notaOriginalita + "',";
-            query = query + "'" + notaEdizione + "',";
-            query = query + "'" + cf + "',";
-            query = query + "'" + idLibro + "')";
-            statement.executeQuery(query);
-            return true;
-        }
-        catch(Exception e)
-        {
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
-    }
-    
-    public boolean loadConsigliPerLibroInDb(int idlibro ,String cf, int idlibroc) {
-
-        try {
-            query = "insert into public.\"Librerie\" values (";
-            query = query + "'" + idlibro + "',";
-            query = query + "'" + cf + "',";
-            query = query + "'" + idlibroc + "')";
-            statement.executeQuery(query);
-            return true;
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-        return false;
     }
 
-    public boolean loadValutazioni(int idLibro, String idcf, int stile, int contenuto, int gradevolezza, int originalita, int edizione) {
+    public boolean loadConsigli(int idlibro, String idcf) {
+        String sql = "INSERT INTO public.\"Consigli\" VALUES (?, ?)";
 
-        try {
-            query = "insert into public.\"Valutazioni\" values (";
-            query = query + "'" + idLibro + "',";
-            query = query + "'" + idcf + "',";
-            query = query + "'" + stile + "',";
-            query = query + "'" + contenuto + "',";
-            query = query + "'" + gradevolezza + "',";
-            query = query + "'" + originalita + "',";
-            query = query + "'" + edizione + "')";
-            statement.executeQuery(query);
-            return true;
-        }
-        catch(Exception e)
-        {
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idlibro);
+            ps.setString(2, idcf);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
+    }
+
+    public boolean loadLibrerie(String idcf, String nomeLibreria, int idLibro) {
+        String sql = "INSERT INTO public.\"Librerie\" VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, nomeLibreria);
+            ps.setInt(2, idLibro);
+            ps.setString(3, idcf);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean loadValutazioniNote(int idLibro, String cf,
+                                      String notaStile, String notaContenuto, String notaGradevolezza,
+                                      String notaOriginalita, String notaEdizione) {
+        String sql = "INSERT INTO public.\"NoteValutazioni\" VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, notaStile);
+            ps.setString(2, notaContenuto);
+            ps.setString(3, notaGradevolezza);
+            ps.setString(4, notaOriginalita);
+            ps.setString(5, notaEdizione);
+            ps.setString(6, cf);
+            ps.setInt(7, idLibro);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean loadConsigliPerLibroInDb(int idLibroCorrente, String cf, int idLibroSuggerito) {
+        // QUI nel tuo codice originale stavi inserendo nella tabella "Librerie" (quasi sicuramente è un errore).
+        // Io metto "Consigli" come tabella logica dei suggerimenti.
+        // Se la tua tabella corretta è un'altra, cambia SOLO il nome tabella.
+        String sql = "INSERT INTO public.\"Consigli\" VALUES (?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idLibroCorrente);
+            ps.setString(2, cf);
+            ps.setInt(3, idLibroSuggerito);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean loadValutazioni(int idLibro, String idcf,
+                                   int stile, int contenuto, int gradevolezza, int originalita, int edizione) {
+        String sql = "INSERT INTO public.\"Valutazioni\" VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idLibro);
+            ps.setString(2, idcf);
+            ps.setInt(3, stile);
+            ps.setInt(4, contenuto);
+            ps.setInt(5, gradevolezza);
+            ps.setInt(6, originalita);
+            ps.setInt(7, edizione);
+
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

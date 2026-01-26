@@ -1,10 +1,5 @@
-
-
 package ServerBR;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,221 +7,183 @@ import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
 import ClassiCondivise.UtenteRegistrato;
 
-//import BookRecommender.src.main.java.ClassiCondivise.String;
-
-import java.sql.ResultSet;
-
 public class DataBase {
 
-    //protected String url = "jdbc:postgresql://localhost/bookReccomender";
-   // protected String user = "postgres";
-    //protected String password = "123";
-   // protected Statement statement;
-    private DbQuery dbq;
-    private DbInsert dbi;
-    
+    private final DbQuery dbq;
+    private final DbInsert dbi;
 
+    public DataBase() {
+        // Crea UNA sola istanza e riusala
+        this.dbq = new DbQuery();
+        this.dbi = new DbInsert();
+    }
 
-    public DataBase(){
-        dbq = new DbQuery();
-        dbi = new DbInsert();
-  
-    	/*try {
+    public synchronized List<Libro> cercaLibro(Libro l) {
+        String titolo = l.getTitolo();
+        String autore = l.getAutore();
+        String anno = l.getAnnoPubblicazione();
 
-            Connection connection = DriverManager.getConnection(url, user, password);
-            if(connection != null)
-            {
-                System.out.println("connessione eseguita con successo");
-                statement = connection.createStatement();
-            } 
+        // normalizzo null -> ""
+        titolo = (titolo == null) ? "" : titolo.trim();
+        autore = (autore == null) ? "" : autore.trim();
+        anno = (anno == null) ? "" : anno.trim();
 
+        List<Libro> ris = new LinkedList<>();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }    */
+        if (!titolo.isEmpty() && !autore.isEmpty() && !anno.isEmpty()) {
+            ris = dbq.libriLibroTAA(titolo, autore, anno);
+        } else if (!titolo.isEmpty() && !anno.isEmpty()) {
+            ris = dbq.libriLibroTA(titolo, anno);
+        } else if (!autore.isEmpty() && !anno.isEmpty()) {
+            ris = dbq.libriLibroAA(autore, anno);
+        } else if (!titolo.isEmpty()) {
+            ris = dbq.libriLibro(titolo);
+        } else if (!autore.isEmpty()) {
+            ris = dbq.libriLibro(autore);
+        }
+
+        return ris;
     }
-    
-    public synchronized List<Libro> cercaLibro(Libro l){
-    	String titolo = l.getTitolo();
-    	String autore = l.getAutore();
-    	String anno = l.getAnnoPubblicazione();
-    	List <Libro> ris = new LinkedList();
-    	if(titolo != "" && autore != "" && anno != "") {
-    		ris = dbq.libriLibroTAA(titolo, autore, anno); //io devo fare il metodo e bisogna fare un casting ad int(anno)
-    	}
-    	else {
-    		if(titolo != "" && anno != "") {
-        		ris = dbq.libriLibroTA(titolo, anno);	//io devo fare il metodo e bisogna fare un casting ad int(anno)
-        	}
-    		else {
-    			if(autore != "" && anno != "") {
-    				ris = dbq.libriLibroAA(autore, anno);//bisogna fare un casting ad int(anno)
-    			}
-    			else {
-    				if(titolo != "") {
-    					ris = dbq.libriLibro(titolo);
-    				}
-    				else {
-    					if(titolo != "") {
-        					ris = dbq.libriLibro(autore);
-        				}
-    				}
-    			}
-    		} 		
-    	}
-    	return ris;	
+
+    public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u) {
+        List<Libro> ris = new LinkedList<>();
+        String userId = u.getUserId();
+        String cf = dbq.getCFU(userId);
+        if (cf == null || cf.isEmpty()) return ris;
+        return dbq.getLibroDaLibreria(cf);
     }
-    
-    public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u){
-    	List <Libro> ris = new LinkedList();
-    	String userId = u.getUserId();
-    	String cf = dbq.getCFU(userId);
-    	ris = dbq.getLibroDaLibreria(cf); //metodo che restituisce una lista contenente tutti i libri presenti in tutte le librerie del utente
-    	return ris;
+
+    public synchronized boolean controllaEmail(UtenteRegistrato u) {
+        String mail = u.getMail();
+        if (mail == null || mail.trim().isEmpty()) return false;
+        // Nota: il tuo commento dice "true se la mail non è presente",
+        // ma il metodo DbQuery.UtentiRegistratiE() (come lo hai scritto) ritorna true se ESISTE.
+        // Qui lascio il comportamento "così com'è" (ritorna true se esiste).
+        return dbq.UtentiRegistratiE(mail.trim());
     }
-    
-    public synchronized boolean controllaEmail(UtenteRegistrato u){
-    	String mail = u.getMail();
-    	boolean esito = dbq.UtentiRegistratiE(mail); //metodo che restituisce true se la mail non è presente nel db
-    	return esito;	
+
+    public synchronized boolean controllaUserId(UtenteRegistrato u) {
+        String userId = u.getUserId();
+        if (userId == null || userId.trim().isEmpty()) return false;
+        // stesso discorso: ritorna true se esiste
+        return dbq.UtentiRegistratiUser(userId.trim());
     }
-    
-    public synchronized boolean controllaUserId(UtenteRegistrato u){
-    	String userId = u.getUserId();
-    	boolean esito = dbq.UtentiRegistratiUser(userId); //metodo che restituisce true se lo userId non è presente nel db
-    	return esito;	
-    }
-    
-        
+
     public synchronized boolean insertUtente(UtenteRegistrato u) {
-		System.out.println("SONO QUAAAA");
-    	String nomeCognome = u.getNomeCognome();
-    	String codiceFiscale = u.getCodiceFiscale();
-    	String mail = u.getMail();
-    	String user = u.getUserId();
-    	String password = u.getPassoword();
-    	String[] split = nomeCognome.split(" ");
-    	boolean esito = dbi.loadUtentiRegistrati(split[0],split[1], codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
-		System.out.println("SONO QUI 2:" + esito);
-    	return esito;
+        String nomeCognome = u.getNomeCognome();
+        String codiceFiscale = u.getCodiceFiscale();
+        String mail = u.getMail();
+        String userId = u.getUserId();
+        String pass = u.getPassoword();
+
+        if (nomeCognome == null) nomeCognome = "";
+        String[] split = nomeCognome.trim().split("\\s+");
+
+        String nome = split.length > 0 ? split[0] : "";
+        String cognome = split.length > 1 ? split[1] : "";
+
+        return dbi.loadUtentiRegistrati(nome, cognome, codiceFiscale, mail, userId, pass);
     }
-    
+
     public synchronized boolean login(UtenteRegistrato u) {
-    	String mail = u.getMail();
-    	String password = u.getPassoword();
-    	boolean esito = dbq.UtentiRegistratiEPB(mail, password);;//metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
-    	if(!esito) {
-    		String userId = u.getUserId();
-    		esito = dbq.UtentiRegistratiUPB(userId, password);///metodo che controlla il login tramite mail; Se il login va a buon fine restituisce true
-    	}
-    	return esito;
+        String mail = u.getMail();
+        String userId = u.getUserId();
+        String pass = u.getPassoword();
+
+        boolean esito = false;
+
+        if (mail != null && !mail.trim().isEmpty()) {
+            esito = dbq.UtentiRegistratiEPB(mail.trim(), pass);
+        }
+        if (!esito && userId != null && !userId.trim().isEmpty()) {
+            esito = dbq.UtentiRegistratiUPB(userId.trim(), pass);
+        }
+        return esito;
     }
-    //uguale per prima, guarda cosa chiede il metodo in in
-    public synchronized boolean iserisciValutazioni(Libro l,UtenteRegistrato u) {
-    	int idLibro = dbq.getCodiceLibro(l);
-    	String userId = u.getUserId();
-    	String cf = dbq.getCFU(userId);
-    	int contenuto = l.getContenuto();
-    	int stile = l.getStile();
-    	int gadevolezza = l.getGradevolezza();
-    	int originalita = l.getOriginalita();
-    	int edizione = l.getEdizione();
-    	boolean controlloValutazioni = dbi.loadValutazioni(idLibro, cf, contenuto, stile, gadevolezza, originalita, edizione);
-    	//metodo che inserisci le valutazione di un utente nel db e restituisce true in caso di esito posito altrimenti false
-    //	boolean controlloNote = this.inserisciNoteLibro(l);
-    	boolean controlloNote = true; //temporaneo
-    	if(controlloValutazioni && controlloNote)
-    		return true;
-    	return false;
-    	//Rifare tabelle separando note, metterle null le righe
+
+    public synchronized boolean iserisciValutazioni(Libro l, UtenteRegistrato u) {
+        int idLibro = dbq.getCodiceLibro(l);
+        String userId = u.getUserId();
+        String cf = dbq.getCFU(userId);
+
+        int contenuto = l.getContenuto();
+        int stile = l.getStile();
+        int gradevolezza = l.getGradevolezza();
+        int originalita = l.getOriginalita();
+        int edizione = l.getEdizione();
+
+        boolean controlloValutazioni = dbi.loadValutazioni(idLibro, cf, contenuto, stile, gradevolezza, originalita, edizione);
+
+        // TODO: se reinserisci le note, riattiva inserisciNoteLibro
+        boolean controlloNote = true;
+
+        return controlloValutazioni && controlloNote;
     }
-    
+
     private synchronized boolean inserisciNoteLibro(Libro l, UtenteRegistrato u) {
-    	int idLibro = dbq.getCodiceLibro(l);
-    	String userId = u.getUserId();
-    	String cf = dbq.getCFU(userId);
-    	String noteContenuto = l.getNoteStile();
-    	String noteStile = l.getNoteContenuto();
-    	String noteGradevolezza = l.getNoteGradevolezza();
-    	String noteOriginalita = l.getNoteOriginalita();
-    	String noteEdizione = l.getNoteEdizione();
-    	boolean controllo = dbi.loadValutazioniNote(idLibro, cf, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
-    	return controllo;
-    }
-    
+        int idLibro = dbq.getCodiceLibro(l);
+        String userId = u.getUserId();
+        String cf = dbq.getCFU(userId);
 
-   
+        String noteContenuto = l.getNoteStile();
+        String noteStile = l.getNoteContenuto();
+        String noteGradevolezza = l.getNoteGradevolezza();
+        String noteOriginalita = l.getNoteOriginalita();
+        String noteEdizione = l.getNoteEdizione();
+
+        return dbi.loadValutazioniNote(idLibro, cf, noteContenuto, noteStile, noteGradevolezza, noteOriginalita, noteEdizione);
+    }
+
     public synchronized boolean InserisciLibreria(UtenteRegistrato u, Libreria libreria) {
-    	String nome = libreria.getNome();
-    	LinkedList<Libro> contenuto = libreria.getContenuto();
-    	String userId = u.getUserId();
-    	boolean controllo = false;
-    	//MODIFICA METODO
-    	//Ora il metodo InserisciLibreriaDb inserisce nella tabella librerie lo userId dell'utente che lha creata il nome che gli è stata assegnata 
-    	//e i libri inseriti dentro e restituisce true in caso di sucesso altriment false
-    	for(int i=0; i<contenuto.size();i++)
-    	{
-    		Libro l = contenuto.get(i);
-    		int IdLibro = dbq.getCodiceLibro(l);
-    		String cf = dbq.getCFU(userId);
-    		controllo = dbi.loadLibrerie(cf, nome, IdLibro); 
-    		//metodo che restituisce codice libro
-        	
-    	}
-    	return controllo;
-    }
-    
-   
-    
-    public synchronized boolean RinominaNomeLibreria(UtenteRegistrato u, Libreria libreria, String nomeVecchio) {
-    	String nomeNuovo = libreria.getNome(); //nome che l'utente ha rinominato
-    	//nomeVecchio è il nome che la libreira aveva prima della modifica
-    	String userId = u.getUserId();
-    	//metodo che aggiorna il nome della libreria e restituisce true in caso di successo, false altrimenti
-    	String cf = dbq.getCFU(userId);
-    	boolean controllo = dbq.aggiornaNomeLibreria(nomeVecchio, nomeNuovo, cf); 
-    	return controllo;
-    }
-    
-    
-    
-    public synchronized boolean EliminaLibreria(UtenteRegistrato u, Libreria libreria) {
-    	String nome = libreria.getNome();
-    	String userId = u.getUserId();
-    	//metodo che elimina la libreria dal Db e restituisce true in caso di successo altrimenti false
-    	String cf=dbq.getCFU(userId);
-    	boolean controllo = dbq.eliminaLibreria(nome, cf); 
-    	return controllo;
-    }
-    
-   
- 
-    public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
-    	int idLibroCorrente = dbq.getCodiceLibro(corrente);
-    	String userId = ur.getUserId();
-    	String cf = dbq.getCFU(userId);
-    	int idLibroSuggerito;
-    	boolean esito = false;
-    	Libro l;
-    	//InserisciConsigliInDb() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla collonna dei libri suggeriti quelli selezionati dall'utente
-    	for(int i=0; i<suggeriti.size(); i++)
-    	{
-    		l = suggeriti.get(i);
-    		idLibroSuggerito = dbq.getCodiceLibro(l);
-    		esito = dbi.loadConsigliPerLibroInDb(idLibroCorrente, cf, idLibroSuggerito );
-    	}
-    	//InserisciConsigliPerUtente() metodo che dati titolo del libro corrente e libri suggeriti, aggiunge alla tabella suggeriti i libri consigliati dall'utente
-    	return esito;
-    } 
-    
-    public synchronized LinkedList caricaSuggeriti(Libro corrente, UtenteRegistrato ur) {
-    	int idlibro = dbq.getCodiceLibro(corrente);
-    	String userId = ur.getUserId();
-    	String cf = dbq.getCFU(userId);
+        String nome = libreria.getNome();
+        LinkedList<Libro> contenuto = libreria.getContenuto();
+        String userId = u.getUserId();
 
-    	LinkedList<Libro> libriSuggeriti = dbq.caricaSuggeritiDaDB(idlibro, cf);
-    //	LinkedList<Libro> libriSuggeriti = new LinkedList<Libro>(); //da modificare
-    	return libriSuggeriti;	
+        boolean controllo = false;
+
+        for (int i = 0; i < contenuto.size(); i++) {
+            Libro l = contenuto.get(i);
+            int idLibro = dbq.getCodiceLibro(l);
+            String cf = dbq.getCFU(userId);
+            controllo = dbi.loadLibrerie(cf, nome, idLibro);
+        }
+        return controllo;
     }
-    
+
+    public synchronized boolean RinominaNomeLibreria(UtenteRegistrato u, Libreria libreria, String nomeVecchio) {
+        String nomeNuovo = libreria.getNome();
+        String userId = u.getUserId();
+        String cf = dbq.getCFU(userId);
+        return dbq.aggiornaNomeLibreria(nomeVecchio, nomeNuovo, cf);
+    }
+
+    public synchronized boolean EliminaLibreria(UtenteRegistrato u, Libreria libreria) {
+        String nome = libreria.getNome();
+        String userId = u.getUserId();
+        String cf = dbq.getCFU(userId);
+        return dbq.eliminaLibreria(nome, cf);
+    }
+
+    public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
+        int idLibroCorrente = dbq.getCodiceLibro(corrente);
+        String userId = ur.getUserId();
+        String cf = dbq.getCFU(userId);
+
+        boolean esito = false;
+
+        for (int i = 0; i < suggeriti.size(); i++) {
+            Libro l = suggeriti.get(i);
+            int idLibroSuggerito = dbq.getCodiceLibro(l);
+            esito = dbi.loadConsigliPerLibroInDb(idLibroCorrente, cf, idLibroSuggerito);
+        }
+        return esito;
+    }
+
+    public synchronized LinkedList<Libro> caricaSuggeriti(Libro corrente, UtenteRegistrato ur) {
+        int idlibro = dbq.getCodiceLibro(corrente);
+        String userId = ur.getUserId();
+        String cf = dbq.getCFU(userId);
+
+        return dbq.caricaSuggeritiDaDB(idlibro, cf);
+    }
 }
