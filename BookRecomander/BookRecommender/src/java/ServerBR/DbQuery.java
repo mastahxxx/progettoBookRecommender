@@ -12,6 +12,10 @@ import ClassiCondivise.Libro;
 public class DbQuery extends DataBase {
 
     private Connection connection = null;
+    protected String url = "jdbc:postgresql://localhost/bookReccomender";
+    protected String user = "postgres";
+    protected String password = "123";
+    protected Statement statement;
 
     public DbQuery(){
 

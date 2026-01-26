@@ -18,10 +18,10 @@ import java.sql.ResultSet;
 
 public class DataBase {
 
-    protected String url = "jdbc:postgresql://localhost/bookReccomender";
-    protected String user = "postgres";
-    protected String password = "123";
-    protected Statement statement;
+    //protected String url = "jdbc:postgresql://localhost/bookReccomender";
+   // protected String user = "postgres";
+    //protected String password = "123";
+   // protected Statement statement;
     private DbQuery dbq;
     private DbInsert dbi;
     

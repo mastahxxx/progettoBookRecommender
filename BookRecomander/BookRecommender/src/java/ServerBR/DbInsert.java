@@ -13,6 +13,10 @@ public class DbInsert extends DataBase {
 
     //private Statement statement = dbconnect.connect();
     private String query;
+    protected String url = "jdbc:postgresql://localhost/bookReccomender";
+    protected String user = "postgres";
+    protected String password = "123";
+    protected Statement statement;
 
     public DbInsert()
     {
