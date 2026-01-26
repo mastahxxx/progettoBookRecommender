@@ -217,6 +217,7 @@ public class DbQuery extends DataBase {
             pstm.setString(1, email);
             result = statement.executeQuery(query);
             metreturn = result.next();
+            System.out.println("SONO QUI:" + metreturn);
         }
         catch(Exception e)
         {

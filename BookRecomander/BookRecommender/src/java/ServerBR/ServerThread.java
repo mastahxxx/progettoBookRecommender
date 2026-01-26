@@ -35,6 +35,7 @@ public class ServerThread extends Thread {
     
      public ServerThread(Socket s) {
         this.socket = s;
+        this.db = new DataBase();
         try {
             this.in = new ObjectInputStream(socket.getInputStream());
             this.out = new ObjectOutputStream(socket.getOutputStream());

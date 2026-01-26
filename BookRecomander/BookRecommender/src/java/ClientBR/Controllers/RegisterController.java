@@ -92,12 +92,12 @@ public class RegisterController {
 
         // le due chiamate seguenti verificano se email/userId sono già usati nel sistema.
         // Il metodo Helpers.*AlreadyUsed(...) dovrebbe restituire true se GIA' in uso.
-        if (!Helpers.emailAlreadyUsed(email)) { // <— se false significa "non usata"
+        if (Helpers.emailAlreadyUsed(email)) { // <— se false significa "non usata"
             Helpers.showError("email gia in uso", lblError);
             controllo = false;
             return;
         }
-        if (!Helpers.userIDAlreadyUsed(SceneNavigator.getUserID())) {
+        if (Helpers.userIDAlreadyUsed(SceneNavigator.getUserID())) {
             Helpers.showError("UserId già in uso", lblError);
             controllo = false;
             return;
@@ -105,6 +105,7 @@ public class RegisterController {
 
         boolean ok = false;
         if (controllo) {
+            
             try {
                 InetAddress addr = InetAddress.getByName(null);
                 Socket socket = new Socket(addr, 8999);
@@ -136,7 +137,7 @@ public class RegisterController {
             Helpers.clearFields(fNome, fCognome, fEmail, fCodiceFiscale, fUserID, pfPassword, pfConfermaPassword);
             Helpers.showInfo("Registrazione effettuata, ora puoi accedere", lblError);
         } else {
-            Helpers.showError("Registrazione non riuscita, UserID o email giaà in uso", lblError);
+            Helpers.showError("Registrazione non riuscita, UserID o email già in uso", lblError);
         }
     }
 }

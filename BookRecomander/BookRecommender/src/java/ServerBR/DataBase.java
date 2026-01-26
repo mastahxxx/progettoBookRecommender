@@ -18,9 +18,9 @@ import java.sql.ResultSet;
 
 public class DataBase {
 
-    protected String url = "jdbc:postgresql://localhost/BookReccomenderDB";
-    protected String user = "entry";
-    protected String password = "pass";
+    protected String url = "jdbc:postgresql://localhost/bookReccomender";
+    protected String user = "postgres";
+    protected String password = "123";
     protected Statement statement;
     private DbQuery dbq;
     private DbInsert dbi;
@@ -99,6 +99,7 @@ public class DataBase {
     
         
     public synchronized boolean insertUtente(UtenteRegistrato u) {
+		System.out.println("SONO QUAAAA");
     	String nomeCognome = u.getNomeCognome();
     	String codiceFiscale = u.getCodiceFiscale();
     	String mail = u.getMail();
@@ -106,6 +107,7 @@ public class DataBase {
     	String password = u.getPassoword();
     	String[] split = nomeCognome.split(" ");
     	boolean esito = dbi.loadUtentiRegistrati(split[0],split[1], codiceFiscale, mail, user, password); //l'utente viene inserito all'interno del db
+		System.out.println("SONO QUI 2:" + esito);
     	return esito;
     }
     
