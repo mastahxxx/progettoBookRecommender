@@ -19,15 +19,19 @@ public class DbQuery {
 
     public DbQuery(){
 
-        try {
+/**         try {
             connection = DriverManager.getConnection(url, user, password);
         } catch (SQLException e) {
         	System.err.println("--- ERRORE DATABASE ---");
             System.err.println("Messaggio: " + e.getMessage());
             System.err.println("Codice SQLState: " + e.getSQLState());
             System.err.println("Codice Errore Nativo: " + e.getErrorCode());
-            ;
-        }
+            
+        } */
+        super();
+
+
+
     }
 
     public void queryProva()
