@@ -163,8 +163,6 @@ public class LibrerieController {
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Libreria l = (Libreria) SceneNavigator.libreria;
-            LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
             UtenteRegistrato u = new UtenteRegistrato();
             u.setUserId(SceneNavigator.userID);
             out.writeObject("RINOMINA LIBRERIA");
@@ -215,8 +213,6 @@ public class LibrerieController {
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Libreria l = (Libreria) SceneNavigator.libreria;
-            LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
             UtenteRegistrato u = new UtenteRegistrato();
             u.setUserId(SceneNavigator.userID);
             out.writeObject("ELIMINA LIBRERIA");
@@ -287,7 +283,26 @@ public class LibrerieController {
      * @param userId identificativo utente
      */
     private void caricaLibrerie(String userId) {
-        librerie.clear();
+    	
+    	try {
+            InetAddress addr = InetAddress.getByName(null);
+            Socket socket = new Socket(addr, 8999);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            UtenteRegistrato u = new UtenteRegistrato();
+            u.setUserId(SceneNavigator.userID);
+            out.writeObject("CARICA LIBRERIE");
+            out.writeObject(u);
+            LinkedList<Libreria> librerie = (LinkedList<Libreria>) in.readObject(); //questa contiene tutte le libreirie e ogni libreria contiene i corrispettivi libri
+            out.close();
+            in.close();
+            socket.close();
+        } catch (Exception e) {
+            
+        } finally {
+            
+        }
+    	librerie.clear();
 
     }
 }
