@@ -31,8 +31,8 @@ public class DbInsert {
             ps.setString(1, nome);
             ps.setString(2, cognome);
             ps.setString(3, cf);
-            ps.setString(4, email);
-            ps.setString(5, uid);
+            ps.setString(4, uid);
+            ps.setString(5, email);
             ps.setString(6, password);
 
             return ps.executeUpdate() > 0;
