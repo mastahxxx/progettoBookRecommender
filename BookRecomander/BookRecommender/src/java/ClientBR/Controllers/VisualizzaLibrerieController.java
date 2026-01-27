@@ -25,6 +25,7 @@ public class VisualizzaLibrerieController {
     @FXML private Button btnRimuovi;
     @FXML private Button btnIndietro;
     @FXML private Button btnLogout;
+    @FXML private Button btnSalva;
 
     @FXML private TableView<Libro> tblLibri;
     @FXML private TableColumn<Libro, String> tTitolo;
@@ -44,6 +45,14 @@ public class VisualizzaLibrerieController {
     private void initialize() {
         libreriaCorrente = SceneNavigator.getLibreria();
 
+        if(SceneNavigator.libro != null) { //Se il libro non è nulla lo salvo nella lista e lo aggiungo alla schermata
+            Libro lib = SceneNavigator.libro;
+            SceneNavigator.listaLibri.add(lib);
+            SceneNavigator.libro = null;
+        }
+        
+        libri.clear();
+        libri.addAll(SceneNavigator.listaLibri);
         tTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         tAutore.setCellValueFactory(new PropertyValueFactory<>("autore"));
         tAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
@@ -54,9 +63,6 @@ public class VisualizzaLibrerieController {
         // abilita/disabilita Rimuovi in base alla selezione
         tblLibri.getSelectionModel().selectedItemProperty().addListener(this::onSelezioneLibroCambiata);
 
-        // carica dati dalla libreria
-        caricaLibriDaLibreria();
-
         lblNomeLibreria.setText(libreriaCorrente.getNome() != null ? libreriaCorrente.getNome() : "(senza nome)");
         refreshTotale();
         refreshUI();
@@ -65,14 +71,6 @@ public class VisualizzaLibrerieController {
     /** Aggiorna UI. */
     private void onSelezioneLibroCambiata(ObservableValue<? extends Libro> obs, Libro oldV, Libro newV) {
         refreshUI();
-    }
-
-    /** Copia i libri dalla libreria corrente nel modello della tabella. */
-    private void caricaLibriDaLibreria() {
-        libri.clear();
-        if (libreriaCorrente.getContenuto() != null) {
-            libri.addAll(libreriaCorrente.getContenuto());
-        }
     }
 
     /** Aggiorna il contatore totale libri. */
@@ -91,51 +89,7 @@ public class VisualizzaLibrerieController {
      */
     @FXML
     private void onAggiungi() {
-        Helpers.clearError(lblErr);
-
-        TextInputDialog dTitolo = new TextInputDialog();
-        dTitolo.setTitle("Aggiungi libro");
-        dTitolo.setHeaderText(null);
-        dTitolo.setContentText("Titolo:");
-        Optional<String> r1 = dTitolo.showAndWait();
-        if (!r1.isPresent()) return;
-        String titolo = r1.get().trim();
-        if (titolo.isEmpty()) {
-            Helpers.showError("Inserisci un titolo valido.", lblErr);
-            return;
-        }
-
-        TextInputDialog dAutore = new TextInputDialog();
-        dAutore.setTitle("Aggiungi libro");
-        dAutore.setHeaderText(null);
-        dAutore.setContentText("Autore:");
-        Optional<String> r2 = dAutore.showAndWait();
-        if (!r2.isPresent()) return;
-        String autore = r2.get().trim();
-        if (autore.isEmpty()) {
-            Helpers.showError("Inserisci un autore valido.", lblErr);
-            return;
-        }
-
-        TextInputDialog dAnno = new TextInputDialog();
-        dAnno.setTitle("Aggiungi libro");
-        dAnno.setHeaderText(null);
-        dAnno.setContentText("Anno di pubblicazione:");
-        Optional<String> r3 = dAnno.showAndWait();
-        if (!r3.isPresent()) return;
-        String anno = r3.get().trim();
-
-        Libro nuovo = new Libro();
-        nuovo.setTitolo(titolo);
-        nuovo.setAutore(autore);
-        nuovo.setAnnoPubblicazione(anno);
-
-        libreriaCorrente.getContenuto().add(nuovo);
-        libri.add(nuovo);
-
-        Helpers.showInfo("Libro aggiunto.", lblErr);
-        refreshTotale();
-        refreshUI();
+        SceneNavigator.switchToSalvaLibro();
     }
 
     /**
@@ -158,6 +112,7 @@ public class VisualizzaLibrerieController {
         Optional<ButtonType> conferma = alert.showAndWait();
         if (!conferma.isPresent() || conferma.get() != ButtonType.OK) return;
 
+        SceneNavigator.listaLibri.remove(sel);
         libreriaCorrente.getContenuto().remove(sel);
         libri.remove(sel);
 
@@ -166,9 +121,28 @@ public class VisualizzaLibrerieController {
         refreshUI();
     }
 
+    @FXML
+    private void onSalva() {  //aggiungere socket, i libri da salvare si trovano in SceneNavigator.listalibri.
+
+
+
+        
+        String nomelibreria = SceneNavigator.libreria.getNome();
+
+
+
+
+
+        //lascia di default
+        SceneNavigator.listaLibri = null;
+        SceneNavigator.libreria = null;
+        SceneNavigator.switchToLibrerie();
+    }
+
     /** Torna alla lista delle librerie. */
     @FXML private void onIndietro() { SceneNavigator.switchToLibrerie(); }
 
     /** Esegue il logout. */
     @FXML private void onLogout() { SceneNavigator.logout(); }
+
 }

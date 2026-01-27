@@ -9,6 +9,9 @@ import ClassiCondivise.Libro;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import ClientBR.Controllers.Helpers;
 
 /**
@@ -19,14 +22,14 @@ public class SceneNavigator {
 
     /** Oggetto libro da passare tra scene. */
     public static Libro libro;
+    /** Collezione di libri da salvare nella libreria */
+    public static List<Libro> listaLibri = new ArrayList<>();
     /** Oggetto libreria da passare tra scene. */
     public static Libreria libreria;
     /** UserID della sessione corrente (null se non loggato). */
     public static String userID;
-
     /** Stage principale dell'app. */
     private static Stage stage;
-
     /** Percorso base dei file FXML. */
     private static final String BASE_PATH = "/views/";
 
@@ -64,23 +67,25 @@ public class SceneNavigator {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
             Helpers.showError("Impossibile aprire la schermata");
-            // System.exit(1);
+            System.exit(1);
         }
     }
 
 
-    /** Vai a Home. */                       public static void switchToHome() { switchTo("home.fxml"); }
-    /** Vai a Login. */                      public static void switchToLogin() { switchTo("login.fxml"); }
-    /** Vai a Registrazione. */              public static void switchToRegister() { switchTo("register.fxml"); }
-    /** Vai a Cerca Libri (ospite). */       public static void switchToCercaLibri() { switchTo("cercaLibro.fxml"); }
-    /** Vai a Dashboard utente registrato. */public static void switchToUtenteRegistrato() { switchTo("utenteRegistrato.fxml"); }
-    /** Vai a dettaglio libro (ospite). */   public static void switchToVisualizzaLibro() { switchTo("visualizzaLibro.fxml"); }
-    /** Vai a elenco librerie. */            public static void switchToLibrerie() { switchTo("librerie.fxml"); }
-    /** Vai a Valuta Libro. */               public static void switchToValutaLibro() { switchTo("valutaLibro.fxml"); }
-    /** Vai a Suggerimenti. */               public static void switchToSuggerimenti() { switchTo("suggerimenti.fxml"); }
-    /** Vai a Cerca Libri (registrato). */   public static void switchToCercaLibroRegistrato() { switchTo("cercaLibroRegistrato.fxml"); }
+    /** Vai a Home. */                        public static void switchToHome() { switchTo("home.fxml"); }
+    /** Vai a Login. */                       public static void switchToLogin() { switchTo("login.fxml"); }
+    /** Vai a Registrazione. */               public static void switchToRegister() { switchTo("register.fxml"); }
+    /** Vai a Cerca Libri (ospite). */        public static void switchToCercaLibri() { switchTo("cercaLibro.fxml"); }
+    /** Vai a Dashboard utente registrato. */ public static void switchToUtenteRegistrato() { switchTo("utenteRegistrato.fxml"); }
+    /** Vai a dettaglio libro (ospite). */    public static void switchToVisualizzaLibro() { switchTo("visualizzaLibro.fxml"); }
+    /** Vai a elenco librerie. */             public static void switchToLibrerie() { switchTo("librerie.fxml"); }
+    /** Vai a Valuta Libro. */                public static void switchToValutaLibro() { switchTo("valutaLibro.fxml"); }
+    /** Vai a Suggerimenti. */                public static void switchToSuggerimenti() { switchTo("suggerimenti.fxml"); }
+    /** Vai a Cerca Libri (registrato). */    public static void switchToCercaLibroRegistrato() { switchTo("cercaLibroRegistrato.fxml"); }
     /** Vai a dettaglio libro (registrato). */public static void switchToVisualizzaLibroRegistrato() { switchTo("visualizzaLibroUtenteRegistrato.fxml"); }
-    /** Vai al dettaglio di una libreria. */ public static void switchToVisualizzaLibreria() { switchTo("visualizzaLibreria.fxml"); }
+    /** Vai al dettaglio di una libreria. */  public static void switchToVisualizzaLibreria() { switchTo("visualizzaLibreria.fxml"); }
+    /** Vai al SalvaLibro */                  public static void switchToSalvaLibro() { switchTo("salvaLibro.fxml");}
+
 
     /**
      * Effettua il logout: azzera lo userID e torna alla Home.

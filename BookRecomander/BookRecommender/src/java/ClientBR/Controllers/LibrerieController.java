@@ -107,20 +107,14 @@ public class LibrerieController {
             return;
         }
 
-        Libreria nuova = new Libreria(nome);
-        boolean ok = false;
-        try {
-            // --- STUB chiamata al server ---
-            ok = true;
-        } catch (Exception e) {
-            // ignorato nello stub
-        }
-        if (ok) {
+            Libreria nuova = new Libreria(nome);
             librerie.add(nuova);
+            SceneNavigator.libreria = nuova;
             tblLibrerie.getSelectionModel().select(nuova);
             Helpers.showInfo("Libreria creata.", lblErr);
             refreshUI();
-        }
+        
+
     }
 
     /**
@@ -174,7 +168,7 @@ public class LibrerieController {
      * Elimina la libreria selezionata dopo conferma utente.
      * <p>Mostra numero di libri e richiede conferma (stub DB).</p>
      */
-    @FXML private void onElimina() {
+    @FXML private void onElimina() { //elimina libreria dal DB
         Helpers.clearError(lblErr);
         Libreria sel = tblLibrerie.getSelectionModel().getSelectedItem();
         if (sel == null) {
@@ -256,21 +250,5 @@ public class LibrerieController {
     private void caricaLibrerie(String userId) {
         librerie.clear();
 
-        // STUB DI TEST
-        Libreria l1 = new Libreria("Fantasy");
-        Libreria l2 = new Libreria("Classici italiani");
-        Libreria l3 = new Libreria("Saggistica");
-
-        Libro f1 = new Libro(); f1.setTitolo("Il Signore degli Anelli");
-        l1.getContenuto().add(f1);
-
-        Libro f2 = new Libro(); f2.setTitolo("I Promessi Sposi");
-        l2.getContenuto().add(f2);
-
-        Libro f3 = new Libro(); f3.setTitolo("Storia della filosofia");
-        l3.getContenuto().add(f3);
-        l3.getContenuto().add(new Libro());
-
-        librerie.addAll(l1, l2, l3);
     }
 }

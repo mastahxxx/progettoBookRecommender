@@ -20,7 +20,10 @@
                 <HBox spacing="10.0">
                     <children>
                         <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Visualizza Libreria" />
-                        <Pane HBox.hgrow="ALWAYS" />
+                        <Pane HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="btnSalva" defaultButton="true" layoutX="459.0" mnemonicParsing="false" onAction="#onSalva" prefHeight="27.0" prefWidth="70.0" style="-fx-background-color: #4CAF50; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Salva" />
+                     </children></Pane>
                         <Button fx:id="btnIndietro" onAction="#onIndietro" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Indietro" />
                         <Button fx:id="btnLogout" onAction="#onLogout" style="-fx-background-color: #FF4D4D; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="LOGOUT" />
                     </children>

@@ -47,6 +47,7 @@ public class VisualizzaLibroController {
     @FXML
     private void initialize() {
         this.libro = SceneNavigator.getLibro();
+        SceneNavigator.libro = null;
         refreshUI();
 
         note.setEditable(false);
