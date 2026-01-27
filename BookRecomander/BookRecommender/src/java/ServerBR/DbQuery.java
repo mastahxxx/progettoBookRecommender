@@ -53,7 +53,8 @@ public class DbQuery {
     //           QUERY LIBRI
     // =============================
     public List<Libro> libriLibro(String param) {
-        String sql = "select * from public.\"Libri\" where titolo = ? or autore = ?";
+        String sql = "select * from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"NoteValutazioni\" as c\r\n"
+        		+ "where titolo = ? or autore = ? and a.cod_libro = b.id_libro and a.cod_libro = c.id_libro";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, param);
