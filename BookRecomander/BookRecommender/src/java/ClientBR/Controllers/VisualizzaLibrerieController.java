@@ -129,11 +129,7 @@ public class VisualizzaLibrerieController {
     }
 
     @FXML
-    private void onSalva() {  //aggiungere socket, i libri da salvare si trovano in SceneNavigator.listalibri.
-
-
-
-        
+    private void onSalva() {  
         String nomelibreria = SceneNavigator.libreria.getNome();
         try {
             InetAddress addr = InetAddress.getByName(null);
@@ -144,6 +140,7 @@ public class VisualizzaLibrerieController {
             LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
             UtenteRegistrato u = new UtenteRegistrato();
             u.setUserId(SceneNavigator.userID);
+            l.setContenuto(linkedList);
             out.writeObject("REGISTRA LIBRERIA");
             out.writeObject(u);
             out.writeObject(l);
@@ -163,7 +160,7 @@ public class VisualizzaLibrerieController {
     }
 
     /** Torna alla lista delle librerie. */
-    @FXML private void onIndietro() { SceneNavigator.switchToLibrerie(); }
+    @FXML private void onIndietro() { SceneNavigator.switchToUtenteRegistrato(); }
 
     /** Esegue il logout. */
     @FXML private void onLogout() { SceneNavigator.logout(); }
