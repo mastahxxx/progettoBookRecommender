@@ -1,5 +1,7 @@
 
-
+/**
+ * Classe main per l'avvio del server
+ */
 package ServerBR;
 
 import java.io.IOException;

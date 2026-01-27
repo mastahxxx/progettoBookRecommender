@@ -5,6 +5,10 @@
 package ServerBR;
 //>>>>>>> 17c85385528a759bc8ef0ed772bb2b9da97f2a28:BookRecommender/src/java/ServerBR/ServerThread.java
 
+/**
+ * Classe che crea un thread ogni vola che un client si connette al server 
+ */
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -22,17 +26,13 @@ public class ServerThread extends Thread {
     private ObjectOutputStream out;
     private Socket socket;
 
- /**   public ServerThread(Socket s, DataBase d) {
-        this.db = d;
-        this.socket = s;
-        try {
-            this.in = new ObjectInputStream(socket.getInputStream());
-            this.out = new ObjectOutputStream(socket.getOutputStream());
-       }catch(IOException e) {
 
-        }
-    } */
-    
+    /**
+     * Costruttore della classe. Inizilizza due variabbili: una di tipo ObjectInputStream per 
+     * la ricezione dei dati proveniente dal client euna di tipo ObjectOutputStream per l'invio dei dati 
+     * 
+     * @param s parametro contente la socket
+     */
      public ServerThread(Socket s) {
         this.socket = s;
         this.db = new DataBase();
@@ -44,6 +44,9 @@ public class ServerThread extends Thread {
         }
     }
     
+     /**
+      * Metodo col quale il server si mette in ascolto della richiesta del client.
+      */
     public void run() {
         try {
             while(true) {
