@@ -73,7 +73,7 @@ public class DbInsert {
     }
 
     public boolean loadLibrerie(String idcf, String nomeLibreria, int idLibro) {
-        String sql = "INSERT INTO public.\"Librerie\" VALUES (?, ?, ?)";
+        String sql = "INSERT INTO public.\"Librerie\" (nome_libreria, id_libro, id_codice_fiscale) VALUES (?, ?, ?)";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, nomeLibreria);
