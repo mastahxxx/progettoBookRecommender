@@ -160,7 +160,7 @@ public class VisualizzaLibrerieController {
     }
 
     /** Torna alla lista delle librerie. */
-    @FXML private void onIndietro() { SceneNavigator.switchToLibrerie(); }
+    @FXML private void onIndietro() { SceneNavigator.switchToUtenteRegistrato(); }
 
     /** Esegue il logout. */
     @FXML private void onLogout() { SceneNavigator.logout(); }
