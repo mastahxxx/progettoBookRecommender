@@ -17,12 +17,11 @@ public class LoginController {
 
     /** Campo per username/userID o email. */
     @FXML private TextField fUserID;
-    @FXML private TextField pfPassword;
+    @FXML private PasswordField pfPassword;
     @FXML private Button btnAccedi;
     @FXML private Button btnRegistrati;
     @FXML private Button btnHome;
     @FXML private Label lblError;
-    @FXML private Button btnCerca;
 
     /** Inizializza la view e pulisce messaggi d'errore. */
     @FXML
@@ -79,9 +78,7 @@ public class LoginController {
             in.close();
             socket.close();
         } catch (Exception e) {
-            // errore silenziato come da codice originale
-        } finally {
-            btnCerca.setDisable(false); // riattiva pulsante
+            // errore silenziato
         }
 
         if (ok) {
