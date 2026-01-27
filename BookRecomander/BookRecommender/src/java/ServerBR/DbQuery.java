@@ -78,7 +78,15 @@ public class DbQuery {
     }
 
     public List<Libro> libriLibroAA(String autore, String anno) {
-        String sql = "select * from public.\"Libri\" where autore = ? and anno_pubblicazione = ?";
+        String sql = "SELECT *\r\n"
+        		+ "FROM \r\n"
+        		+ "    public.\"Libri\" AS a\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
+        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
+        		+ "WHERE a.autore =? and a.anno_pubblicazione =?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, autore);
@@ -95,7 +103,15 @@ public class DbQuery {
     }
 
     public List<Libro> libriLibroTAA(String titolo, String autore, String anno) {
-        String sql = "select * from public.\"Libri\" where autore = ? and anno_pubblicazione = ? and titolo = ?";
+        String sql = "SELECT *\r\n"
+        		+ "FROM \r\n"
+        		+ "    public.\"Libri\" AS a\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
+        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
+        		+ "WHERE a.autore =? and a.anno_pubblicazione =? and a.titolo = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, autore);
@@ -113,7 +129,15 @@ public class DbQuery {
     }
 
     public List<Libro> libriLibroTA(String titolo, String anno) {
-        String sql = "select * from public.\"Libri\" where anno_pubblicazione = ? and titolo = ?";
+        String sql = "sSELECT *\r\n"
+        		+ "FROM \r\n"
+        		+ "    public.\"Libri\" AS a\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
+        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
+        		+ "WHERE a.anno_pubblicazione =? and a.titolo = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, anno);
