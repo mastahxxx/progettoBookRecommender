@@ -53,8 +53,15 @@ public class DbQuery {
     //           QUERY LIBRI
     // =============================
     public List<Libro> libriLibro(String param) {
-        String sql = "select * from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"NoteValutazioni\" as c\r\n"
-        		+ "where titolo = ? or autore = ? and a.cod_libro = b.id_libro and a.cod_libro = c.id_libro";
+        String sql = "SELECT *\r\n"
+        		+ "FROM \r\n"
+        		+ "    public.\"Libri\" AS a\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
+        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
+        		+ "WHERE a.titolo =? or autore =?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, param);
