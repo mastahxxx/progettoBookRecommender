@@ -77,4 +77,8 @@ public class Libreria implements Serializable {
     public void setControllo(boolean c) {
         this.controllo = c;
     }
+    
+    public void setContenuto(LinkedList<Libro> c) {
+    	this.contenuto = c;
+    }
 }

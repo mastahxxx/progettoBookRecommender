@@ -88,7 +88,7 @@ public class CercaLibroRegistratoController { // classe quasi identica a CercaLi
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-
+            
             Libro l = new Libro();
             l.setTitolo(titolo);
             l.setAutore(autore);

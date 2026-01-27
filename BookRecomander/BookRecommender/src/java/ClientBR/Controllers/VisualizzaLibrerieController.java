@@ -3,6 +3,7 @@ package ClientBR.Controllers;
 import ClientBR.SceneNavigator;
 import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
+import ClassiCondivise.UtenteRegistrato;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -128,11 +135,27 @@ public class VisualizzaLibrerieController {
 
         
         String nomelibreria = SceneNavigator.libreria.getNome();
-
-
-
-
-
+        try {
+            InetAddress addr = InetAddress.getByName(null);
+            Socket socket = new Socket(addr, 8999);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            Libreria l = (Libreria) SceneNavigator.libreria;
+            LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
+            UtenteRegistrato u = new UtenteRegistrato();
+            u.setUserId(SceneNavigator.userID);
+            out.writeObject("REGISTRA LIBRERIA");
+            out.writeObject(u);
+            out.writeObject(l);
+            boolean ok = (boolean) in.readObject();
+            out.close();
+            in.close();
+            socket.close();
+        } catch (Exception e) {
+            
+        } finally {
+            
+        }
         //lascia di default
         SceneNavigator.listaLibri = null;
         SceneNavigator.libreria = null;

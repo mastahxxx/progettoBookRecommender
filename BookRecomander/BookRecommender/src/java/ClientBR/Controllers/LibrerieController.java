@@ -3,6 +3,7 @@ package ClientBR.Controllers;
 import ClientBR.SceneNavigator;
 import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
+import ClassiCondivise.UtenteRegistrato;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,6 +15,11 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.LinkedList;
 import java.util.Optional;
 
 /**
@@ -148,14 +154,31 @@ public class LibrerieController {
             Helpers.showError("Esiste gia una libreria con questo nome.", lblErr);
             return;
         }
-
+        String vecchioNome = sel.getNome();
         sel.setNome(nuovo);
         boolean ok = false;
-        try {
-            // --- STUB chiamata al server ---
-            ok = true;
+     // --- STUB chiamata al server ---
+    	try {
+            InetAddress addr = InetAddress.getByName(null);
+            Socket socket = new Socket(addr, 8999);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            Libreria l = (Libreria) SceneNavigator.libreria;
+            LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
+            UtenteRegistrato u = new UtenteRegistrato();
+            u.setUserId(SceneNavigator.userID);
+            out.writeObject("RINOMINA LIBRERIA");
+            out.writeObject(u);
+            out.writeObject(sel);
+            out.writeObject(vecchioNome);
+            ok = (boolean) in.readObject();
+            out.close();
+            in.close();
+            socket.close();
         } catch (Exception e) {
-            // ignorato nello stub
+            
+        } finally {
+            
         }
         if (ok) {
             tblLibrerie.refresh();
@@ -186,11 +209,27 @@ public class LibrerieController {
         if (!conferma.isPresent() || conferma.get() != ButtonType.OK) return;
 
         boolean ok = false;
-        try {
-            // --- STUB chiamata al server ---
-            ok = true;
+     // --- STUB chiamata al server ---
+    	try {
+            InetAddress addr = InetAddress.getByName(null);
+            Socket socket = new Socket(addr, 8999);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            Libreria l = (Libreria) SceneNavigator.libreria;
+            LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
+            UtenteRegistrato u = new UtenteRegistrato();
+            u.setUserId(SceneNavigator.userID);
+            out.writeObject("ELIMINA LIBRERIA");
+            out.writeObject(u);
+            out.writeObject(sel);
+            ok = (boolean) in.readObject();
+            out.close();
+            in.close();
+            socket.close();
         } catch (Exception e) {
-            // ignorato nello stub
+            
+        } finally {
+            
         }
         if (ok) {
             librerie.remove(sel);
