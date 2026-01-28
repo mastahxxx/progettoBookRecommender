@@ -174,29 +174,29 @@ public class Libro implements Serializable {
         return t + " — " + a + " (" + y + ")";
     }
     
-    private void setListNoteNoteStile (String u) {
+    public void setListNoteNoteStile (String u) {
     	String nuovaNota = u+": "+this.getNoteStile();
     	this.ListaNoteStile.add(nuovaNota);		
     }
     
-    private void setListNoteContenuto (String u) {
-    	String nuovaNota = u+": "+this.getContenuto();
+    public void setListNoteContenuto (String u) {
+    	String nuovaNota = u+": "+this.getNoteContenuto();
     	this.ListaNoteContenuto.add(nuovaNota);		
     }
     
-    private void setListNoteGradevolezza (String u) {
-    	String nuovaNota = u+": "+this.getGradevolezza();
+    public void setListNoteGradevolezza (String u) {
+    	String nuovaNota = u+": "+this.getNoteGradevolezza();
     	this.ListaNoteGradevolezza.add(nuovaNota);		
     }
     
-    private void setListNoteOriginalita (UtenteRegistrato u) {
-    	String nuovaNota = u.getUserId()+": "+this.getNoteOriginalita();
+    public void setListNoteOriginalita (String u) {
+    	String nuovaNota = u+": "+this.getNoteOriginalita();
     	this.ListaNoteOriginalita.add(nuovaNota);	
     	
     }
     
-    private void setListNoteEdizione (UtenteRegistrato u) {
-    	String nuovaNota = u.getUserId()+": "+this.getNoteEdizione();
+    public void setListNoteEdizione (String u) {
+    	String nuovaNota = u+": "+this.getNoteEdizione();
     	this.ListaNoteEdizione.add(nuovaNota);		
     }
     

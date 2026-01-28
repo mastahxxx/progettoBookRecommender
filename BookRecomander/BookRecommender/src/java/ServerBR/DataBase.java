@@ -223,6 +223,7 @@ public class DataBase {
             int idLibro = dbq.getCodiceLibro(l);
             String cf = dbq.getCFU(userId);
             controllo = dbi.loadLibrerie(cf, nome, idLibro);
+            System.out.println(i);
         }
         return controllo;
     }
