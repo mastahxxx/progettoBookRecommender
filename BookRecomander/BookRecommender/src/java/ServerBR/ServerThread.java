@@ -64,7 +64,6 @@ public class ServerThread extends Thread {
         try {
             while (true) {
                 String request = (String) in.readObject();
-
                 Libro l = new Libro();
                 Libreria libreria = new Libreria();
                 UtenteRegistrato u;
@@ -240,7 +239,8 @@ public class ServerThread extends Thread {
                         
                     case "CARICA NOTE":
                     	l = (Libro) in.readObject();
-                        
+                    	Libro libroConSoloNote = db.caricaNoteDalDb(l);
+                        out.writeObject(libroConSoloNote);
                         break;
                     default:
                         // richiesta non riconosciuta, ignorata

@@ -294,6 +294,12 @@ public class DataBase {
         return dbq.caricaSuggeritiDaDB(idlibro, cf);
     }
 
+	public Libro caricaNoteDalDb(Libro l) {
+		int idlibro = dbq.getCodiceLibro(l);
+		Libro libroConSoloNote = dbq.caricaNote(idlibro);
+		return libroConSoloNote;
+	}
+
 //   	public LinkedList<Libreria> LibrerieUtente(UtenteRegistrato u) {
 //		String userId = u.getUserId();
 //        String cf = dbq.getCFU(userId);
