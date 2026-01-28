@@ -53,15 +53,9 @@ public class DbQuery {
     //           QUERY LIBRI
     // =============================
     public List<Libro> libriLibro(String param) {
-        String sql = "SELECT *\r\n"
-        		+ "FROM \r\n"
-        		+ "    public.\"Libri\" AS a\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
-        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
-        		+ "WHERE a.titolo =? or autore =?";
+        // Rimuovo i JOIN per evitare duplicati. 
+        // Se cerco un libro, voglio l'elenco dei libri, non tutte le recensioni di tutti gli utenti.
+        String sql = "SELECT * FROM public.\"Libri\" WHERE titolo = ? OR autore = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, param);
@@ -519,19 +513,43 @@ public class DbQuery {
 
         while (result.next()) {
             Libro libro = new Libro();
+            
+            // Dati base del libro (sempre presenti)
             libro.setTitolo(result.getString("titolo"));
             libro.setAutore(result.getString("autore"));
             libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
+
+            /* GESTIONE DEI VOTI (INT)
+               getInt restituisce 0 se il valore è NULL. 
+               Se vuoi distinguere tra "voto 0" e "nessun voto", dovresti usare result.getObject
+               ma per ora va bene così, assumendo che 0 significhi "non valutato".
+            */
             libro.setStile(result.getInt("stile"));
             libro.setContenuto(result.getInt("contenuto"));
             libro.setGradevolezza(result.getInt("gradevolezza"));
-            libro.setOriginalita(result.getInt("originalità"));
+            libro.setOriginalita(result.getInt("originalità")); // Occhio all'accento nel DB
             libro.setEdizione(result.getInt("edizione"));
-            libro.setNoteStile(result.getString("nota_stile"));
-            libro.setNoteContenuto(result.getString("nota_contenuto"));
-            libro.setNoteGradevolezza(result.getString("nota_gradevolezza"));
-            libro.setNoteOriginalita(result.getString("nota_originalita"));
-            libro.setNoteEdizione(result.getString("nota_edizione"));
+
+            /* GESTIONE DELLE NOTE (STRING) - CORREZIONE FONDAMENTALE 
+               Controlliamo che la stringa non sia null prima di passarla al setter.
+               Se è null, non chiamiamo il metodo, così la nota nel libro resta vuota/null
+               invece di diventare "Note stile : null."
+            */
+            String nStile = result.getString("nota_stile");
+            if (nStile != null) libro.setNoteStile(nStile);
+
+            String nContenuto = result.getString("nota_contenuto");
+            if (nContenuto != null) libro.setNoteContenuto(nContenuto);
+
+            String nGradevolezza = result.getString("nota_gradevolezza");
+            if (nGradevolezza != null) libro.setNoteGradevolezza(nGradevolezza);
+
+            String nOriginalita = result.getString("nota_originalita");
+            if (nOriginalita != null) libro.setNoteOriginalita(nOriginalita);
+
+            String nEdizione = result.getString("nota_edizione");
+            if (nEdizione != null) libro.setNoteEdizione(nEdizione);
+
             libro.setControllo(true);
             libri.add(libro);
         }
