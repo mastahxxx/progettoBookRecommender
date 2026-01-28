@@ -156,7 +156,7 @@ public class VisualizzaLibroController {
         return sb.toString();
     } */
 
-    private void caricaLibri() {
-        
+    private void caricaNote() {
+        Libro l = SceneNavigator.getLibro();
     }
 }
