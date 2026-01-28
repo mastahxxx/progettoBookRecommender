@@ -447,6 +447,68 @@ public class DbQuery {
         return listaLibrerie;
     }
     
+    public Libro caricaNote(int idlibro) {
+    	
+        String sql = "SELECT a.*, b.\"userId\" "
+                   + "FROM public.\"NoteValutazioni\" AS a "
+                   + "JOIN public.\"UtentiRegistrati\" AS b ON a.cf = b.codice_fiscale "
+                   + "WHERE a.id_libro = ?";
+
+        Libro libro = new Libro();
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idlibro);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                
+                while (rs.next()) {
+                    String userIdAutore = rs.getString("userId");
+
+                    //  NOTE STILE 
+                    String notaStile = rs.getString("nota_stile");
+                    if (notaStile != null && !notaStile.isEmpty()) {
+                        libro.setNoteStile(notaStile);     
+                        libro.setListNoteNoteStile(userIdAutore); 
+                    }
+
+                    //  NOTE CONTENUTO 
+                    String notaContenuto = rs.getString("nota_contenuto");
+                    if (notaContenuto != null && !notaContenuto.isEmpty()) {
+                        libro.setNoteContenuto(notaContenuto);
+                        libro.setListNoteContenuto(userIdAutore);
+                    }
+
+                    //  NOTE GRADEVOLEZZA 
+                    String notaGradevolezza = rs.getString("nota_gradevolezza");
+                    if (notaGradevolezza != null && !notaGradevolezza.isEmpty()) {
+                        libro.setNoteGradevolezza(notaGradevolezza);
+                        libro.setListNoteGradevolezza(userIdAutore);
+                    }
+
+                    //  NOTE ORIGINALITÀ 
+                    String notaOriginalita = rs.getString("nota_originalita");
+                    if (notaOriginalita != null && !notaOriginalita.isEmpty()) {
+                        libro.setNoteOriginalita(notaOriginalita);
+                        libro.setListNoteOriginalita(userIdAutore);
+                    }
+
+                    //  NOTE EDIZIONE
+                    String notaEdizione = rs.getString("nota_edizione");
+                    if (notaEdizione != null && !notaEdizione.isEmpty()) {
+                        libro.setNoteEdizione(notaEdizione);
+                        libro.setListNoteEdizione(userIdAutore);
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Libro();
+        }
+
+        return libro;
+    }
+    
 
     // =============================
     //     MAPPER RESULTSET -> OGGETTI
