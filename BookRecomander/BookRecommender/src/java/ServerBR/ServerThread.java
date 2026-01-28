@@ -232,11 +232,11 @@ public class ServerThread extends Thread {
                         out.writeObject(ris);
                         break;
                         
-                    case "CARICA LIBRERIE":
-                    	u = (UtenteRegistrato) in.readObject();
-                    	LinkedList<Libreria> librerie = db.LibrerieUtente(u);
-                    	out.writeObject(librerie);
-                    	break;
+//                    case "CARICA LIBRERIE":
+//                    	u = (UtenteRegistrato) in.readObject();
+//                    	LinkedList<Libreria> librerie = db.LibrerieUtente(u);
+//                    	out.writeObject(librerie);
+ //                   	break;
 
                     default:
                         // richiesta non riconosciuta, ignorata

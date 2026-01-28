@@ -294,12 +294,12 @@ public class DataBase {
         return dbq.caricaSuggeritiDaDB(idlibro, cf);
     }
 
-	public LinkedList<Libreria> LibrerieUtente(UtenteRegistrato u) {
-		String userId = u.getUserId();
-        String cf = dbq.getCFU(userId);
-        LinkedList<Libreria> librerie =  dbq.caricaLibrerie(cf);
-        return librerie;    
-	}
+//   	public LinkedList<Libreria> LibrerieUtente(UtenteRegistrato u) {
+//		String userId = u.getUserId();
+//        String cf = dbq.getCFU(userId);
+//        LinkedList<Libreria> librerie =  dbq.caricaLibrerie(cf);
+//        return librerie;    
+//	} 
 }
 
 
