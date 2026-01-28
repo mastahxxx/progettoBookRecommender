@@ -82,7 +82,7 @@ public class DataBase {
         	libroPulito.setOriginalita(ris.get(i).getOriginalita());
         	libroPulito.setEdizione(ris.get(i).getEdizione());
         	
-        	libroPulito.setLibriConsigliati(ris.get(i).getLibriConsigliati());
+        	libroPulito.caricaContenutoSuggeritiPulito(ris.get(i).getLibriConsigliati());
         	risPulito.add(libroPulito);
         }
 

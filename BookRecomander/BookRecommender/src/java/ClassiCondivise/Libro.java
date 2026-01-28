@@ -151,15 +151,20 @@ public class Libro implements Serializable {
         noteEdizione = "Note edizione : " + noteEd + ". ";
     }
 
-
+    
     /**
      * Aggiunge un libro alla lista dei consigliati.
-     * @param libro libro da aggiungere
+     * @param linkedList libro da aggiungere
      */
-    public void setLibriConsigliati(Libro libro) {
-        if (libro != null) {
-            this.libriConsigliati.add(libro);
+    public void setLibriConsigliati(Libro linkedList) {
+        if (linkedList != null) {
+            this.libriConsigliati.add(linkedList);
         }
+      
+    }
+    
+    public void caricaContenutoSuggeritiPulito(LinkedList<Libro> l) {
+    	this.libriConsigliati = l;
     }
 
     /**
