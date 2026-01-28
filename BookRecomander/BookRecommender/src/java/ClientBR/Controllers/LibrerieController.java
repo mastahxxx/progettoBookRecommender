@@ -293,15 +293,17 @@ public class LibrerieController {
             u.setUserId(SceneNavigator.userID);
             out.writeObject("CARICA LIBRERIE");
             out.writeObject(u);
-            LinkedList<Libreria> librerie = (LinkedList<Libreria>) in.readObject(); //questa contiene tutte le libreirie e ogni libreria contiene i corrispettivi libri
+            LinkedList<Libreria> lib = (LinkedList<Libreria>) in.readObject(); //questa contiene tutte le libreirie e ogni libreria contiene i corrispettivi libri
             out.close();
             in.close();
             socket.close();
+            for (int i = 0 ; i < lib.size() ; i++ ) {
+            librerie.add(lib.get(i)); }
         } catch (Exception e) {
             
-        } finally {
-            
         }
+
+
     	librerie.clear();
 
     }
