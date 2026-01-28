@@ -131,13 +131,19 @@ public class VisualizzaLibrerieController {
     @FXML
     private void onSalva() {  
         String nomelibreria = SceneNavigator.libreria.getNome();
+        LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
+        Libreria l = (Libreria) SceneNavigator.libreria;
+        l.setContenuto(linkedList);
         try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            Libreria l = (Libreria) SceneNavigator.libreria;
-            LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
+            
+            System.out.println("SSSSSSSSSSSSSS");
+            System.out.println("ARANCIA" + linkedList);
+            System.out.println("XXXXXXX" + SceneNavigator.listaLibri);
+            System.out.println("YYYYYYYY qui");
             UtenteRegistrato u = new UtenteRegistrato();
             u.setUserId(SceneNavigator.userID);
             l.setContenuto(linkedList);
@@ -150,9 +156,7 @@ public class VisualizzaLibrerieController {
             socket.close();
         } catch (Exception e) {
             
-        } finally {
-            
-        }
+        } 
         //lascia di default
         SceneNavigator.listaLibri = null;
         SceneNavigator.libreria = null;
