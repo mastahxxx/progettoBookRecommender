@@ -53,15 +53,24 @@ public class DbQuery {
     //           QUERY LIBRI
     // =============================
     public List<Libro> libriLibro(String param) {
-        // La logica SQL è rimasta INVARIATA come hai chiesto (coi LEFT JOIN)
-        String sql = "SELECT * "
-                   + "FROM public.\"Libri\" AS a "
-                   + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
-                   + "LEFT JOIN public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro AND b.id_codice_fiscale = c.cf "
+        // CORREZIONE: Invece di SELECT *, elenco le colonne esplicitamente.
+        // Questo garantisce che il ResultSet trovi i nomi corretti ("stile", "autore", ecc.)
+        // ed evita conflitti con gli ID duplicati delle tabelle unite.
+        String sql = "SELECT "
+                   + "    a.titolo, a.autore, a.anno_pubblicazione, "
+                   + "    b.stile, b.contenuto, b.gradevolezza, b.\"originalità\", b.edizione, "
+                   + "    c.nota_stile, c.nota_contenuto, c.nota_gradevolezza, c.nota_originalita, c.nota_edizione "
+                   + "FROM "
+                   + "    public.\"Libri\" AS a "
+                   + "LEFT JOIN "
+                   + "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+                   + "LEFT JOIN "
+                   + "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro "
+                   + "    AND b.id_codice_fiscale = c.cf "
                    + "WHERE a.titolo = ? OR a.autore = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            // Imposto i parametri per cercare sia per titolo che per autore
+            // Imposto i parametri (parametro unico usato sia per titolo che per autore)
             ps.setString(1, param);
             ps.setString(2, param);
 
