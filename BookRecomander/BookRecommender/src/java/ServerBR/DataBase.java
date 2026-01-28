@@ -69,18 +69,24 @@ public class DataBase {
         } else if (!autore.isEmpty()) {
             ris = dbq.libriLibro(autore);
         }
-
+        Libro libroPulito = new Libro();
+        List<Libro> risPulito = new LinkedList<>();
         for (int i  = 0 ; i < ris.size(); i++) {
-            System.out.println(ris.get(i).getTitolo());  
-            System.out.println(ris.get(i).getAutore());
-            System.out.println(ris.get(i).getAnnoPubblicazione());
-
+        	libroPulito.setTitolo(ris.get(i).getTitolo());
+        	libroPulito.setAutore(ris.get(i).getAutore());
+        	libroPulito.setAnnoPubblicazione(ris.get(i).getAnnoPubblicazione());
+        	
+        	libroPulito.setContenuto(ris.get(i).getContenuto());
+        	libroPulito.setStile(ris.get(i).getStile());
+        	libroPulito.setGradevolezza(ris.get(i).getGradevolezza());
+        	libroPulito.setOriginalita(ris.get(i).getOriginalita());
+        	libroPulito.setEdizione(ris.get(i).getEdizione());
+        	
+        	libroPulito.setLibriConsigliati(ris.get(i).getLibriConsigliati());
+        	risPulito.add(libroPulito);
         }
 
-
-
-
-        return ris;
+        return risPulito;
     }
 
     /**
