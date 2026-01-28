@@ -53,11 +53,15 @@ public class DbQuery {
     //           QUERY LIBRI
     // =============================
     public List<Libro> libriLibro(String param) {
-        // Rimuovo i JOIN per evitare duplicati. 
-        // Se cerco un libro, voglio l'elenco dei libri, non tutte le recensioni di tutti gli utenti.
-        String sql = "SELECT * FROM public.\"Libri\" WHERE titolo = ? OR autore = ?";
+        // La logica SQL è rimasta INVARIATA come hai chiesto (coi LEFT JOIN)
+        String sql = "SELECT * "
+                   + "FROM public.\"Libri\" AS a "
+                   + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+                   + "LEFT JOIN public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro AND b.id_codice_fiscale = c.cf "
+                   + "WHERE a.titolo = ? OR a.autore = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            // Imposto i parametri per cercare sia per titolo che per autore
             ps.setString(1, param);
             ps.setString(2, param);
 
@@ -514,48 +518,53 @@ public class DbQuery {
         while (result.next()) {
             Libro libro = new Libro();
             
-            // Dati base del libro (sempre presenti)
+            // --- Dati base del libro ---
             libro.setTitolo(result.getString("titolo"));
             libro.setAutore(result.getString("autore"));
             libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
 
-            /* GESTIONE DEI VOTI (INT)
-               getInt restituisce 0 se il valore è NULL. 
-               Se vuoi distinguere tra "voto 0" e "nessun voto", dovresti usare result.getObject
-               ma per ora va bene così, assumendo che 0 significhi "non valutato".
-            */
+            // --- Valutazioni (Numeriche) ---
+            // getInt restituisce 0 se il campo è NULL, il che non rompe il codice
             libro.setStile(result.getInt("stile"));
             libro.setContenuto(result.getInt("contenuto"));
             libro.setGradevolezza(result.getInt("gradevolezza"));
-            libro.setOriginalita(result.getInt("originalità")); // Occhio all'accento nel DB
+            libro.setOriginalita(result.getInt("originalità")); // OK l'accento se nel DB è così
             libro.setEdizione(result.getInt("edizione"));
 
-            /* GESTIONE DELLE NOTE (STRING) - CORREZIONE FONDAMENTALE 
-               Controlliamo che la stringa non sia null prima di passarla al setter.
-               Se è null, non chiamiamo il metodo, così la nota nel libro resta vuota/null
-               invece di diventare "Note stile : null."
-            */
-            String nStile = result.getString("nota_stile");
-            if (nStile != null) libro.setNoteStile(nStile);
+            // --- Note (Stringhe) - FIX PER EVITARE "null" ---
+            
+            String notaStile = result.getString("nota_stile");
+            if (notaStile != null) {
+                libro.setNoteStile(notaStile);
+            }
 
-            String nContenuto = result.getString("nota_contenuto");
-            if (nContenuto != null) libro.setNoteContenuto(nContenuto);
+            String notaContenuto = result.getString("nota_contenuto");
+            if (notaContenuto != null) {
+                libro.setNoteContenuto(notaContenuto);
+            }
 
-            String nGradevolezza = result.getString("nota_gradevolezza");
-            if (nGradevolezza != null) libro.setNoteGradevolezza(nGradevolezza);
+            String notaGradevolezza = result.getString("nota_gradevolezza");
+            if (notaGradevolezza != null) {
+                libro.setNoteGradevolezza(notaGradevolezza);
+            }
 
-            String nOriginalita = result.getString("nota_originalita");
-            if (nOriginalita != null) libro.setNoteOriginalita(nOriginalita);
+            String notaOriginalita = result.getString("nota_originalita");
+            if (notaOriginalita != null) {
+                libro.setNoteOriginalita(notaOriginalita);
+            }
 
-            String nEdizione = result.getString("nota_edizione");
-            if (nEdizione != null) libro.setNoteEdizione(nEdizione);
+            String notaEdizione = result.getString("nota_edizione");
+            if (notaEdizione != null) {
+                libro.setNoteEdizione(notaEdizione);
+            }
 
             libro.setControllo(true);
             libri.add(libro);
         }
         return libri;
     }
-
+    
+    
     public static LinkedList<Libro> resultSetToLibriL(ResultSet result) throws SQLException {
         LinkedList<Libro> libri = new LinkedList<>();
         if (result == null) return libri;
