@@ -52,20 +52,20 @@ public class DbQuery {
     // =============================
     //           QUERY LIBRI
     // =============================
-    public List<Libro> libriLibro(String param) {
+    public List<Libro> libriLibro(String titolo, String autore) {
         String sql = "SELECT *\r\n"
-        + "FROM \r\n"
-        + "    public.\"Libri\" AS a\r\n"
-        + "LEFT JOIN \r\n"
-        + "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
-        + "LEFT JOIN \r\n"
-        + "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
-        + "    AND b.id_codice_fiscale = c.cf\r\n"
-        + "WHERE a.titolo =? or autore =?";
+        		+ "FROM \r\n"
+        		+ "    public.\"Libri\" AS a\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
+        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
+        		+ "WHERE a.titolo =? and a.autore =?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, param);
-            ps.setString(2, param);
+            ps.setString(1, titolo);
+            ps.setString(2, autore);
 
             try (ResultSet rs = ps.executeQuery()) {
                 return resultSetToLibri(rs);
@@ -76,6 +76,7 @@ public class DbQuery {
             return new ArrayList<>();
         }
     }
+
     public List<Libro> libriLibroAA(String autore, String anno) {
         String sql = "SELECT *\r\n"
         		+ "FROM \r\n"
@@ -518,19 +519,47 @@ public class DbQuery {
 
         while (result.next()) {
             Libro libro = new Libro();
+            
+            // --- Dati base del libro ---
             libro.setTitolo(result.getString("titolo"));
             libro.setAutore(result.getString("autore"));
             libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
+
+            // --- Valutazioni (Numeriche) ---
+            // getInt restituisce 0 se il campo è NULL, il che non rompe il codice
             libro.setStile(result.getInt("stile"));
             libro.setContenuto(result.getInt("contenuto"));
             libro.setGradevolezza(result.getInt("gradevolezza"));
-            libro.setOriginalita(result.getInt("originalità"));
+            libro.setOriginalita(result.getInt("originalità")); // OK l'accento se nel DB è così
             libro.setEdizione(result.getInt("edizione"));
-            libro.setNoteStile(result.getString("nota_stile"));
-            libro.setNoteContenuto(result.getString("nota_contenuto"));
-            libro.setNoteGradevolezza(result.getString("nota_gradevolezza"));
-            libro.setNoteOriginalita(result.getString("nota_originalita"));
-            libro.setNoteEdizione(result.getString("nota_edizione"));
+
+            // --- Note (Stringhe) - FIX PER EVITARE "null" ---
+            
+            String notaStile = result.getString("nota_stile");
+            if (notaStile != null) {
+                libro.setNoteStile(notaStile);
+            }
+
+            String notaContenuto = result.getString("nota_contenuto");
+            if (notaContenuto != null) {
+                libro.setNoteContenuto(notaContenuto);
+            }
+
+            String notaGradevolezza = result.getString("nota_gradevolezza");
+            if (notaGradevolezza != null) {
+                libro.setNoteGradevolezza(notaGradevolezza);
+            }
+
+            String notaOriginalita = result.getString("nota_originalita");
+            if (notaOriginalita != null) {
+                libro.setNoteOriginalita(notaOriginalita);
+            }
+
+            String notaEdizione = result.getString("nota_edizione");
+            if (notaEdizione != null) {
+                libro.setNoteEdizione(notaEdizione);
+            }
+
             libro.setControllo(true);
             libri.add(libro);
         }
