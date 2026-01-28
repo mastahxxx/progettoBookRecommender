@@ -70,6 +70,16 @@ public class DataBase {
             ris = dbq.libriLibro(autore);
         }
 
+        for (int i  = 0 ; i < ris.size(); i++) {
+            System.out.println(ris.get(i).getTitolo());  
+            System.out.println(ris.get(i).getAutore());
+            System.out.println(ris.get(i).getAnnoPubblicazione());
+
+        }
+
+
+
+
         return ris;
     }
 
