@@ -129,7 +129,7 @@ public class DbQuery {
     }
 
     public List<Libro> libriLibroTA(String titolo, String anno) {
-        String sql = "sSELECT *\r\n"
+        String sql = "SELECT *\r\n"
         		+ "FROM \r\n"
         		+ "    public.\"Libri\" AS a\r\n"
         		+ "LEFT JOIN \r\n"
@@ -359,6 +359,94 @@ public class DbQuery {
             return new LinkedList<>();
         }
     }
+    
+    public LinkedList<Libreria> caricaLibrerie(String cf) {
+        String sql = "SELECT a.nome_libreria, b.*, c.stile, c.contenuto, c.gradevolezza, c.\"originalità\", c.edizione, "
+                   + "d.nota_stile, d.nota_contenuto, d.nota_gradevolezza, d.nota_originalita, d.nota_edizione "
+                   + "FROM public.\"Librerie\" AS a "
+                   + "LEFT JOIN public.\"Libri\" AS b ON a.id_libro = b.cod_libro "
+                   + "LEFT JOIN public.\"Valutazioni\" AS c ON a.id_libro = c.id_libro AND a.id_codice_fiscale = c.id_codice_fiscale "
+                   + "LEFT JOIN public.\"NoteValutazioni\" AS d ON a.id_libro = d.id_libro AND a.id_codice_fiscale = d.cf "
+                   + "WHERE a.id_codice_fiscale = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, cf);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return mappaResultSetInLibrerie(rs);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new LinkedList<>();
+        }
+    }
+
+    /**
+     * Metodo rinominato per convertire il ResultSet in una lista di Librerie
+     */
+    private LinkedList<Libreria> mappaResultSetInLibrerie(ResultSet rs) throws SQLException {
+        LinkedList<Libreria> listaLibrerie = new LinkedList<>();
+
+        while (rs.next()) {
+            String nomeLibreria = rs.getString("nome_libreria");
+            
+            // 1. Cerco se la libreria esiste già nella mia lista (Raggruppamento)
+            Libreria libreriaCorrente = null;
+            for (Libreria lib : listaLibrerie) {
+                if (lib.getNome() != null && lib.getNome().equals(nomeLibreria)) {
+                    libreriaCorrente = lib;
+                    break;
+                }
+            }
+
+            // 2. Se non esiste, la creo e la aggiungo alla lista
+            if (libreriaCorrente == null) {
+                libreriaCorrente = new Libreria(nomeLibreria);
+                listaLibrerie.add(libreriaCorrente);
+            }
+
+            // 3. Controllo se c'è effettivamente un libro nella riga corrente
+            // (utile se ci sono librerie vuote o join nulli)
+            if (rs.getString("titolo") != null) {
+                Libro libro = new Libro();
+                
+        
+                libro.setTitolo(rs.getString("titolo"));
+                libro.setAutore(rs.getString("autore"));
+                libro.setAnnoPubblicazione(rs.getString("anno_pubblicazione"));
+
+              
+                libro.setStile(rs.getInt("stile"));
+                libro.setContenuto(rs.getInt("contenuto"));
+                libro.setGradevolezza(rs.getInt("gradevolezza"));
+                libro.setOriginalita(rs.getInt("originalità")); // Nome colonna con accento nel DB
+                libro.setEdizione(rs.getInt("edizione"));
+
+                
+                if (rs.getString("nota_stile") != null) 
+                    libro.setNoteStile(rs.getString("nota_stile"));
+                
+                if (rs.getString("nota_contenuto") != null) 
+                    libro.setNoteContenuto(rs.getString("nota_contenuto"));
+                
+                if (rs.getString("nota_gradevolezza") != null) 
+                    libro.setNoteGradevolezza(rs.getString("nota_gradevolezza"));
+                
+                if (rs.getString("nota_originalita") != null) 
+                    libro.setNoteOriginalita(rs.getString("nota_originalita"));
+                
+                if (rs.getString("nota_edizione") != null) 
+                    libro.setNoteEdizione(rs.getString("nota_edizione"));
+
+                // 4. Aggiungo il libro alla lista interna della libreria trovata
+                libreriaCorrente.getContenuto().add(libro);
+            }
+        }
+
+        return listaLibrerie;
+    }
+    
 
     // =============================
     //     MAPPER RESULTSET -> OGGETTI
