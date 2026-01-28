@@ -54,6 +54,7 @@ public class LibrerieController {
      */
     @FXML private void initialize() {
         userId = SceneNavigator.getUserID();
+        caricaLibrerie(SceneNavigator.getUserID());
 
         tNome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         tNumero.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Libreria, String>, ObservableValue<String>>() {
@@ -70,7 +71,7 @@ public class LibrerieController {
         tblLibrerie.setOnMouseClicked(this::onTableClick);
         tblLibrerie.getSelectionModel().selectedItemProperty().addListener(this::onSelezioneCambiata);
 
-        caricaLibrerie(SceneNavigator.getUserID());
+        
         refreshUI();
     }
 
@@ -283,7 +284,7 @@ public class LibrerieController {
      * @param userId identificativo utente
      */
     private void caricaLibrerie(String userId) {
-    	
+    	librerie.clear();
     	try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
