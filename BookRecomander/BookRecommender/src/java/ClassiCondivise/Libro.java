@@ -19,7 +19,8 @@ public class Libro implements Serializable {
     private int gradevolezza;
     private int originalita;
     private int edizione;
-
+    
+    //Utilizzate per la valutazione da mandare la server
     private String noteContenuto;
     private String noteStile;
     private String noteGradevolezza;
@@ -27,6 +28,12 @@ public class Libro implements Serializable {
     private String noteEdizione;
 
     private LinkedList<Libro> libriConsigliati;
+    
+    private LinkedList<String> ListaNoteContenuto;
+    private LinkedList<String> ListaNoteStile;
+    private LinkedList<String> ListaNoteGradevolezza;
+    private LinkedList<String> ListaNoteOriginalita;
+    private LinkedList<String> ListaNoteEdizione;
     private boolean controllo;
 
     /**
@@ -34,6 +41,11 @@ public class Libro implements Serializable {
      */
     public Libro() {
         this.libriConsigliati = new LinkedList();
+        ListaNoteContenuto = new LinkedList();
+        ListaNoteStile = new LinkedList();
+        ListaNoteGradevolezza = new LinkedList();
+        ListaNoteOriginalita = new LinkedList();
+        ListaNoteEdizione = new LinkedList();
     }
 
     //Getter
@@ -161,4 +173,31 @@ public class Libro implements Serializable {
         String y = (annoPubblicazione != null) ? annoPubblicazione : "-";
         return t + " — " + a + " (" + y + ")";
     }
+    
+    private void setListNoteNoteStile (String u) {
+    	String nuovaNota = u+": "+this.getNoteStile();
+    	this.ListaNoteStile.add(nuovaNota);		
+    }
+    
+    private void setListNoteContenuto (String u) {
+    	String nuovaNota = u+": "+this.getContenuto();
+    	this.ListaNoteContenuto.add(nuovaNota);		
+    }
+    
+    private void setListNoteGradevolezza (String u) {
+    	String nuovaNota = u+": "+this.getGradevolezza();
+    	this.ListaNoteGradevolezza.add(nuovaNota);		
+    }
+    
+    private void setListNoteOriginalita (UtenteRegistrato u) {
+    	String nuovaNota = u.getUserId()+": "+this.getNoteOriginalita();
+    	this.ListaNoteOriginalita.add(nuovaNota);	
+    	
+    }
+    
+    private void setListNoteEdizione (UtenteRegistrato u) {
+    	String nuovaNota = u.getUserId()+": "+this.getNoteEdizione();
+    	this.ListaNoteEdizione.add(nuovaNota);		
+    }
+    
 }

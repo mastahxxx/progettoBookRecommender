@@ -237,7 +237,11 @@ public class ServerThread extends Thread {
 //                    	LinkedList<Libreria> librerie = db.LibrerieUtente(u);
 //                    	out.writeObject(librerie);
  //                   	break;
-
+                        
+                    case "CARICA NOTE":
+                    	l = (Libro) in.readObject();
+                        
+                        break;
                     default:
                         // richiesta non riconosciuta, ignorata
                         break;

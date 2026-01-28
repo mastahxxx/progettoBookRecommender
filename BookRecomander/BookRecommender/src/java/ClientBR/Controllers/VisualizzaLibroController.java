@@ -1,7 +1,9 @@
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
+import ClassiCondivise.Libreria;
 import ClassiCondivise.Libro;
+import ClassiCondivise.UtenteRegistrato;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -10,6 +12,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -157,6 +163,27 @@ public class VisualizzaLibroController {
     } */
 
     private void caricaNote() {
-        Libro l = SceneNavigator.getLibro();
+        
+        try {
+            InetAddress addr = InetAddress.getByName(null);
+            Socket socket = new Socket(addr, 8999);
+            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+            UtenteRegistrato u = new UtenteRegistrato();
+            Libro l = SceneNavigator.getLibro();
+            u.setUserId(SceneNavigator.userID);
+            out.writeObject("CARICA NOTE");
+            out.writeObject(u);
+            out.writeObject(l);
+            LinkedList listaNote = new LinkedList();
+            listaNote = (LinkedList) in.readObject();
+            out.close();
+            in.close();
+            socket.close();
+        } catch (Exception e) {
+            
+        } finally {
+            
+        }
     }
 }
