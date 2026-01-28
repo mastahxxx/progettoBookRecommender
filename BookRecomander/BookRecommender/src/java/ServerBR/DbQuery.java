@@ -512,7 +512,7 @@ public class DbQuery {
     // =============================
     //     MAPPER RESULTSET -> OGGETTI
     // =============================
-    public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {
+  /*  public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {
         List<Libro> libri = new ArrayList<>();
         if (result == null) return libri;
 
@@ -531,6 +531,59 @@ public class DbQuery {
             libro.setNoteGradevolezza(result.getString("nota_gradevolezza"));
             libro.setNoteOriginalita(result.getString("nota_originalita"));
             libro.setNoteEdizione(result.getString("nota_edizione"));
+            libro.setControllo(true);
+            libri.add(libro);
+        }
+        return libri;
+    } */
+    
+    public static List<Libro> resultSetToLibri(ResultSet result) throws SQLException {
+        List<Libro> libri = new ArrayList<>();
+        if (result == null) return libri;
+
+        while (result.next()) {
+            Libro libro = new Libro();
+            
+            // --- Dati base del libro ---
+            libro.setTitolo(result.getString("titolo"));
+            libro.setAutore(result.getString("autore"));
+            libro.setAnnoPubblicazione(result.getString("anno_pubblicazione"));
+
+            // --- Valutazioni (Numeriche) ---
+            // getInt restituisce 0 se il campo è NULL, il che non rompe il codice
+            libro.setStile(result.getInt("stile"));
+            libro.setContenuto(result.getInt("contenuto"));
+            libro.setGradevolezza(result.getInt("gradevolezza"));
+            libro.setOriginalita(result.getInt("originalità")); // OK l'accento se nel DB è così
+            libro.setEdizione(result.getInt("edizione"));
+
+            // --- Note (Stringhe) - FIX PER EVITARE "null" ---
+            
+            String notaStile = result.getString("nota_stile");
+            if (notaStile != null) {
+                libro.setNoteStile(notaStile);
+            }
+
+            String notaContenuto = result.getString("nota_contenuto");
+            if (notaContenuto != null) {
+                libro.setNoteContenuto(notaContenuto);
+            }
+
+            String notaGradevolezza = result.getString("nota_gradevolezza");
+            if (notaGradevolezza != null) {
+                libro.setNoteGradevolezza(notaGradevolezza);
+            }
+
+            String notaOriginalita = result.getString("nota_originalita");
+            if (notaOriginalita != null) {
+                libro.setNoteOriginalita(notaOriginalita);
+            }
+
+            String notaEdizione = result.getString("nota_edizione");
+            if (notaEdizione != null) {
+                libro.setNoteEdizione(notaEdizione);
+            }
+
             libro.setControllo(true);
             libri.add(libro);
         }
