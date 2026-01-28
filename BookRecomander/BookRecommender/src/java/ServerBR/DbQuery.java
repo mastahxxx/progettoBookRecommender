@@ -52,27 +52,20 @@ public class DbQuery {
     // =============================
     //           QUERY LIBRI
     // =============================
-    public List<Libro> libriLibro(String param) {
-        // CORREZIONE: Invece di SELECT *, elenco le colonne esplicitamente.
-        // Questo garantisce che il ResultSet trovi i nomi corretti ("stile", "autore", ecc.)
-        // ed evita conflitti con gli ID duplicati delle tabelle unite.
-        String sql = "SELECT "
-                   + "    a.titolo, a.autore, a.anno_pubblicazione, "
-                   + "    b.stile, b.contenuto, b.gradevolezza, b.\"originalità\", b.edizione, "
-                   + "    c.nota_stile, c.nota_contenuto, c.nota_gradevolezza, c.nota_originalita, c.nota_edizione "
-                   + "FROM "
-                   + "    public.\"Libri\" AS a "
-                   + "LEFT JOIN "
-                   + "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
-                   + "LEFT JOIN "
-                   + "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro "
-                   + "    AND b.id_codice_fiscale = c.cf "
-                   + "WHERE a.titolo = ? OR a.autore = ?";
+    public List<Libro> libriLibro(String titolo, String autore) {
+        String sql = "SELECT *\r\n"
+        		+ "FROM \r\n"
+        		+ "    public.\"Libri\" AS a\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
+        		+ "LEFT JOIN \r\n"
+        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
+        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
+        		+ "WHERE a.titolo =? and a.autore =?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            // Imposto i parametri (parametro unico usato sia per titolo che per autore)
-            ps.setString(1, param);
-            ps.setString(2, param);
+            ps.setString(1, titolo);
+            ps.setString(2, autore);
 
             try (ResultSet rs = ps.executeQuery()) {
                 return resultSetToLibri(rs);
