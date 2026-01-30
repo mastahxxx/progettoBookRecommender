@@ -68,7 +68,7 @@ public class LibrerieController {
         tblLibrerie.setItems(librerie);
         tblLibrerie.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); //l' utente puo selezionare solo una libreria alla volta
         tblLibrerie.setPlaceholder(new Label("Nessuna libreria"));
-        //tblLibrerie.setOnMouseClicked(this::onTableClick);
+        tblLibrerie.setOnMouseClicked(this::onTableClick);
         tblLibrerie.getSelectionModel().selectedItemProperty().addListener(this::onSelezioneCambiata);
 
         
@@ -246,7 +246,7 @@ public class LibrerieController {
             return;
         }
         SceneNavigator.setLibreria(sel);
-        SceneNavigator.switchToVisualizzaLibreria();
+        SceneNavigator.switchToOnlyVisLib();
     }
 
     /** Torna alla schermata dell'utente registrato. */

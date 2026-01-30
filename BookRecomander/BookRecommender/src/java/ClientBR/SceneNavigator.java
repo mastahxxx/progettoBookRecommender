@@ -85,6 +85,7 @@ public class SceneNavigator {
     /** Vai a dettaglio libro (registrato). */public static void switchToVisualizzaLibroRegistrato() { switchTo("visualizzaLibroUtenteRegistrato.fxml"); }
     /** Vai al dettaglio di una libreria. */  public static void switchToVisualizzaLibreria() { switchTo("visualizzaLibreria.fxml"); }
     /** Vai al SalvaLibro */                  public static void switchToSalvaLibro() { switchTo("salvaLibro.fxml");}
+    /** Vai a OnlyVisLib */                   public static void switchToOnlyVisLib() { switchTo("onlyVisLib.fxml");}
 
 
     /**
