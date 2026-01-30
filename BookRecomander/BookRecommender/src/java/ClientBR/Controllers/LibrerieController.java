@@ -66,9 +66,9 @@ public class LibrerieController {
         });
 
         tblLibrerie.setItems(librerie);
-        tblLibrerie.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+        tblLibrerie.getSelectionModel().setSelectionMode(SelectionMode.SINGLE); //l' utente puo selezionare solo una libreria alla volta
         tblLibrerie.setPlaceholder(new Label("Nessuna libreria"));
-        tblLibrerie.setOnMouseClicked(this::onTableClick);
+        //tblLibrerie.setOnMouseClicked(this::onTableClick);
         tblLibrerie.getSelectionModel().selectedItemProperty().addListener(this::onSelezioneCambiata);
 
         
@@ -115,11 +115,17 @@ public class LibrerieController {
         }
 
             Libreria nuova = new Libreria(nome);
-            librerie.add(nuova);
+            //librerie.add(nuova);
             SceneNavigator.libreria = nuova;
-            tblLibrerie.getSelectionModel().select(nuova);
-            Helpers.showInfo("Libreria creata.", lblErr);
-            refreshUI();
+            SceneNavigator.switchToVisualizzaLibreria();
+            //tblLibrerie.getSelectionModel().select(nuova);
+            //Helpers.showInfo("Libreria creata.", lblErr);
+
+
+
+
+
+            //refreshUI();
         
 
     }
