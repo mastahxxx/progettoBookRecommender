@@ -208,7 +208,6 @@ public class LibrerieController {
         if (!conferma.isPresent() || conferma.get() != ButtonType.OK) return;
 
         boolean ok = false;
-     // --- STUB chiamata al server ---
     	try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
@@ -224,8 +223,6 @@ public class LibrerieController {
             in.close();
             socket.close();
         } catch (Exception e) {
-            
-        } finally {
             
         }
         if (ok) {
@@ -280,7 +277,6 @@ public class LibrerieController {
     }
 
     /**
-     * Carica (stub) le librerie dell'utente.
      * @param userId identificativo utente
      */
     private void caricaLibrerie(String userId) {
@@ -303,9 +299,6 @@ public class LibrerieController {
         } catch (Exception e) {
             
         }
-
-
-    	librerie.clear();
 
     }
 }
