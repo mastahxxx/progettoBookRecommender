@@ -204,5 +204,12 @@ public class Libro implements Serializable {
     	String nuovaNota = u+": "+this.getNoteEdizione();
     	this.ListaNoteEdizione.add(nuovaNota);		
     }
-    
+
+    //getter note
+
+    public LinkedList<String> getListaNoteStile() { return ListaNoteStile; }
+    public LinkedList<String> getListaNoteContenuto() { return ListaNoteContenuto; }
+    public LinkedList<String> getListaNoteGradevolezza() { return ListaNoteGradevolezza; }
+    public LinkedList<String> getListaNoteOriginalita() { return ListaNoteOriginalita; }
+    public LinkedList<String> getListaNoteEdizione() { return ListaNoteEdizione; }
 }

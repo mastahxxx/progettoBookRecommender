@@ -129,6 +129,8 @@ public class VisualizzaLibroController {
         		nuovaLista.add(consigliati.get(i));
         }
         consigliatiData.setAll(nuovaLista == null ? List.of() : nuovaLista);
+        Libro libroConNote = caricaNote();
+        note.setText(formattaNote(libroConNote));
     }
 
     /** Ripulisce l'UI quando nessun libro è selezionato. */
@@ -144,46 +146,51 @@ public class VisualizzaLibroController {
         consigliatiData.clear();
     }
 
-    /**
-     * Concatena le note provenienti da più liste in un unico testo.
-     * @param liste liste di note
-     * @return testo aggregato
-     */
- /**    private String concatenaNote(List<String>... liste) {
-        StringBuilder sb = new StringBuilder();
-        for (List<String> l : liste) {
-            if (l == null) continue;
-            for (String n : l) {
-                if (n == null || n.isBlank()) continue;
-                if (sb.length() > 0) sb.append("\n---\n");
-                sb.append(n.trim());
-            }
-        }
-        return sb.toString();
-    } */
 
-    private void caricaNote() {
-        
-        try {
-            InetAddress addr = InetAddress.getByName(null);
-            Socket socket = new Socket(addr, 8999);
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            UtenteRegistrato u = new UtenteRegistrato();
-            Libro l = SceneNavigator.getLibro();
-            u.setUserId(SceneNavigator.userID);
-            out.writeObject("CARICA NOTE");
-            out.writeObject(u);
-            out.writeObject(l);
-            LinkedList listaNote = new LinkedList();
-            listaNote = (LinkedList) in.readObject();
-            out.close();
-            in.close();
-            socket.close();
-        } catch (Exception e) {
-            
-        } finally {
-            
-        }
+
+    private Libro caricaNote() {
+    try {
+        InetAddress addr = InetAddress.getByName(null);
+        Socket socket = new Socket(addr, 8999);
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+        out.writeObject("CARICA NOTE");
+        out.writeObject(this.libro);
+
+        Libro libroConNote = (Libro) in.readObject();
+        out.close();
+        in.close();
+        socket.close();
+        return libroConNote;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new Libro();
     }
+}
+
+private String formattaNote(Libro l) {
+    StringBuilder sb = new StringBuilder();
+
+    aggiungiSezioneNote(sb, "STILE", l.getListaNoteStile());
+    aggiungiSezioneNote(sb, "CONTENUTO", l.getListaNoteContenuto());
+    aggiungiSezioneNote(sb, "GRADEVOLEZZA", l.getListaNoteGradevolezza());
+    aggiungiSezioneNote(sb, "ORIGINALITÀ", l.getListaNoteOriginalita());
+    aggiungiSezioneNote(sb, "EDIZIONE", l.getListaNoteEdizione());
+
+    if (sb.length() == 0) return "Nessuna nota per questo libro.";
+    return sb.toString();
+}
+
+private void aggiungiSezioneNote(StringBuilder sb, String titolo, LinkedList<String> lista) {
+    if (lista == null || lista.isEmpty()) return;
+
+    sb.append("=== NOTE ").append(titolo).append(" ===\n");
+    for (String nota : lista) {
+        sb.append("• ").append(nota).append("\n");
+    }
+    sb.append("\n");
+}
+
+
 }

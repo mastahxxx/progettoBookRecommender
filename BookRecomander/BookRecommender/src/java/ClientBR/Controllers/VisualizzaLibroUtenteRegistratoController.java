@@ -10,6 +10,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
@@ -110,14 +114,6 @@ public class VisualizzaLibroUtenteRegistratoController {
                    + libro.getEdizione() + libro.getOriginalita()) / 5;
         votoFinale.setText("voto finale: " + media);
 
-      /**   note.setText(concatenaNote(
-            libro.getNoteStile(),
-            libro.getNoteContenuto(),
-            libro.getNoteGradevolezza(),
-            libro.getNoteOriginalita(),
-            libro.getNoteEdizione()
-        )); */
-
         LinkedList<Libro> consigliati = libro.getLibriConsigliati();
         LinkedList<Libro> nuovaLista = new LinkedList();
         for(int i= 0; i<consigliati.size();i++) {
@@ -125,6 +121,10 @@ public class VisualizzaLibroUtenteRegistratoController {
         		nuovaLista.add(consigliati.get(i));
         }
         consigliatiData.setAll(nuovaLista == null ? List.of() : nuovaLista);
+        Libro libroConNote = caricaNote();
+        note.setText(formattaNote(libroConNote));
+
+        
     }
 
     /** Pulisce i campi quando non c’è un libro da mostrare. */
@@ -140,24 +140,54 @@ public class VisualizzaLibroUtenteRegistratoController {
         consigliatiData.clear();
     }
 
-    /**
-     * Concatena tutte le note fornite in un’unica stringa con separatori.
-     * @param liste liste di note (per categoria)
-     * @return testo unico con note concatenate
-     */
-   /**  private String concatenaNote(List<String>... liste) {
-        StringBuilder sb = new StringBuilder();
-        for (List<String> l : liste) {
-            if (l == null) continue;
-            for (String n : l) {
-                if (n == null || n.isBlank()) continue;
-                if (sb.length() > 0) sb.append("\n---\n");
-                sb.append(n.trim());
-            }
-        }
-        return sb.toString();
-    } */
-    private void caricaNote() {
-        Libro l = SceneNavigator.getLibro();
+
+    private Libro caricaNote() {
+    try {
+        InetAddress addr = InetAddress.getByName(null);
+        Socket socket = new Socket(addr, 8999);
+
+        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+
+        out.writeObject("CARICA NOTE");
+        out.writeObject(this.libro); // mando il libro corrente
+
+        Libro libroConNote = (Libro) in.readObject();
+
+        out.close();
+        in.close();
+        socket.close();
+
+        return libroConNote;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return new Libro();
     }
+}
+
+    private String formattaNote(Libro l) {
+        StringBuilder sb = new StringBuilder();
+
+        aggiungiSezioneNote(sb, "STILE", l.getListaNoteStile());
+        aggiungiSezioneNote(sb, "CONTENUTO", l.getListaNoteContenuto());
+        aggiungiSezioneNote(sb, "GRADEVOLEZZA", l.getListaNoteGradevolezza());
+        aggiungiSezioneNote(sb, "ORIGINALITÀ", l.getListaNoteOriginalita());
+        aggiungiSezioneNote(sb, "EDIZIONE", l.getListaNoteEdizione());
+
+        if (sb.length() == 0) return "Nessuna nota per questo libro.";
+            return sb.toString();
+    }
+
+    private void aggiungiSezioneNote(StringBuilder sb, String titolo, LinkedList<String> lista) {
+        if (lista == null || lista.isEmpty()) return;
+
+        sb.append("=== NOTE ").append(titolo).append(" ===\n");
+            for (String nota : lista) {
+                sb.append("• ").append(nota).append("\n");
+            }
+                sb.append("\n");
+}
+
+
 }
