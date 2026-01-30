@@ -113,15 +113,6 @@ public class VisualizzaLibroController {
                    + libro.getEdizione() + libro.getOriginalita()) / 5;
         votoFinale.setText("voto finale: " + media);
 
-       // note.setText(concatenaNote(
-         //   libro.getNoteStile(),
-          //  libro.getNoteContenuto(),
-          //  libro.getNoteGradevolezza(),
-          //  libro.getNoteOriginalita(),
-          //  libro.getNoteEdizione()
-          // ));
-        
-
         LinkedList<Libro> consigliati = libro.getLibriConsigliati();
         LinkedList<Libro> nuovaLista = new LinkedList();
         for(int i= 0; i<consigliati.size();i++) {

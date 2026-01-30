@@ -14,6 +14,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -36,7 +37,8 @@ public class VisualizzaLibrerieController {
     @FXML private TableView<Libro> tblLibri;
     @FXML private TableColumn<Libro, String> tTitolo;
     @FXML private TableColumn<Libro, String> tAutore;
-    @FXML private TableColumn<Libro, String> tAnno;
+    @FXML private TableColumn<Libro, String> tAnno; 
+
 
     /** Modello dati mostrato nella tabella. */
     private final ObservableList<Libro> libri = FXCollections.observableArrayList();
@@ -50,6 +52,11 @@ public class VisualizzaLibrerieController {
     @FXML
     private void initialize() {
         libreriaCorrente = SceneNavigator.getLibreria();
+        if(SceneNavigator.listaLibri.contains(SceneNavigator.libro)) { //evita di salvare piu volte lo stesso libro
+            SceneNavigator.libro = null;
+        }
+
+
 
         if(SceneNavigator.libro != null) { //Se il libro non è nulla lo salvo nella lista e lo aggiungo alla schermata
             Libro lib = SceneNavigator.libro;
@@ -129,7 +136,7 @@ public class VisualizzaLibrerieController {
 
     @FXML
     private void onSalva() {  
-        String nomelibreria = SceneNavigator.libreria.getNome();
+        String nomelibreria = SceneNavigator.libreria.getNome();    
         LinkedList<Libro> linkedList = new LinkedList<>(SceneNavigator.listaLibri);
         Libreria l = (Libreria) SceneNavigator.libreria;
         l.setContenuto(linkedList);
