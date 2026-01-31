@@ -191,24 +191,26 @@ public class SuggerimentiController {
      * @param userId identificativo dell’utente
      */
     private void caricaLibri(String userId) {
+        LinkedList<Libro> prova = new LinkedList<>();
         try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
             UtenteRegistrato ur = new UtenteRegistrato();
-            ur.setUserId(USERID);
+            ur.setUserId(SceneNavigator.getUserID());
             out.writeObject("CARICA LIBRI LIBRERIE CLIENT");
             out.writeObject(ur);
-            @SuppressWarnings("unchecked")
-            List<Libro> normalList = (List<Libro>) in.readObject();
-            mieiLibri = FXCollections.observableArrayList(normalList);
+
+            prova = (LinkedList<Libro> ) in.readObject();
+            System.out.println("prova" + prova);
 
             out.close();
             in.close();
             socket.close();
+
         } catch (Exception e) {
-            System.out.println(1);
+           System.out.println(1);
         }
         mieiLibri.clear();
         disponibili.clear();
