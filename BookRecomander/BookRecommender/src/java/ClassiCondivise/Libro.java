@@ -129,37 +129,62 @@ public class Libro implements Serializable {
 
     /** Aggiunge una nota sullo stile. */
     public void setNoteStile(String noteSt) {
-    	if(noteSt.charAt(noteSt.length()-1)!='.')
-    		noteSt = noteSt+".";
-        noteStile = noteSt;
+    	if(noteSt.charAt(noteSt.length()-1)=='?'  && noteSt.charAt(noteSt.length()-1)=='!') {
+    		noteStile = noteSt;
+    	}else {
+    		if(noteSt.charAt(noteSt.length()-1)!='.' )
+    			noteSt = noteSt+".";
+            noteStile = noteSt;
+    	}
+    	noteStile = noteSt;
     }
 
     /** Aggiunge una nota sul contenuto. */
     public void setNoteContenuto(String noteCo) {
-    	if(noteCo.charAt(noteCo.length()-1)!='.')
-    		noteCo = noteCo+".";
-        noteContenuto = noteCo;
+    	if(noteCo.charAt(noteCo.length()-1)=='?' && noteCo.charAt(noteCo.length()-1)=='!') {
+    		noteContenuto = noteCo;
+    	}else {
+    		if(noteCo.charAt(noteCo.length()-1)!='.')
+    			noteCo = noteCo+".";
+            noteContenuto = noteCo;
+    	}
+    	noteContenuto = noteCo;
     }
 
     /** Aggiunge una nota sulla gradevolezza. */
     public void setNoteGradevolezza(String noteGr) {
-    	if(noteGr.charAt(noteGr.length()-1)!='.')
-    		noteGr = noteGr+".";
-        noteGradevolezza = noteGr;
+    	if(noteGr.charAt(noteGr.length()-1)=='?' && noteGr.charAt(noteGr.length()-1)=='!') {
+    		noteGradevolezza = noteGr;
+    	}else {
+    		if(noteGr.charAt(noteGr.length()-1)=='?')
+    			noteGr = noteGr+".";
+            noteGradevolezza = noteGr;
+    	}	
+    	noteGradevolezza = noteGr;
     }
 
     /** Aggiunge una nota sull'originalità. */
     public void setNoteOriginalita(String noteOr) {
-    	if(noteOr.charAt(noteOr.length()-1)!='.')
-    		noteOr = noteOr+".";
-        noteOriginalita = noteOr;
+    	if(noteOr.charAt(noteOr.length()-1)=='?' && noteOr.charAt(noteOr.length()-1)=='!') {
+    		noteOriginalita = noteOr;
+    	}else {
+    		if(noteOr.charAt(noteOr.length()-1)!='.')
+    			noteOr = noteOr+".";
+    		noteOriginalita = noteOr;
+    	}
+    	noteOriginalita = noteOr;	
     }
 
     /** Aggiunge una nota sull'edizione. */
     public void setNoteEdizione(String noteEd) {
-    	if(noteEd.charAt(noteEd.length()-1)!='.')
-    		noteEd = noteEd+".";
-        noteEdizione = noteEd;
+    	if(noteEd.charAt(noteEd.length()-1)=='?' && noteEd.charAt(noteEd.length()-1)=='!') {
+    		noteEdizione = noteEd;
+    	}else {
+    		if(noteEd.charAt(noteEd.length()-1)!='.')
+    			noteEd = noteEd+".";
+    		noteEdizione = noteEd;
+    	}
+    	noteEdizione = noteEd;
     }
 
     
