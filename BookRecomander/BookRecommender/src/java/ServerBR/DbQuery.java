@@ -80,14 +80,31 @@ public class DbQuery {
     public List<Libro> libriLibro(String param) {
         // FIX: Uso SELECT esplicita invece di *. 
         // Questo permette al ResultSet di trovare sicuramente le colonne "stile", "nota_stile", ecc.
-        String sql = "SELECT "
+       /* String sql = "SELECT "
                    + "  a.titolo, a.autore, a.anno_pubblicazione, "
                    + "  b.stile, b.contenuto, b.gradevolezza, b.\"originalità\", b.edizione, "
                    + "  c.nota_stile, c.nota_contenuto, c.nota_gradevolezza, c.nota_originalita, c.nota_edizione "
                    + "FROM public.\"Libri\" AS a "
                    + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
                    + "LEFT JOIN public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro AND b.id_codice_fiscale = c.cf "
-                   + "WHERE a.titolo = ? OR a.autore = ?";
+                   + "WHERE a.titolo = ? OR a.autore = ?"; */
+    	
+    	String sql = "SELECT "
+                + "    a.titolo, a.autore, a.anno_pubblicazione, "
+                + "    CAST(ROUND(AVG(b.stile)) AS INTEGER) AS stile, "
+                + "    CAST(ROUND(AVG(b.contenuto)) AS INTEGER) AS contenuto, "
+                + "    CAST(ROUND(AVG(b.gradevolezza)) AS INTEGER) AS gradevolezza, "
+                + "    CAST(ROUND(AVG(b.\"originalità\")) AS INTEGER) AS \"originalità\", "
+                + "    CAST(ROUND(AVG(b.edizione)) AS INTEGER) AS edizione, "
+                + "    NULL AS nota_stile, "
+                + "    NULL AS nota_contenuto, "
+                + "    NULL AS nota_gradevolezza, "
+                + "    NULL AS nota_originalita, "
+                + "    NULL AS nota_edizione "
+                + "FROM public.\"Libri\" AS a "
+                + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+                + "WHERE a.titolo = ? OR a.autore = ? "
+                + "GROUP BY a.cod_libro, a.titolo, a.autore, a.anno_pubblicazione";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, param);
@@ -104,15 +121,22 @@ public class DbQuery {
     }
     
     public List<Libro> libriLibroAA(String autore, String anno) {
-        String sql = "SELECT *\r\n"
-        		+ "FROM \r\n"
-        		+ "    public.\"Libri\" AS a\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
-        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
-        		+ "WHERE a.autore =? and a.anno_pubblicazione =?";
+    	    String sql = "SELECT "
+    	               + "    a.titolo, a.autore, a.anno_pubblicazione, "
+    	               + "    CAST(ROUND(AVG(b.stile)) AS INTEGER) AS stile, "
+    	               + "    CAST(ROUND(AVG(b.contenuto)) AS INTEGER) AS contenuto, "
+    	               + "    CAST(ROUND(AVG(b.gradevolezza)) AS INTEGER) AS gradevolezza, "
+    	               + "    CAST(ROUND(AVG(b.\"originalità\")) AS INTEGER) AS \"originalità\", "
+    	               + "    CAST(ROUND(AVG(b.edizione)) AS INTEGER) AS edizione, "
+    	               + "    NULL AS nota_stile, "
+    	               + "    NULL AS nota_contenuto, "
+    	               + "    NULL AS nota_gradevolezza, "
+    	               + "    NULL AS nota_originalita, "
+    	               + "    NULL AS nota_edizione "
+    	               + "FROM public.\"Libri\" AS a "
+    	               + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+    	               + "WHERE a.autore = ? AND a.anno_pubblicazione = ? "
+    	               + "GROUP BY a.cod_libro, a.titolo, a.autore, a.anno_pubblicazione";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, autore);
@@ -129,15 +153,22 @@ public class DbQuery {
     }
 
     public List<Libro> libriLibroTAA(String titolo, String autore, String anno) {
-        String sql = "SELECT *\r\n"
-        		+ "FROM \r\n"
-        		+ "    public.\"Libri\" AS a\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
-        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
-        		+ "WHERE a.autore =? and a.anno_pubblicazione =? and a.titolo = ?";
+    	String sql = "SELECT "
+                + "    a.titolo, a.autore, a.anno_pubblicazione, "
+                + "    CAST(ROUND(AVG(b.stile)) AS INTEGER) AS stile, "
+                + "    CAST(ROUND(AVG(b.contenuto)) AS INTEGER) AS contenuto, "
+                + "    CAST(ROUND(AVG(b.gradevolezza)) AS INTEGER) AS gradevolezza, "
+                + "    CAST(ROUND(AVG(b.\"originalità\")) AS INTEGER) AS \"originalità\", "
+                + "    CAST(ROUND(AVG(b.edizione)) AS INTEGER) AS edizione, "
+                + "    NULL AS nota_stile, "
+                + "    NULL AS nota_contenuto, "
+                + "    NULL AS nota_gradevolezza, "
+                + "    NULL AS nota_originalita, "
+                + "    NULL AS nota_edizione "
+                + "FROM public.\"Libri\" AS a "
+                + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+                + "WHERE a.autore = ? AND a.anno_pubblicazione = ? AND a.titolo = ? "
+                + "GROUP BY a.cod_libro, a.titolo, a.autore, a.anno_pubblicazione";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, autore);
@@ -155,15 +186,22 @@ public class DbQuery {
     }
 
     public List<Libro> libriLibroTA(String titolo, String anno) {
-        String sql = "SELECT *\r\n"
-        		+ "FROM \r\n"
-        		+ "    public.\"Libri\" AS a\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro\r\n"
-        		+ "LEFT JOIN \r\n"
-        		+ "    public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro \r\n"
-        		+ "    AND b.id_codice_fiscale = c.cf\r\n"
-        		+ "WHERE a.anno_pubblicazione =? and a.titolo = ?";
+    	String sql = "SELECT "
+                + "    a.titolo, a.autore, a.anno_pubblicazione, "
+                + "    CAST(ROUND(AVG(b.stile)) AS INTEGER) AS stile, "
+                + "    CAST(ROUND(AVG(b.contenuto)) AS INTEGER) AS contenuto, "
+                + "    CAST(ROUND(AVG(b.gradevolezza)) AS INTEGER) AS gradevolezza, "
+                + "    CAST(ROUND(AVG(b.\"originalità\")) AS INTEGER) AS \"originalità\", "
+                + "    CAST(ROUND(AVG(b.edizione)) AS INTEGER) AS edizione, "
+                + "    NULL AS nota_stile, "
+                + "    NULL AS nota_contenuto, "
+                + "    NULL AS nota_gradevolezza, "
+                + "    NULL AS nota_originalita, "
+                + "    NULL AS nota_edizione "
+                + "FROM public.\"Libri\" AS a "
+                + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+                + "WHERE a.anno_pubblicazione = ? AND a.titolo = ? "
+                + "GROUP BY a.cod_libro, a.titolo, a.autore, a.anno_pubblicazione";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, anno);
@@ -179,9 +217,6 @@ public class DbQuery {
         }
     }
 
-    // =============================
-    //          UTENTI
-    // =============================
     public boolean UtentiRegistratiEPB(String email, String pass) {
         String sql = "select 1 from public.\"UtentiRegistrati\" where email = ? and password = ?";
 
