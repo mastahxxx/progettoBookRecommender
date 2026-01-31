@@ -117,6 +117,8 @@ public class LibrerieController {
             Libreria nuova = new Libreria(nome);
             //librerie.add(nuova);
             SceneNavigator.libreria = nuova;
+            SceneNavigator.listaLibri.clear();
+            SceneNavigator.libro = null; 
             SceneNavigator.switchToVisualizzaLibreria();
             //tblLibrerie.getSelectionModel().select(nuova);
             //Helpers.showInfo("Libreria creata.", lblErr);

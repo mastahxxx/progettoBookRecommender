@@ -136,6 +136,7 @@ public class SalvaLibro { // classe quasi identica a CercaLibro, con logout/indi
     /** Torna alla schermata dell'utente registrato. */
     @FXML
     private void onIndietro() {
+        SceneNavigator.listaLibri.clear();
         SceneNavigator.switchToVisualizzaLibreria();
     }
 

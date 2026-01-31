@@ -66,8 +66,8 @@ public class SceneNavigator {
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             e.printStackTrace(new PrintWriter(sw));
-            Helpers.showError("Impossibile aprire la schermata");
-            System.exit(1);
+            Helpers.showError("Impossibile aprire la schermata" + e.getMessage());
+            //System.exit(1);
         }
     }
 

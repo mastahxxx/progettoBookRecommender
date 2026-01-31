@@ -52,9 +52,10 @@ public class VisualizzaLibrerieController {
     @FXML
     private void initialize() {
         libreriaCorrente = SceneNavigator.getLibreria();
-        if(SceneNavigator.listaLibri.contains(SceneNavigator.libro)) { //evita di salvare piu volte lo stesso libro
-            SceneNavigator.libro = null;
-        }
+        
+    //    if(SceneNavigator.listaLibri.contains(SceneNavigator.libro)) { //evita di salvare piu volte lo stesso libro
+    //        SceneNavigator.libro = null;
+    //    }
 
 
 
@@ -164,7 +165,7 @@ public class VisualizzaLibrerieController {
             
         } 
         //lascia di default
-        SceneNavigator.listaLibri = null;
+        SceneNavigator.listaLibri.clear();
         SceneNavigator.libreria = null;
         SceneNavigator.switchToLibrerie();
     }
