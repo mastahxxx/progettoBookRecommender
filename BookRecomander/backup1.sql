@@ -39,7 +39,6 @@ ALTER TABLE public."Consigli" OWNER TO postgres;
 --
 
 CREATE TABLE public."Librerie" (
-    cod_libreria integer NOT NULL,
     nome_libreria character varying(30) NOT NULL,
     id_libro integer NOT NULL,
     id_codice_fiscale character(16) NOT NULL
@@ -52,14 +51,6 @@ ALTER TABLE public."Librerie" OWNER TO postgres;
 -- Name: Librerie_cod_libreria_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-ALTER TABLE public."Librerie" ALTER COLUMN cod_libreria ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public."Librerie_cod_libreria_seq"
-    START WITH 0
-    INCREMENT BY 1
-    MINVALUE 0
-    NO MAXVALUE
-    CACHE 1
-);
 
 
 --
@@ -208,8 +199,6 @@ SELECT pg_catalog.setval('public."Libri_cod_libro_seq"', 0, false);
 -- Name: Librerie PK_cod_libreria; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."Librerie"
-    ADD CONSTRAINT "PK_cod_libreria" PRIMARY KEY (cod_libreria);
 
 
 --
