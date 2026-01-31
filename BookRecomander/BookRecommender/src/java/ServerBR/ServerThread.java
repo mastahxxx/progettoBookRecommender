@@ -177,8 +177,7 @@ public class ServerThread extends Thread {
                     case "CONSIGLIA LIBRI":
                         corrente = (Libro) in.readObject();
                         u = (UtenteRegistrato) in.readObject();
-                        libroSuggeriti = (LinkedList<Libro>) in.readObject();
-                        esito = db.InserisciConsigli(u, corrente, libroSuggeriti);
+                        esito = db.InserisciConsigli(u, corrente);
                         out.writeObject(esito);
                         break;
 

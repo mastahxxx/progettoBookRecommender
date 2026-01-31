@@ -170,6 +170,7 @@ public class SuggerimentiController {
         boolean ok = false;
         LinkedList<Libro> lista = new LinkedList<>();
         lista.addAll(selezionati);
+        lib.caricaContenutoSuggeritiPulito(lista);
         try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
@@ -180,8 +181,6 @@ public class SuggerimentiController {
             out.writeObject("CONSIGLIA LIBRI");
             out.writeObject(ur);
             out.writeObject(lib);
-            List<Libro> normalList = new LinkedList<Libro>(selezionati);
-            out.writeObject(normalList);
             ok = (boolean) in.readObject();
             out.close();
             in.close();
