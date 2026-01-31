@@ -106,7 +106,7 @@ public class ServerThread extends Thread {
                     /**
                      * Comando "LOGIN"
                      * Effettua il login dell'utente. Riceve {@link UtenteRegistrato} e verifica
-                     * le credenziali tramite {@link DataBase#login}.
+                     * le credenziali tramite {@link DataBase#login}.s
                      * Restituisce true se le credenziali sono corrette.
                      */
                     case "LOGIN":
