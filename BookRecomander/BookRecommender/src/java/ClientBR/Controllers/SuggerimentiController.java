@@ -58,11 +58,13 @@ public class SuggerimentiController {
             return;
         }
 
+        caricaLibri(USERID);
+        cbLibro.setItems(mieiLibri);
+
         lvDisponibili.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lvSelezionati.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        caricaLibri(USERID);
-        cbLibro.setItems(mieiLibri);
+        
         cbLibro.valueProperty().addListener(this::onLibroChanged);
         
 
@@ -231,7 +233,7 @@ public class SuggerimentiController {
             caricaSuggeriti(lib);
             
             
-            /*
+            
             if (lib != null && lib.getLibriConsigliati() != null) {
                 for (Libro l : lib.getLibriConsigliati()) {
                 	try {
@@ -259,7 +261,7 @@ public class SuggerimentiController {
                     }
                     if (!selezionati.contains(l)) selezionati.add(l);
                 }
-            }*/
+            }
             ultimoLibro = lib;
         }
 
