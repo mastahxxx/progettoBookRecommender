@@ -87,9 +87,6 @@ public class ValutaLibroController {
     /** Torna all’area utente. */
     @FXML private void onAnnulla() { SceneNavigator.switchToUtenteRegistrato(); }
 
-    /** Naviga alla gestione suggerimenti. */
-    @FXML private void onAggiungiSuggerimenti() { SceneNavigator.switchToSuggerimenti(); }
-
     /** reset UI, ricalcolo media e bottone salva. */
     private void onLibroChanged(javafx.beans.value.ObservableValue<? extends Libro> obs,
                                 Libro oldV, Libro newV) {
@@ -145,6 +142,7 @@ public class ValutaLibroController {
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
             out.writeObject("INSETISCI VALUTAZIONE");
             out.writeObject(l);
+            System.out.println(l.getNoteContenuto() + l.getNoteEdizione());
             UtenteRegistrato u = new UtenteRegistrato();
             u.setUserId(autore);
             out.writeObject(u);
@@ -157,6 +155,9 @@ public class ValutaLibroController {
         }
         if (ok) {
             Helpers.showInfo("Valutazione salvata!", lblErr);
+            SceneNavigator.switchToUtenteRegistrato();
+            
+
         }
     }
 

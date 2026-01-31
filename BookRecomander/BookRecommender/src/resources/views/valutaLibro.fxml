@@ -75,7 +75,6 @@
             <children>
                 <Button onAction="#onLogout" style="-fx-background-color: #FF4D4D; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="LOGOUT" />
                 <Label fx:id="lblErr" text="" HBox.hgrow="ALWAYS" />
-            <Button onAction="#onAggiungiSuggerimenti" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Aggiungi suggerimenti" />
                 <Button onAction="#onAnnulla" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Annulla" />
                 <Button fx:id="btnSalva" defaultButton="true" disable="true" onAction="#onSalva" style="-fx-background-color: #CBF5FF; -fx-background-radius: 6; -fx-border-color: #1B5E20; -fx-border-radius: 6; -fx-border-width: 1;" text="Salva valutazione" />
             </children>
