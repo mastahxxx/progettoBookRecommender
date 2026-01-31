@@ -141,11 +141,6 @@ public class VisualizzaLibrerieController {
             Socket socket = new Socket(addr, 8999);
             ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
             ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-            
-            System.out.println("SSSSSSSSSSSSSS");
-            System.out.println("ARANCIA" + linkedList);
-            System.out.println("XXXXXXX" + SceneNavigator.listaLibri);
-            System.out.println("YYYYYYYY qui");
             UtenteRegistrato u = new UtenteRegistrato();
             u.setUserId(SceneNavigator.userID);
             l.setContenuto(linkedList);

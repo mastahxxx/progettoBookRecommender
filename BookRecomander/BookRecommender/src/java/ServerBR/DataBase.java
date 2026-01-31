@@ -69,26 +69,8 @@ public class DataBase {
         } else if (!autore.isEmpty()) {
             ris = dbq.libriLibro(autore);
         }
-        Libro libroPulito = new Libro();
-        List<Libro> risPulito = new LinkedList<>();
-        for (int i  = 0 ; i < ris.size(); i++) {
-        	libroPulito.setTitolo(ris.get(i).getTitolo());
-        	libroPulito.setAutore(ris.get(i).getAutore());
-        	libroPulito.setAnnoPubblicazione(ris.get(i).getAnnoPubblicazione());
-        	
-        	libroPulito.setContenuto(ris.get(i).getContenuto());
-        	libroPulito.setStile(ris.get(i).getStile());
-        	libroPulito.setGradevolezza(ris.get(i).getGradevolezza());
-        	libroPulito.setOriginalita(ris.get(i).getOriginalita());
-        	libroPulito.setEdizione(ris.get(i).getEdizione());
-        	
-        	//libroPulito.caricaContenutoSuggeritiPulito(ris.get(i).getLibriConsigliati());
-        	risPulito.add(libroPulito);
-        }
 
-        System.out.println(ris);
-        System.out.println("XXXXXXXX" + risPulito);
-        return risPulito;
+        return ris;
     }
 
     /**
@@ -101,8 +83,9 @@ public class DataBase {
         List<Libro> ris = new LinkedList<>();
         String userId = u.getUserId();
         String cf = dbq.getCFU(userId);
-        if (cf == null || cf.isEmpty()) return ris;
-        return dbq.getLibroDaLibreria(cf);
+        ris = dbq.getLibroDaLibreria(cf);
+        LinkedList<Libro> prova = new LinkedList<>(ris);
+        return prova;
     }
 
     /**
@@ -241,7 +224,6 @@ public class DataBase {
             int idLibro = dbq.getCodiceLibro(l);
             String cf = dbq.getCFU(userId);
             controllo = dbi.loadLibrerie(cf, nome, idLibro);
-            System.out.println(i);
         }
         return controllo;
     }

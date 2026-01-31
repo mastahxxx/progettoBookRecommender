@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.LinkedList;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -37,14 +38,23 @@ public class ValutaLibroController {
 
     /** Libri dell'utente caricati dal db. */
     private ObservableList<Libro> mieiLibri = FXCollections.observableArrayList();
+    private LinkedList<Libro> libri = new LinkedList<>();
 
     /** Inizializza combo, listener, limiti note e stato pulsante. */
     @FXML
     private void initialize() {
         Helpers.clearError(lblErr);
 
-        caricaMieiLibri(SceneNavigator.getUserID());
+        libri = caricaMieiLibri(SceneNavigator.getUserID());
+        System.out.println("stampa nel intialize" + libri);
 
+        mieiLibri.setAll(libri);
+        System.out.println("xxxxx " + mieiLibri);
+        System.out.println(mieiLibri);
+
+    
+
+        System.out.println("QUA" + mieiLibri);
         cbLibro.setItems(mieiLibri);
         cbLibro.valueProperty().addListener(this::onLibroChanged);
 
@@ -216,7 +226,8 @@ public class ValutaLibroController {
      * Carica i libri dell’utente dal backend e resetta la lista locale.
      * @param userId identificativo utente
      */
-    private void caricaMieiLibri(String userId) {
+    private LinkedList<Libro> caricaMieiLibri(String userId) {
+        LinkedList<Libro> prova = new LinkedList<>();
         try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
@@ -226,14 +237,17 @@ public class ValutaLibroController {
             ur.setUserId(SceneNavigator.getUserID());
             out.writeObject("CARICA LIBRI LIBRERIE CLIENT");
             out.writeObject(ur);
-            mieiLibri = (ObservableList<Libro>) in.readObject();//convertire
-            boolean ok = (boolean) in.readObject(); // non usato
+
+            prova = (LinkedList<Libro> ) in.readObject();
+            System.out.println("prova" + prova);
+
             out.close();
             in.close();
             socket.close();
+
         } catch (Exception e) {
            System.out.println(1);
         }
-        mieiLibri.clear();
+        return prova;
     }
 }
