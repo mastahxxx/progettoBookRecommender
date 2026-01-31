@@ -198,6 +198,24 @@ public class DbQuery {
             return false;
         }
     }
+    
+    public boolean valutazionePresentechk(int idlibro, String cf) {
+        String sql = "SELECT * FROM public.\"Valutazioni\"\r\n"
+        		+ "where id_libro = ? and id_codice_fiscale = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, idlibro );
+            ps.setString(2, cf);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     public boolean UtentiRegistratiUPB(String userId, String pass) {
         String sql = "select 1 from public.\"UtentiRegistrati\" where \"userId\" = ? and password = ?";
