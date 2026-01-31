@@ -34,7 +34,7 @@ public class CercaLibroRegistratoController { // classe quasi identica a CercaLi
     @FXML private TableColumn<Libro, String> tTitolo;
     @FXML private TableColumn<Libro, String> tAutore;
     @FXML private TableColumn<Libro, String> tAnno;
-    @FXML private Label lblErr;
+
 
     /** Risultati mostrati nella tabella. */
     private final ObservableList<Libro> risultati = FXCollections.observableArrayList();
@@ -75,10 +75,6 @@ public class CercaLibroRegistratoController { // classe quasi identica a CercaLi
         String autore = fAutore.getText().trim();
         String anno   = fAnno.getText().trim();
 
-        Helpers.showInfo("inserisci titolo, autore oppure autore e anno", lblErr);
-        if (titolo.equals("") || autore.equals("")) {
-            Helpers.showError("Inserisci titolo o autore", lblErr);
-        }
 
         btnCerca.setDisable(true);
         tblView.setPlaceholder(new Label("Ricerca in corso..."));

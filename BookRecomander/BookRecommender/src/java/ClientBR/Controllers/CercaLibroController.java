@@ -32,7 +32,6 @@ public class CercaLibroController {
     @FXML private Button btnCerca;
     @FXML private Button btnPulisci;
     @FXML private Button btnHome;
-    @FXML private Label lblErr;
     @FXML private TableView<Libro> tblView;
     @FXML private TableColumn<Libro, String> tTitolo;
     @FXML private TableColumn<Libro, String> tAutore;
@@ -79,10 +78,7 @@ public class CercaLibroController {
         String autore = fAutore.getText().trim();
         String anno   = fAnno.getText().trim();
 
-        Helpers.showInfo("inserisci titolo, autore oppure autore e anno", lblErr);
-        if (titolo.equals("") || autore.equals("")) {
-            Helpers.showError("Inserisci titolo o autore", lblErr);
-        }
+
 
         btnCerca.setDisable(true);
         tblView.setPlaceholder(new Label("Ricerca in corso..."));

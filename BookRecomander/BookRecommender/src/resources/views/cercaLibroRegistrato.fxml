@@ -76,7 +76,4 @@
          </children>
       </VBox>
    </center>
-   <bottom>
-      <Label fx:id="lblErr" alignment="CENTER" prefHeight="17.0" prefWidth="565.0" BorderPane.alignment="CENTER" />
-   </bottom>
 </BorderPane>

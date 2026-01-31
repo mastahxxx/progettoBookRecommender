@@ -113,16 +113,20 @@ public class VisualizzaLibroController {
                    + libro.getEdizione() + libro.getOriginalita()) / 5;
         votoFinale.setText("voto finale: " + media);
 
-        LinkedList<Libro> consigliati = libro.getLibriConsigliati();
-        System.out.println(consigliati);
+
+        Libro consigliati = caricaSuggeriti();
+        LinkedList<Libro> cons = consigliati.getLibriConsigliati();
         LinkedList<Libro> nuovaLista = new LinkedList();
-        for(int i= 0; i<consigliati.size();i++) {
-        	if(!nuovaLista.contains(consigliati.get(i)))
-        		nuovaLista.add(consigliati.get(i));
+        
+        for(int i= 0; i<cons.size();i++) {
+        	if(!nuovaLista.contains(cons.get(i)))
+        		nuovaLista.add(cons.get(i));
         }
         consigliatiData.setAll(nuovaLista == null ? List.of() : nuovaLista);
         Libro libroConNote = caricaNote();
         note.setText(formattaNote(libroConNote));
+
+        
     }
 
     /** Ripulisce l'UI quando nessun libro è selezionato. */
