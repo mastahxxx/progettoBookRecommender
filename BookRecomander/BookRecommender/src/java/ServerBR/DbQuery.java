@@ -296,7 +296,7 @@ public class DbQuery {
             + "           + \"    ON d.id_libro = b.id_libro AND d.id_codice_fiscale = b.id_codice_fiscale \"\r\n"
             + "           + \"LEFT JOIN public.\\\"NoteValutazioni\\\" AS e \"\r\n"
             + "           + \"    ON d.id_libro = e.id_libro AND d.id_codice_fiscale = e.cf \"\r\n"
-            + "           + \"WHERE d.id_codice_fiscale = ?\";";
+            + "           + \"WHERE d.id_codice_fiscale = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, cf);
