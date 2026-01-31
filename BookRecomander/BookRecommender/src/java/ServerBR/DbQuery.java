@@ -282,16 +282,21 @@ public class DbQuery {
         }
     }
 
-    // =============================
-    //     LIBRERIE / LIBRI VARI
-    // =============================
+    
     public List<Libro> getLibroDaLibreria(String cf) {
         String sql =
-            "select titolo, autore, anno_pubblicazione, stile, contenuto, gradevolezza, originalità, edizione, " +
-            "nota_stile, nota_contenuto, nota_gradevolezza, nota_originalita, nota_edizione, b.id_codice_fiscale " +
-            "from public.\"Libri\" as a, public.\"Valutazioni\" as b, public.\"UtentiRegistrati\" as c, public.\"Librerie\" as d " +
-            "where c.codice_fiscale = ? and c.codice_fiscale = d.id_codice_fiscale and d.id_libro = a.cod_libro " +
-            "and a.cod_libro = b.id_libro";
+            "String sql = \"SELECT \"\r\n"
+            + "           + \"    a.titolo, a.autore, a.anno_pubblicazione, \"\r\n"
+            + "           + \"    b.stile, b.contenuto, b.gradevolezza, b.\\\"originalità\\\", b.edizione, \"\r\n"
+            + "           + \"    e.nota_stile, e.nota_contenuto, e.nota_gradevolezza, e.nota_originalita, e.nota_edizione, \"\r\n"
+            + "           + \"    d.id_codice_fiscale \"\r\n"
+            + "           + \"FROM public.\\\"Librerie\\\" AS d \"\r\n"
+            + "           + \"JOIN public.\\\"Libri\\\" AS a ON d.id_libro = a.cod_libro \"\r\n"
+            + "           + \"LEFT JOIN public.\\\"Valutazioni\\\" AS b \"\r\n"
+            + "           + \"    ON d.id_libro = b.id_libro AND d.id_codice_fiscale = b.id_codice_fiscale \"\r\n"
+            + "           + \"LEFT JOIN public.\\\"NoteValutazioni\\\" AS e \"\r\n"
+            + "           + \"    ON d.id_libro = e.id_libro AND d.id_codice_fiscale = e.cf \"\r\n"
+            + "           + \"WHERE d.id_codice_fiscale = ?\";";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, cf);
