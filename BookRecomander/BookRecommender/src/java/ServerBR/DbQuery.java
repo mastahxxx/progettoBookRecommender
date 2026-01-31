@@ -541,6 +541,43 @@ public class DbQuery {
         
         return 3;
     }
+   
+    public LinkedList<Libro> scaricaSuggeriti(int idlibro) {
+        // Selezioniamo i dettagli del libro CONSIGLIATO (tabella l),
+        // calcolando la media delle valutazioni che quel libro ha ricevuto.
+        String sql = "SELECT "
+                   + "    l.titolo, l.autore, l.anno_pubblicazione, "
+                   + "    CAST(ROUND(AVG(v.stile)) AS INTEGER) AS stile, "
+                   + "    CAST(ROUND(AVG(v.contenuto)) AS INTEGER) AS contenuto, "
+                   + "    CAST(ROUND(AVG(v.gradevolezza)) AS INTEGER) AS gradevolezza, "
+                   + "    CAST(ROUND(AVG(v.\"originalità\")) AS INTEGER) AS \"originalità\", "
+                   + "    CAST(ROUND(AVG(v.edizione)) AS INTEGER) AS edizione, "
+                   + "    NULL AS nota_stile, "
+                   + "    NULL AS nota_contenuto, "
+                   + "    NULL AS nota_gradevolezza, "
+                   + "    NULL AS nota_originalita, "
+                   + "    NULL AS nota_edizione "
+                   + "FROM public.\"Consigli\" AS c "
+                   + "JOIN public.\"Libri\" AS l ON c.id_libro_consigliato = l.cod_libro "
+                   + "LEFT JOIN public.\"Valutazioni\" AS v ON l.cod_libro = v.id_libro "
+                   + "WHERE c.id_libro = ? "
+                   + "GROUP BY l.cod_libro, l.titolo, l.autore, l.anno_pubblicazione";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            // Converto la stringa in Intero perché id_libro nel DB è un numero
+            ps.setInt(1, idlibro);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                // Riutilizziamo il metodo statico 'resultSetToLibri' che abbiamo già sistemato
+                // e convertiamo la List risultante in una LinkedList
+                return new LinkedList<>(resultSetToLibri(rs));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new LinkedList<>();
+        }
+    }
     
     
     /**
