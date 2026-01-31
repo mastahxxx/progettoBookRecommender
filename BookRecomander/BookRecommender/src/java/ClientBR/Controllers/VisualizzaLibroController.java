@@ -114,6 +114,7 @@ public class VisualizzaLibroController {
         votoFinale.setText("voto finale: " + media);
 
         LinkedList<Libro> consigliati = libro.getLibriConsigliati();
+        System.out.println(consigliati);
         LinkedList<Libro> nuovaLista = new LinkedList();
         for(int i= 0; i<consigliati.size();i++) {
         	if(!nuovaLista.contains(consigliati.get(i)))

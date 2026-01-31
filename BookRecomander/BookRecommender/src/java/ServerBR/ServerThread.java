@@ -175,8 +175,8 @@ public class ServerThread extends Thread {
                      * Restituisce true se l'inserimento è riuscito.
                      */
                     case "CONSIGLIA LIBRI":
+                         u = (UtenteRegistrato) in.readObject();
                         corrente = (Libro) in.readObject();
-                        u = (UtenteRegistrato) in.readObject();
                         esito = db.InserisciConsigli(u, corrente);
                         out.writeObject(esito);
                         break;

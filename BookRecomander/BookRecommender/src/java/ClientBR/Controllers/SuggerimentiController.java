@@ -191,6 +191,7 @@ public class SuggerimentiController {
         if (ok) {
             Helpers.showInfo("suggerimenti salvati con successo", lblErr);
         }
+        refreshUI();
     }
 
     /**
@@ -240,11 +241,11 @@ public class SuggerimentiController {
             lblErr.setStyle("");
 
             selezionati.clear();
-            caricaSuggeriti(lib);
+            //caricaSuggeriti(lib);
             
             
             
-            if (lib != null && lib.getLibriConsigliati() != null) {
+       /*       if (lib != null && lib.getLibriConsigliati() != null) {
                 for (Libro l : lib.getLibriConsigliati()) {
                 	try {
                         InetAddress addr = InetAddress.getByName(null);
@@ -271,10 +272,10 @@ public class SuggerimentiController {
                     }
                     if (!selezionati.contains(l)) selezionati.add(l);
                 }
-            }
+            } */
             ultimoLibro = lib;
-        }
-
+        }  
+           
         disponibili.clear();
         for (Libro l : mieiLibri) {
             if (lib != null && l == lib) continue;    // esclude il libro base
