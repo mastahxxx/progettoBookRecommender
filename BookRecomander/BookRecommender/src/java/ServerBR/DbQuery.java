@@ -90,12 +90,21 @@ public class DbQuery {
                    + "WHERE a.titolo = ? OR a.autore = ?"; */
     	
     	String sql = "SELECT "
-                + "  a.titolo, a.autore, a.anno_pubblicazione, "
-                + "  0 AS stile, 0 AS contenuto, 0 AS gradevolezza, 0 AS \"originalità\", 0 AS edizione, "
-                + "  NULL AS nota_stile, NULL AS nota_contenuto, NULL AS nota_gradevolezza, "
-                + "  NULL AS nota_originalita, NULL AS nota_edizione "
+                + "    a.titolo, a.autore, a.anno_pubblicazione, "
+                + "    CAST(ROUND(AVG(b.stile)) AS INTEGER) AS stile, "
+                + "    CAST(ROUND(AVG(b.contenuto)) AS INTEGER) AS contenuto, "
+                + "    CAST(ROUND(AVG(b.gradevolezza)) AS INTEGER) AS gradevolezza, "
+                + "    CAST(ROUND(AVG(b.\"originalità\")) AS INTEGER) AS \"originalità\", "
+                + "    CAST(ROUND(AVG(b.edizione)) AS INTEGER) AS edizione, "
+                + "    NULL AS nota_stile, "
+                + "    NULL AS nota_contenuto, "
+                + "    NULL AS nota_gradevolezza, "
+                + "    NULL AS nota_originalita, "
+                + "    NULL AS nota_edizione "
                 + "FROM public.\"Libri\" AS a "
-                + "WHERE a.titolo = ? OR a.autore = ?";
+                + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
+                + "WHERE a.titolo = ? OR a.autore = ? "
+                + "GROUP BY a.cod_libro, a.titolo, a.autore, a.anno_pubblicazione";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, param);
