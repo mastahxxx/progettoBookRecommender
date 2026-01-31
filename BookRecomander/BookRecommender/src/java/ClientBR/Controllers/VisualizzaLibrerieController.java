@@ -52,11 +52,6 @@ public class VisualizzaLibrerieController {
     @FXML
     private void initialize() {
         libreriaCorrente = SceneNavigator.getLibreria();
-        
-    //    if(SceneNavigator.listaLibri.contains(SceneNavigator.libro)) { //evita di salvare piu volte lo stesso libro
-    //        SceneNavigator.libro = null;
-    //    }
-
 
 
         if(SceneNavigator.libro != null) { //Se il libro non è nulla lo salvo nella lista e lo aggiungo alla schermata

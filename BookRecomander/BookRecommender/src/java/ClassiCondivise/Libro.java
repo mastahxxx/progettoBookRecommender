@@ -2,6 +2,7 @@ package ClassiCondivise;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.Objects;
 
 /**
  * Rappresenta un libro con titolo, autore, anno di pubblicazione,
@@ -212,4 +213,24 @@ public class Libro implements Serializable {
     public LinkedList<String> getListaNoteGradevolezza() { return ListaNoteGradevolezza; }
     public LinkedList<String> getListaNoteOriginalita() { return ListaNoteOriginalita; }
     public LinkedList<String> getListaNoteEdizione() { return ListaNoteEdizione; }
+
+
+
+
+    @Override
+    public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    Libro libro = (Libro) o;
+    return Objects.equals(titolo, libro.titolo) &&
+           Objects.equals(autore, libro.autore) &&
+           Objects.equals(annoPubblicazione, libro.annoPubblicazione);
+}
+
+   // @Override
+   // public int hashCode() {
+   // return Objects.hash(titolo, autore, annoPubblicazione);
+   // }
+
+
 }
