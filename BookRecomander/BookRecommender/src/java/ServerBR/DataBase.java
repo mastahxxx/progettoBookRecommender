@@ -185,11 +185,15 @@ public class DataBase {
         int gradevolezza = l.getGradevolezza();
         int originalita = l.getOriginalita();
         int edizione = l.getEdizione();
+        
+        String noteContenuto = l.getNoteContenuto();
+        String noteStile = l.getNoteStile();
+        String noteGradevolezza = l.getNoteGradevolezza();
+        String noteOriginalita = l.getNoteOriginalita();
+        String noteEdizione = l.getNoteEdizione();
 
         boolean controlloValutazioni = dbi.loadValutazioni(idLibro, cf, contenuto, stile, gradevolezza, originalita, edizione);
-
-        // TODO: se reinserisci le note, riattiva inserisciNoteLibro
-        boolean controlloNote = true;
+        boolean controlloNote = dbi.loadValutazioniNote(idLibro, cf, noteStile, noteContenuto, noteGradevolezza, noteOriginalita, noteEdizione);
 
         return controlloValutazioni && controlloNote;
     }
