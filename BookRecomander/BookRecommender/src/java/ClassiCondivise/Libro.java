@@ -129,27 +129,37 @@ public class Libro implements Serializable {
 
     /** Aggiunge una nota sullo stile. */
     public void setNoteStile(String noteSt) {
-        noteStile = "Note stile : "+ noteSt + ". ";
+    	if(noteSt.charAt(noteSt.length()-1)!='.')
+    		noteSt = noteSt+".";
+        noteStile = noteSt;
     }
 
     /** Aggiunge una nota sul contenuto. */
     public void setNoteContenuto(String noteCo) {
-        noteContenuto = "Note contenuto : "  + noteCo + ". ";
+    	if(noteCo.charAt(noteCo.length()-1)!='.')
+    		noteCo = noteCo+".";
+        noteContenuto = noteCo;
     }
 
     /** Aggiunge una nota sulla gradevolezza. */
     public void setNoteGradevolezza(String noteGr) {
-        noteGradevolezza = "Note gradevolezza : " + noteGr + ". ";
+    	if(noteGr.charAt(noteGr.length()-1)!='.')
+    		noteGr = noteGr+".";
+        noteGradevolezza = noteGr;
     }
 
     /** Aggiunge una nota sull'originalità. */
     public void setNoteOriginalita(String noteOr) {
-        noteOriginalita = "Note originalità : "  + noteOr + ". ";
+    	if(noteOr.charAt(noteOr.length()-1)!='.')
+    		noteOr = noteOr+".";
+        noteOriginalita = noteOr;
     }
 
     /** Aggiunge una nota sull'edizione. */
     public void setNoteEdizione(String noteEd) {
-        noteEdizione = "Note edizione : " + noteEd + ". ";
+    	if(noteEd.charAt(noteEd.length()-1)!='.')
+    		noteEd = noteEd+".";
+        noteEdizione = noteEd;
     }
 
     
