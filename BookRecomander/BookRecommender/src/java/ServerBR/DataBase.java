@@ -84,8 +84,14 @@ public class DataBase {
         String userId = u.getUserId();
         String cf = dbq.getCFU(userId);
         ris = dbq.getLibroDaLibreria(cf);
-        LinkedList<Libro> prova = new LinkedList<>(ris);
-        return prova;
+        LinkedList<Libro> prova = new LinkedList(ris);
+        LinkedList<Libro> listaPulita = new LinkedList();
+        for(int i = 0; i<prova.size(); i++) {
+        	if(!listaPulita.contains(prova.get(i))) {
+        		listaPulita.add(prova.get(i));
+        	}
+        }
+        return listaPulita;
     }
 
     /**
