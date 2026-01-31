@@ -333,7 +333,7 @@ public class DataBase {
 	        for(int i = 0; i<prova.size(); i++) {
 	        	int idlibro = dbq.getCodiceLibro(prova.get(i));
 	        	if(!listaPulita.contains(prova.get(i))) {
-	        		if(!verificaPresenzaConsigli(cf, idlibro)) {
+	        		if(!dbq.verificaPresenzaConsigli(cf, idlibro)) {
 	        			listaPulita.add(prova.get(i));
 	        		}
 	        		

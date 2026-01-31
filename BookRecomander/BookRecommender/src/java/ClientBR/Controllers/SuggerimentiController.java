@@ -8,7 +8,7 @@ import javafx.scene.control.*;
 
 import java.util.LinkedList;
 import java.util.List;
-
+ 
 import ClassiCondivise.Libro;
 import ClassiCondivise.UtenteRegistrato;
 import ClientBR.SceneNavigator;
@@ -33,7 +33,9 @@ public class SuggerimentiController {
     @FXML private ListView<Libro> lvSelezionati;
     @FXML private ListView<Libro> lvDisponibili;
     @FXML private Label lblErr;
-    private static final String USERID = SceneNavigator.getUserID();;
+    private static final String USERID = SceneNavigator.getUserID();
+    private LinkedList<Libro> libri = new LinkedList<>();
+
 
     /** Numero massimo di suggerimenti consentiti per libro. */
     private static final int LIMITE = 3;
@@ -58,8 +60,10 @@ public class SuggerimentiController {
             return;
         }
 
-        caricaLibri(USERID);
+        libri = caricaLibri(USERID);
+        mieiLibri.setAll(libri);
         cbLibro.setItems(mieiLibri);
+
 
         lvDisponibili.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         lvSelezionati.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -71,11 +75,12 @@ public class SuggerimentiController {
         lvDisponibili.setItems(disponibili);
         lvSelezionati.setItems(selezionati);
 
-        ricalcolaDisponibli();
+
+       // ricalcolaDisponibli();
         refreshUI();
     }
     
-    private boolean controlloLibroCorrente() {
+  /*    private boolean controlloLibroCorrente() {
     	Libro lib = cbLibro.getValue();
     	UtenteRegistrato ur = new UtenteRegistrato();
         ur.setUserId(USERID);
@@ -95,7 +100,8 @@ public class SuggerimentiController {
             System.out.println(1);
         }
     	return ok;
-    }
+    }  */
+    
 
     /**
      * Ricalola liste in base al libro selezionato dal utente nella ComboBox.
@@ -150,7 +156,7 @@ public class SuggerimentiController {
      */
     @FXML
     private void onSalva() {
-        Libro lib = cbLibro.getValue();
+        Libro lib = cbLibro.getValue(); //libro corrente
         if (lib == null) {
             Helpers.showError("seleziona un libro dalla libreria", lblErr);
             return;
@@ -162,6 +168,8 @@ public class SuggerimentiController {
         }
 
         boolean ok = false;
+        LinkedList<Libro> lista = new LinkedList<>();
+        lista.addAll(selezionati);
         try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
@@ -190,7 +198,7 @@ public class SuggerimentiController {
      * Carica i libri dell’utente e resetta le liste locali.
      * @param userId identificativo dell’utente
      */
-    private void caricaLibri(String userId) {
+    private LinkedList<Libro> caricaLibri(String userId) {
         LinkedList<Libro> prova = new LinkedList<>();
         try {
             InetAddress addr = InetAddress.getByName(null);
@@ -199,7 +207,7 @@ public class SuggerimentiController {
             ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
             UtenteRegistrato ur = new UtenteRegistrato();
             ur.setUserId(SceneNavigator.getUserID());
-            out.writeObject("CARICA LIBRI LIBRERIE CLIENT");
+            out.writeObject("CARICA LIBRI LIBRERIE CLIENT PER SUGGERITI");
             out.writeObject(ur);
 
             prova = (LinkedList<Libro> ) in.readObject();
@@ -212,10 +220,11 @@ public class SuggerimentiController {
         } catch (Exception e) {
            System.out.println(1);
         }
-        mieiLibri.clear();
-        disponibili.clear();
-        selezionati.clear();
-        ultimoLibro = null;
+        return prova;
+       // mieiLibri.clear();
+       // disponibili.clear();
+       // selezionati.clear();
+       // ultimoLibro = null;
     }
 
     /**

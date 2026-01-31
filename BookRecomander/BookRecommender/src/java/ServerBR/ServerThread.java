@@ -236,6 +236,12 @@ public class ServerThread extends Thread {
                     	LinkedList<Libreria> librerie = db.LibrerieUtente(u);
                     	out.writeObject(librerie);
                     	break;
+
+                    case "CARICA LIBRI LIBRERIE CLIENT PER SUGGERITI":
+                        u = (UtenteRegistrato) in.readObject();
+                        ris = db.caricaLibreriePerSuggeriti(u);
+                        out.writeObject(ris);
+                        break;
                         
                     case "CARICA NOTE":
                     	l = (Libro) in.readObject();
