@@ -80,6 +80,7 @@ public class DataBase {
      * @return una lista di {@link Libro} presenti nelle librerie dell'utente
      */
     public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u) {
+    public synchronized List<Libro> caricaLibreriePerValutazione(UtenteRegistrato u) {
         List<Libro> ris = new LinkedList<>();
         String userId = u.getUserId();
         String cf = dbq.getCFU(userId);
@@ -315,12 +316,32 @@ public class DataBase {
 		return libroConSoloNote;
 	}
 
+	//restituisce libreire dell'utente
    	public LinkedList<Libreria> LibrerieUtente(UtenteRegistrato u) {
 		String userId = u.getUserId();
         String cf = dbq.getCFU(userId);
         LinkedList<Libreria> librerie =  dbq.caricaLibrerie(cf);
         return librerie;    
-	} 
+	}
+
+	public List<Libro> caricaLibreriePerSuggeriti(UtenteRegistrato u) {
+		 List<Libro> ris = new LinkedList<>();
+	        String userId = u.getUserId();
+	        String cf = dbq.getCFU(userId);
+	        ris = dbq.getLibroDaLibreria(cf);
+	        LinkedList<Libro> prova = new LinkedList(ris);
+	        LinkedList<Libro> listaPulita = new LinkedList();
+	        for(int i = 0; i<prova.size(); i++) {
+	        	int idlibro = dbq.getCodiceLibro(prova.get(i));
+	        	if(!listaPulita.contains(prova.get(i))) {
+	        		if(!verificaPresenzaConsigli(cf, idlibro)) {
+	        			listaPulita.add(prova.get(i));
+	        		}
+	        		
+	        	}
+	        }
+	        return listaPulita;
+	}
 }
 
 

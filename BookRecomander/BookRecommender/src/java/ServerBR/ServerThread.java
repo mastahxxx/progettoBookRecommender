@@ -227,7 +227,7 @@ public class ServerThread extends Thread {
                      */
                     case "CARICA LIBRI LIBRERIE CLIENT":
                         u = (UtenteRegistrato) in.readObject();
-                        ris = db.caricaLibrerie(u);
+                        ris = db.caricaLibreriePerValutazione(u);
                         out.writeObject(ris);
                         break;
                         
