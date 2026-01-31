@@ -136,7 +136,7 @@ public class SalvaLibro { // classe quasi identica a CercaLibro, con logout/indi
     /** Torna alla schermata dell'utente registrato. */
     @FXML
     private void onIndietro() {
-        SceneNavigator.listaLibri.clear();
+        SceneNavigator.libro = null;
         SceneNavigator.switchToVisualizzaLibreria();
     }
 
@@ -146,7 +146,17 @@ public class SalvaLibro { // classe quasi identica a CercaLibro, con logout/indi
     private void salvaLibro() {
         Libro sel = tblView.getSelectionModel().getSelectedItem();
         if (sel == null) { return; }
+
+        System.out.println(SceneNavigator.listaLibri.contains(sel));
+
+        if (SceneNavigator.listaLibri.contains(sel)) {
+            Alert a = new Alert(Alert.AlertType.WARNING, "Hai gia aggiunto questo libro");
+            a.setHeaderText(null);
+            a.showAndWait();
+
+
+        } else {
         SceneNavigator.setLibro(sel);
-        SceneNavigator.switchToVisualizzaLibreria();
+        SceneNavigator.switchToVisualizzaLibreria(); }
     }
 }
