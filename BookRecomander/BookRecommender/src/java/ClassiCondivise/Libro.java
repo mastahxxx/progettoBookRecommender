@@ -227,10 +227,6 @@ public class Libro implements Serializable {
            Objects.equals(annoPubblicazione, libro.annoPubblicazione);
 }
 
-   // @Override
-   // public int hashCode() {
-   // return Objects.hash(titolo, autore, annoPubblicazione);
-   // }
 
 
 }
