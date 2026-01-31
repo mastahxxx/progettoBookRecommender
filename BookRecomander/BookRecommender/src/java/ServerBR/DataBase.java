@@ -279,11 +279,11 @@ public class DataBase {
      * @param suggeriti lista dei libri suggeriti
      * @return {@code true} se l'inserimento è riuscito
      */
-    public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente, LinkedList<Libro> suggeriti) {
+    public synchronized boolean InserisciConsigli(UtenteRegistrato ur, Libro corrente) {
         int idLibroCorrente = dbq.getCodiceLibro(corrente);
         String userId = ur.getUserId();
         String cf = dbq.getCFU(userId);
-
+        LinkedList<Libro> suggeriti = corrente.getLibriConsigliati();
         boolean esito = false;
 
         for (int i = 0; i < suggeriti.size(); i++) {
