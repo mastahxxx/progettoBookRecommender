@@ -79,7 +79,6 @@ public class DataBase {
      * @param u l'utente registrato di cui caricare le librerie
      * @return una lista di {@link Libro} presenti nelle librerie dell'utente
      */
-    public synchronized List<Libro> caricaLibrerie(UtenteRegistrato u) {
     public synchronized List<Libro> caricaLibreriePerValutazione(UtenteRegistrato u) {
         List<Libro> ris = new LinkedList<>();
         String userId = u.getUserId();
