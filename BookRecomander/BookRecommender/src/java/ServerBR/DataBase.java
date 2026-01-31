@@ -87,8 +87,12 @@ public class DataBase {
         LinkedList<Libro> prova = new LinkedList(ris);
         LinkedList<Libro> listaPulita = new LinkedList();
         for(int i = 0; i<prova.size(); i++) {
+        	int idlibro = dbq.getCodiceLibro(prova.get(i));
         	if(!listaPulita.contains(prova.get(i))) {
-        		listaPulita.add(prova.get(i));
+        		if(dbq.valutazionePresentechk(idlibro, cf)) {
+        			listaPulita.add(prova.get(i));
+        		}
+        		
         	}
         }
         return listaPulita;
