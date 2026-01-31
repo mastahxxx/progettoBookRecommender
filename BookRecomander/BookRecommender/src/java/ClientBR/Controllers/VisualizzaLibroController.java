@@ -141,25 +141,45 @@ public class VisualizzaLibroController {
 
 
     private Libro caricaNote() {
-    try {
-        InetAddress addr = InetAddress.getByName(null);
-        Socket socket = new Socket(addr, 8999);
-        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-        out.writeObject("CARICA NOTE");
-        out.writeObject(this.libro);
+    	try {
+    		InetAddress addr = InetAddress.getByName(null);
+    		Socket socket = new Socket(addr, 8999);
+    		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+    		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+    		out.writeObject("CARICA NOTE");
+    		out.writeObject(this.libro);
+        
+    		Libro libroConNote = (Libro) in.readObject();
+    		out.close();
+    		in.close();
+        	socket.close();
+        	return libroConNote;
 
-        Libro libroConNote = (Libro) in.readObject();
-        out.close();
-        in.close();
-        socket.close();
-        return libroConNote;
-
-    } catch (Exception e) {
-        e.printStackTrace();
-        return new Libro();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return new Libro();
+    	}
     }
-}
+    
+    private Libro caricaSuggeriti() {
+    	try {
+    		InetAddress addr = InetAddress.getByName(null);
+    		Socket socket = new Socket(addr, 8999);
+    		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+    		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+    		out.writeObject("CARICA LIBRI SUGGERITI PER VISUALIZAZZIONE");
+    		out.writeObject(this.libro);
+    		Libro libroConNote = (Libro) in.readObject();
+    		out.close();
+    		in.close();
+        	socket.close();
+        	return libroConNote;
+
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return new Libro();
+    	}
+    }
 
 private String formattaNote(Libro l) {
     StringBuilder sb = new StringBuilder();

@@ -247,6 +247,12 @@ public class ServerThread extends Thread {
                     	Libro libroConSoloNote = db.caricaNoteDalDb(l);
                         out.writeObject(libroConSoloNote);
                         break;
+                    
+                    case "CARICA LIBRI SUGGERITI PER VISUALIZAZZIONE":
+                    	l = (Libro) in.readObject();
+                    	Libro libroConSoloSuggeriti = db.caricaSuggeritiDalDb(l);
+                        out.writeObject(libroConSoloSuggeriti);
+                        break;
                     default:
                         // richiesta non riconosciuta, ignorata
                         break;

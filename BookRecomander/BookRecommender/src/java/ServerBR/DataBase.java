@@ -341,6 +341,13 @@ public class DataBase {
 	        }
 	        return listaPulita;
 	}
+
+	public Libro caricaSuggeritiDalDb(Libro l) {
+		int idlibro = dbq.getCodiceLibro(l);
+		LinkedList<Libro> suggeriti = dbq.scaricaSuggeriti(idlibro);
+		l.caricaContenutoSuggeritiPulito(suggeriti);
+		return l;
+	}
 }
 
 

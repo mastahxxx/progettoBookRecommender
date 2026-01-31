@@ -238,7 +238,6 @@ public class ValutaLibroController {
             ur.setUserId(SceneNavigator.getUserID());
             out.writeObject("CARICA LIBRI LIBRERIE CLIENT");
             out.writeObject(ur);
-
             prova = (LinkedList<Libro> ) in.readObject();
             System.out.println("prova" + prova);
 
