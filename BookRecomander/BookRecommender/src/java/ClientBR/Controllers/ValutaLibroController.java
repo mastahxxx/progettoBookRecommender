@@ -46,15 +46,15 @@ public class ValutaLibroController {
         Helpers.clearError(lblErr);
 
         libri = caricaMieiLibri(SceneNavigator.getUserID());
-        System.out.println("stampa nel intialize" + libri);
+ 
 
         mieiLibri.setAll(libri);
-        System.out.println("xxxxx " + mieiLibri);
+
         System.out.println(mieiLibri);
 
     
 
-        System.out.println("QUA" + mieiLibri);
+
         cbLibro.setItems(mieiLibri);
         cbLibro.valueProperty().addListener(this::onLibroChanged);
 
