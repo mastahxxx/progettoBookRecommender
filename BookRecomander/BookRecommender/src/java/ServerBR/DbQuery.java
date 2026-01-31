@@ -491,6 +491,32 @@ public class DbQuery {
     }
 
     
+    public boolean verificaPresenzaConsigli(String cf, int idLibro) {
+        // Query che conta le righe nella tabella Consigli per un determinato utente e libro base
+        String sql = "SELECT COUNT(*) FROM public.\"Consigli\" "
+                   + "WHERE id_codice_fiscale = ? AND id_libro = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, cf);
+            ps.setInt(2, idLibro);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    // Recuperiamo il conteggio dalla prima colonna
+                    int numeroConsigli = rs.getInt(1);
+                    
+                    // Restituisce true se sono 3 o più
+                    return numeroConsigli >= 1;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    
     public int verificaNumConsigli(String cf, int idLibro) {
         // Query che conta le righe nella tabella Consigli per un determinato utente e libro base
         String sql = "SELECT COUNT(*) FROM public.\"Consigli\" "
