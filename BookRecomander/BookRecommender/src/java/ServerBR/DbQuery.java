@@ -80,14 +80,22 @@ public class DbQuery {
     public List<Libro> libriLibro(String param) {
         // FIX: Uso SELECT esplicita invece di *. 
         // Questo permette al ResultSet di trovare sicuramente le colonne "stile", "nota_stile", ecc.
-        String sql = "SELECT "
+       /* String sql = "SELECT "
                    + "  a.titolo, a.autore, a.anno_pubblicazione, "
                    + "  b.stile, b.contenuto, b.gradevolezza, b.\"originalità\", b.edizione, "
                    + "  c.nota_stile, c.nota_contenuto, c.nota_gradevolezza, c.nota_originalita, c.nota_edizione "
                    + "FROM public.\"Libri\" AS a "
                    + "LEFT JOIN public.\"Valutazioni\" AS b ON a.cod_libro = b.id_libro "
                    + "LEFT JOIN public.\"NoteValutazioni\" AS c ON b.id_libro = c.id_libro AND b.id_codice_fiscale = c.cf "
-                   + "WHERE a.titolo = ? OR a.autore = ?";
+                   + "WHERE a.titolo = ? OR a.autore = ?"; */
+    	
+    	String sql = "SELECT "
+                + "  a.titolo, a.autore, a.anno_pubblicazione, "
+                + "  0 AS stile, 0 AS contenuto, 0 AS gradevolezza, 0 AS \"originalità\", 0 AS edizione, "
+                + "  NULL AS nota_stile, NULL AS nota_contenuto, NULL AS nota_gradevolezza, "
+                + "  NULL AS nota_originalita, NULL AS nota_edizione "
+                + "FROM public.\"Libri\" AS a "
+                + "WHERE a.titolo = ? OR a.autore = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, param);
