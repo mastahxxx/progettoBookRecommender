@@ -1,3 +1,14 @@
+/**
+ * @author Adrian Gabriel Soare 749483
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+
+
 package ClassiCondivise;
 
 import java.util.LinkedList;

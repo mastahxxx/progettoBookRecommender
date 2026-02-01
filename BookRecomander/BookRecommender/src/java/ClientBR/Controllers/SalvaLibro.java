@@ -1,3 +1,15 @@
+/**
+ * @author Adrian Gabriel Soare 749483
+ * 
+ * 
+ * 
+ * 
+ */
+
+
+
+
+
 package ClientBR.Controllers;
 
 import javafx.collections.FXCollections;

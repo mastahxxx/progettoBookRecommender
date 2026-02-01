@@ -1,3 +1,12 @@
+/**
+ * @author Adrian Gabriel Soare 749483
+ * 
+ * 
+ * 
+ * 
+ */
+
+
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
