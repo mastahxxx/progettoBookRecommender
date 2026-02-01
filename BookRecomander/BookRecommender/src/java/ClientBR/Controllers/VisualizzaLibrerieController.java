@@ -1,3 +1,10 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
@@ -130,6 +137,7 @@ public class VisualizzaLibrerieController {
         refreshUI();
     }
 
+    //** Salva le librerie nel db */
     @FXML
     private void onSalva() {  
         String nomelibreria = SceneNavigator.libreria.getNome();    
@@ -154,7 +162,6 @@ public class VisualizzaLibrerieController {
         } catch (Exception e) {
             
         } 
-        //lascia di default
         SceneNavigator.listaLibri.clear();
         SceneNavigator.libreria = null;
         SceneNavigator.switchToLibrerie();

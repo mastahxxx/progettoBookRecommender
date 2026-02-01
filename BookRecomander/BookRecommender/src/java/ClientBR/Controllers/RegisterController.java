@@ -1,3 +1,10 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
 
 import javafx.fxml.FXML;
@@ -62,7 +69,6 @@ public class RegisterController {
         String pswd2   = pfConfermaPassword.getText();
         boolean controllo = true;
 
-        // validazioni base lato client
         if (nome.isEmpty() || cognome.isEmpty() || cf.isEmpty() || email.isEmpty()
                 || userId.isEmpty() || pswd.isEmpty() || pswd2.isEmpty()) {
             Helpers.showError("completa tutti i campi", lblError);
@@ -92,7 +98,7 @@ public class RegisterController {
 
         // le due chiamate seguenti verificano se email/userId sono già usati nel sistema.
         // Il metodo Helpers.*AlreadyUsed(...) dovrebbe restituire true se GIA' in uso.
-        if (Helpers.emailAlreadyUsed(email)) { // <— se false significa "non usata"
+        if (Helpers.emailAlreadyUsed(email)) { // se false significa non usata
             Helpers.showError("email gia in uso", lblError);
             controllo = false;
             return;
@@ -120,7 +126,7 @@ public class RegisterController {
                 ur.setUserId(userId);
                 ur.setPassoword(pswd);
 
-                out.writeObject("Registrazine"); // dipende dal protocollo server
+                out.writeObject("Registrazine"); 
                 out.writeObject(ur);
 
                 ok = (boolean) in.readObject();

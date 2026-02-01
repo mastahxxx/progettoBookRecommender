@@ -1,3 +1,10 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
@@ -44,16 +51,9 @@ public class ValutaLibroController {
     @FXML
     private void initialize() {
         Helpers.clearError(lblErr);
-
         libri = caricaMieiLibri(SceneNavigator.getUserID());
- 
-
         mieiLibri.setAll(libri);
-
         System.out.println(mieiLibri);
-
-    
-
 
         cbLibro.setItems(mieiLibri);
         cbLibro.valueProperty().addListener(this::onLibroChanged);

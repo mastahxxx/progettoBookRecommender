@@ -1,3 +1,6 @@
+/**
+ * @author Matteo Sorrentino n: 753775
+ */
 package ServerBR;
 
 import java.io.IOException;
@@ -12,26 +15,38 @@ import ClassiCondivise.Libro;
 import ClassiCondivise.UtenteRegistrato;
 
 /**
- * La classe {@code ServerThread} rappresenta un thread dedicato per la gestione
- * della connessione con un singolo client.
- * 
- * <p>Ogni volta che un client si connette al server, viene creato un {@code ServerThread}
- * che si occupa di ricevere richieste, elaborarle tramite {@link DataBase} e restituire
- * i risultati al client.</p>
+ * Classe {@code ServerThread} che rappresenta un thread dedicato
+ * alla gestione della comunicazione con un singolo client.
+ *
+ * <p>Per ogni client che si connette al server viene creata un'istanza
+ * di {@code ServerThread}, la quale si occupa di ricevere le richieste,
+ * elaborarle tramite la classe {@link DataBase} e inviare le risposte
+ * al client.</p>
+ *
+ * <p>La comunicazione avviene tramite stream di oggetti
+ * ({@link ObjectInputStream} e {@link ObjectOutputStream}).</p>
  */
 public class ServerThread extends Thread {
+
+    /** Riferimento al database utilizzato per l'elaborazione delle richieste */
     private DataBase db;
+
+    /** Stream di input per la ricezione degli oggetti dal client */
     private ObjectInputStream in;
+
+    /** Stream di output per l'invio degli oggetti al client */
     private ObjectOutputStream out;
+
+    /** Socket associata alla connessione con il client */
     private Socket socket;
 
     /**
      * Costruttore della classe {@code ServerThread}.
-     * 
-     * <p>Inizializza i flussi di input/output per la comunicazione con il client
-     * e crea una nuova istanza del database.</p>
-     * 
-     * @param s la socket della connessione con il client
+     *
+     * <p>Inizializza la socket di comunicazione, i flussi di input/output
+     * e crea una nuova istanza della classe {@link DataBase}.</p>
+     *
+     * @param s socket relativa alla connessione con il client
      */
     public ServerThread(Socket s) {
         this.socket = s;
@@ -40,30 +55,27 @@ public class ServerThread extends Thread {
             this.in = new ObjectInputStream(socket.getInputStream());
             this.out = new ObjectOutputStream(socket.getOutputStream());
         } catch (IOException e) {
-            // Gestione semplificata, da migliorare eventualmente con log
+            // Gestione semplificata dell'eccezione
         }
     }
 
     /**
      * Metodo principale del thread.
-     * 
-     * <p>Il thread si mette in ascolto delle richieste del client in un loop infinito
-     * fino a quando il client invia il comando "END" o si verifica un'eccezione.</p>
-     * 
-     * <p>Gestisce richieste come:</p>
-     * <ul>
-     *     <li>ricerca libri</li>
-     *     <li>registrazione e login utenti</li>
-     *     <li>inserimento librerie e valutazioni</li>
-     *     <li>inserimento e caricamento suggerimenti</li>
-     *     <li>verifica email e userId</li>
-     * </ul>
+     *
+     * <p>Il thread rimane in ascolto delle richieste inviate dal client
+     * all'interno di un ciclo infinito. Ogni richiesta viene identificata
+     * tramite una stringa di comando e gestita mediante uno {@code switch}.</p>
+     *
+     * <p>La comunicazione termina quando il client invia il comando
+     * {@code "END"} o in caso di errore di comunicazione.</p>
      */
     @SuppressWarnings("unchecked")
+    @Override
     public void run() {
         try {
             while (true) {
                 String request = (String) in.readObject();
+
                 Libro l = new Libro();
                 Libreria libreria = new Libreria();
                 UtenteRegistrato u;
@@ -74,53 +86,32 @@ public class ServerThread extends Thread {
 
                 switch (request) {
 
-                    /**
-                     * Comando "END"
-                     * Termina la connessione con il client e chiude il thread.
-                     */
+                    // Termina la connessione con il client
                     case "END":
                         return;
 
-                    /**
-                     * Comando "CERCA LIBRO"
-                     * Legge un oggetto {@link Libro} dal client e restituisce una lista di libri
-                     * corrispondenti ai criteri di ricerca (titolo, autore, anno) tramite {@link DataBase#cercaLibro}.
-                     */
+                    // Ricerca di libri tramite titolo, autore o anno
                     case "CERCA LIBRO":
                         l = (Libro) in.readObject();
                         ris = db.cercaLibro(l);
                         out.writeObject(ris);
                         break;
 
-                    /**
-                     * Comando "Registrazine"
-                     * Registra un nuovo utente nel database leggendo un oggetto {@link UtenteRegistrato} dal client.
-                     * Restituisce true se la registrazione è avvenuta con successo.
-                     */
+                    // Registrazione di un nuovo utente
                     case "Registrazine":
                         u = (UtenteRegistrato) in.readObject();
                         esito = db.insertUtente(u);
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "LOGIN"
-                     * Effettua il login dell'utente. Riceve {@link UtenteRegistrato} e verifica
-                     * le credenziali tramite {@link DataBase#login}.s
-                     * Restituisce true se le credenziali sono corrette.
-                     */
+                    // Login dell'utente
                     case "LOGIN":
                         u = (UtenteRegistrato) in.readObject();
                         esito = db.login(u);
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "INSETISCI VALUTAZIONE"
-                     * Inserisce le valutazioni di un libro fatte da un utente.
-                     * Legge {@link Libro} e {@link UtenteRegistrato} dal client.
-                     * Restituisce true se l'inserimento è avvenuto con successo.
-                     */
+                    // Inserimento valutazioni di un libro
                     case "INSETISCI VALUTAZIONE":
                         l = (Libro) in.readObject();
                         u = (UtenteRegistrato) in.readObject();
@@ -128,12 +119,7 @@ public class ServerThread extends Thread {
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "REGISTRA LIBRERIA"
-                     * Inserisce una nuova libreria per un utente.
-                     * Riceve {@link UtenteRegistrato} e {@link Libreria} dal client.
-                     * Restituisce true se l'inserimento è riuscito.
-                     */
+                    // Registrazione di una nuova libreria
                     case "REGISTRA LIBRERIA":
                         u = (UtenteRegistrato) in.readObject();
                         libreria = (Libreria) in.readObject();
@@ -141,12 +127,7 @@ public class ServerThread extends Thread {
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "RINOMINA LIBRERIA"
-                     * Rinomina una libreria esistente di un utente.
-                     * Riceve {@link UtenteRegistrato}, {@link Libreria} e il vecchio nome della libreria.
-                     * Restituisce true se il rinomino è avvenuto con successo.
-                     */
+                    // Rinomina di una libreria esistente
                     case "RINOMINA LIBRERIA":
                         u = (UtenteRegistrato) in.readObject();
                         libreria = (Libreria) in.readObject();
@@ -155,12 +136,7 @@ public class ServerThread extends Thread {
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "ELIMINA LIBRERIA"
-                     * Elimina una libreria di un utente.
-                     * Riceve {@link UtenteRegistrato} e {@link Libreria}.
-                     * Restituisce true se l'eliminazione è riuscita.
-                     */
+                    // Eliminazione di una libreria
                     case "ELIMINA LIBRERIA":
                         u = (UtenteRegistrato) in.readObject();
                         libreria = (Libreria) in.readObject();
@@ -168,25 +144,15 @@ public class ServerThread extends Thread {
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "CONSIGLIA LIBRI"
-                     * Inserisce suggerimenti di libri correlati a un libro specifico.
-                     * Riceve {@link UtenteRegistrato}, il libro corrente e la lista dei libri suggeriti.
-                     * Restituisce true se l'inserimento è riuscito.
-                     */
+                    // Inserimento suggerimenti di lettura
                     case "CONSIGLIA LIBRI":
-                         u = (UtenteRegistrato) in.readObject();
+                        u = (UtenteRegistrato) in.readObject();
                         corrente = (Libro) in.readObject();
                         esito = db.InserisciConsigli(u, corrente);
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "RIEMPI SUGGERITI"
-                     * Carica i libri suggeriti per un libro specifico di un utente.
-                     * Riceve {@link Libro} e {@link UtenteRegistrato}.
-                     * Restituisce la lista dei libri suggeriti.
-                     */
+                    // Caricamento libri suggeriti
                     case "RIEMPI SUGGERITI":
                         corrente = (Libro) in.readObject();
                         u = (UtenteRegistrato) in.readObject();
@@ -194,73 +160,56 @@ public class ServerThread extends Thread {
                         out.writeObject(libroSuggeriti);
                         break;
 
-                    /**
-                     * Comando "CONTROLLA USERID"
-                     * Controlla se l'userId di un utente è già presente nel database.
-                     * Riceve {@link UtenteRegistrato}.
-                     * Restituisce true se l'userId esiste.
-                     */
+                    // Controllo esistenza userId
                     case "CONTROLLA USERID":
                         u = (UtenteRegistrato) in.readObject();
                         esito = db.controllaUserId(u);
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "CONTROLLA EMAIL"
-                     * Controlla se l'email di un utente è già presente nel database.
-                     * Riceve {@link UtenteRegistrato}.
-                     * Restituisce true se l'email esiste.
-                     */
+                    // Controllo esistenza email
                     case "CONTROLLA EMAIL":
                         u = (UtenteRegistrato) in.readObject();
                         esito = db.controllaEmail(u);
                         out.writeObject(esito);
                         break;
 
-                    /**
-                     * Comando "CARICA LIBRI LIBRERIE CLIENT"
-                     * Carica tutti i libri presenti nelle librerie di un utente.
-                     * Riceve {@link UtenteRegistrato}.
-                     * Restituisce la lista di libri.
-                     */
+                    // Caricamento libri delle librerie dell'utente
                     case "CARICA LIBRI LIBRERIE CLIENT":
                         u = (UtenteRegistrato) in.readObject();
                         ris = db.caricaLibreriePerValutazione(u);
                         out.writeObject(ris);
                         break;
-                        
+
                     case "CARICA LIBRERIE":
-                    	u = (UtenteRegistrato) in.readObject();
-                    	LinkedList<Libreria> librerie = db.LibrerieUtente(u);
-                    	out.writeObject(librerie);
-                    	break;
+                        u = (UtenteRegistrato) in.readObject();
+                        LinkedList<Libreria> librerie = db.LibrerieUtente(u);
+                        out.writeObject(librerie);
+                        break;
 
                     case "CARICA LIBRI LIBRERIE CLIENT PER SUGGERITI":
                         u = (UtenteRegistrato) in.readObject();
                         ris = db.caricaLibreriePerSuggeriti(u);
                         out.writeObject(ris);
                         break;
-                        
+
                     case "CARICA NOTE":
-                    	l = (Libro) in.readObject();
-                    	Libro libroConSoloNote = db.caricaNoteDalDb(l);
-                        out.writeObject(libroConSoloNote);
+                        l = (Libro) in.readObject();
+                        out.writeObject(db.caricaNoteDalDb(l));
                         break;
-                    
-                    case "CARICA LIBRI SUGGERITI PER VISUALIZAZZIONE":
-                    	l = (Libro) in.readObject();
-                    	Libro libroConSoloSuggeriti = db.caricaSuggeritiDalDb(l);
-                        out.writeObject(libroConSoloSuggeriti);
+
+                    case "CARICA LIBRI SUGGERITI PER VISUALIZZAZIONE":
+                        l = (Libro) in.readObject();
+                        out.writeObject(db.caricaSuggeritiDalDb(l));
                         break;
+
                     default:
-                        // richiesta non riconosciuta, ignorata
+                        // Comando non riconosciuto
                         break;
                 }
             }
-
         } catch (IOException | ClassNotFoundException e) {
-            // Eccezioni ignorate, migliorabile con logging
+            // Gestione semplificata dell'errore
         } finally {
             try {
                 socket.close();
@@ -270,13 +219,3 @@ public class ServerThread extends Thread {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

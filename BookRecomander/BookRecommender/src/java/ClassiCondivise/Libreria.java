@@ -1,23 +1,49 @@
+/**
+ * @author Adrian Gabriel Soare 749483
+ * @author Abdullah Waheed Malik 756789
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ */
+
+
+
+
 package ClassiCondivise;
 
-import java.util.LinkedList;
 import java.io.Serializable;
+import java.util.LinkedList;
 
 /**
- * Rappresenta una libreria che contiene una collezione di libri.
- * <p>
- * Ogni libreria ha un nome, un contenuto rappresentato come lista di libri
+ * Classe {@code Libreria} che rappresenta una libreria personale di un utente.
  *
+ * <p>Una libreria è identificata da un nome e contiene una collezione di
+ * {@link Libro}. La classe viene utilizzata sia lato client che lato server
+ * ed è serializzabile per consentire la trasmissione degli oggetti
+ * tramite stream.</p>
  */
 public class Libreria implements Serializable {
-    
-    private static final long SerialVersionUID = 1L;
+
+    /** Identificativo per la serializzazione della classe */
+    private static final long serialVersionUID = 1L;
+
+    /** Nome della libreria */
     private String nome;
+
+    /** Lista dei libri contenuti nella libreria */
     private LinkedList<Libro> contenuto;
+
+    /**
+     * Flag di controllo utilizzato per indicare lo stato della libreria
+     * (ad esempio selezione o validità in contesti applicativi).
+     */
     private boolean controllo;
 
     /**
-     * Crea una libreria vuota senza nome e inizializza la lista dei libri.
+     * Costruttore di default.
+     *
+     * <p>Crea una libreria senza nome e inizializza la lista dei libri
+     * come vuota.</p>
      */
     public Libreria() {
         this.contenuto = new LinkedList<>();
@@ -26,7 +52,10 @@ public class Libreria implements Serializable {
     /**
      * Costruttore con nome.
      *
-     * @param nome il nome della libreria
+     * <p>Crea una libreria con il nome specificato e una lista
+     * di libri inizialmente vuota.</p>
+     *
+     * @param nome nome della libreria
      */
     public Libreria(String nome) {
         this.nome = nome;
@@ -36,49 +65,54 @@ public class Libreria implements Serializable {
     /**
      * Restituisce il nome della libreria.
      *
-     * @return il nome della libreria
+     * @return nome della libreria
      */
     public String getNome() {
-        return this.nome;
+        return nome;
     }
 
     /**
      * Imposta il nome della libreria.
      *
-     * @param nome il nuovo nome della libreria
+     * @param nome nuovo nome della libreria
      */
     public void setNome(String nome) {
         this.nome = nome;
     }
 
     /**
-     * Restituisce i libri della libreria.
+     * Restituisce la lista dei libri contenuti nella libreria.
      *
-     * @return la lista di libri contenuti
+     * @return lista di {@link Libro}
      */
     public LinkedList<Libro> getContenuto() {
-        return this.contenuto;
+        return contenuto;
+    }
+
+    /**
+     * Imposta il contenuto della libreria.
+     *
+     * @param c lista di {@link Libro} da associare alla libreria
+     */
+    public void setContenuto(LinkedList<Libro> c) {
+        this.contenuto = c;
     }
 
     /**
      * Restituisce il valore del flag di controllo.
      *
-     * @return {@code true} se il controllo è attivo, {@code false} altrimenti
+     * @return {@code true} se il flag è attivo, {@code false} altrimenti
      */
     public boolean getControllo() {
-        return this.controllo;
+        return controllo;
     }
 
     /**
      * Imposta il valore del flag di controllo.
      *
-     * @param c nuovo valore per il flag di controllo
+     * @param c nuovo valore del flag di controllo
      */
     public void setControllo(boolean c) {
         this.controllo = c;
-    }
-    
-    public void setContenuto(LinkedList<Libro> c) {
-    	this.contenuto = c;
     }
 }

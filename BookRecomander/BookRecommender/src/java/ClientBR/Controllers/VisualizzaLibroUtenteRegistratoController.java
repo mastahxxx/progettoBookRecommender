@@ -1,3 +1,10 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
@@ -142,7 +149,7 @@ public class VisualizzaLibroUtenteRegistratoController {
         consigliatiData.clear();
     }
 
-
+//** Carica le note dal db */
     private Libro caricaNote() {
     try {
         InetAddress addr = InetAddress.getByName(null);
@@ -167,6 +174,7 @@ public class VisualizzaLibroUtenteRegistratoController {
         return new Libro();
     }
 }
+  //** Carica suggerimenti dal db */
     private Libro caricaSuggeriti() {
     	try {
     		InetAddress addr = InetAddress.getByName(null);
@@ -187,6 +195,12 @@ public class VisualizzaLibroUtenteRegistratoController {
     	}
     }
 
+    /**
+    * Formatta le note di un {@link Libro} raggruppandole per sezione.
+    *
+    * @param l libro di cui formattare le note
+    * @return note formattate, oppure "Nessuna nota per questo libro." se assenti
+    */
     private String formattaNote(Libro l) {
         StringBuilder sb = new StringBuilder();
 
@@ -200,6 +214,13 @@ public class VisualizzaLibroUtenteRegistratoController {
             return sb.toString();
     }
 
+/**
+ * Aggiunge una sezione di note con titolo e punti elenco, se la lista non è vuota.
+ *
+ * @param sb builder su cui scrivere
+ * @param titolo titolo della sezione
+ * @param lista note da aggiungere
+ */
     private void aggiungiSezioneNote(StringBuilder sb, String titolo, LinkedList<String> lista) {
         if (lista == null || lista.isEmpty()) return;
 

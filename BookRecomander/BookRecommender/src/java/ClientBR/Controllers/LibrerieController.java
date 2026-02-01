@@ -1,3 +1,10 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
@@ -115,20 +122,10 @@ public class LibrerieController {
         }
 
             Libreria nuova = new Libreria(nome);
-            //librerie.add(nuova);
             SceneNavigator.libreria = nuova;
             SceneNavigator.listaLibri.clear();
             SceneNavigator.libro = null; 
             SceneNavigator.switchToVisualizzaLibreria();
-            //tblLibrerie.getSelectionModel().select(nuova);
-            //Helpers.showInfo("Libreria creata.", lblErr);
-
-
-
-
-
-            //refreshUI();
-        
 
     }
 
@@ -166,7 +163,6 @@ public class LibrerieController {
         String vecchioNome = sel.getNome();
         sel.setNome(nuovo);
         boolean ok = false;
-     // --- STUB chiamata al server ---
     	try {
             InetAddress addr = InetAddress.getByName(null);
             Socket socket = new Socket(addr, 8999);
@@ -184,9 +180,7 @@ public class LibrerieController {
             socket.close();
         } catch (Exception e) {
             
-        } finally {
-            
-        }
+        } 
         if (ok) {
             tblLibrerie.refresh();
             Helpers.showInfo("Libreria rinominata.", lblErr);
@@ -284,7 +278,7 @@ public class LibrerieController {
         btnElimina.setDisable(!hasSel);
     }
 
-    /**
+    /** Carica librerie dal db
      * @param userId identificativo utente
      */
     private void caricaLibrerie(String userId) {

@@ -1,3 +1,10 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
 
 import ClientBR.SceneNavigator;
@@ -143,7 +150,7 @@ public class VisualizzaLibroController {
     }
 
 
-
+    //** Carica le note dal db */
     private Libro caricaNote() {
     	try {
     		InetAddress addr = InetAddress.getByName(null);
@@ -165,6 +172,7 @@ public class VisualizzaLibroController {
     	}
     }
     
+    //** Carica suggerimenti dal db */
     private Libro caricaSuggeriti() {
     	try {
     		InetAddress addr = InetAddress.getByName(null);
@@ -185,19 +193,32 @@ public class VisualizzaLibroController {
     	}
     }
 
-private String formattaNote(Libro l) {
-    StringBuilder sb = new StringBuilder();
+      /**
+    * Formatta le note di un {@link Libro} raggruppandole per sezione.
+    *
+    * @param l libro di cui formattare le note
+    * @return note formattate, oppure "Nessuna nota per questo libro." se assenti
+    */
+    private String formattaNote(Libro l) {
+        StringBuilder sb = new StringBuilder();
 
-    aggiungiSezioneNote(sb, "STILE", l.getListaNoteStile());
-    aggiungiSezioneNote(sb, "CONTENUTO", l.getListaNoteContenuto());
-    aggiungiSezioneNote(sb, "GRADEVOLEZZA", l.getListaNoteGradevolezza());
-    aggiungiSezioneNote(sb, "ORIGINALITÀ", l.getListaNoteOriginalita());
-    aggiungiSezioneNote(sb, "EDIZIONE", l.getListaNoteEdizione());
+        aggiungiSezioneNote(sb, "STILE", l.getListaNoteStile());
+        aggiungiSezioneNote(sb, "CONTENUTO", l.getListaNoteContenuto());
+        aggiungiSezioneNote(sb, "GRADEVOLEZZA", l.getListaNoteGradevolezza());
+        aggiungiSezioneNote(sb, "ORIGINALITÀ", l.getListaNoteOriginalita());
+        aggiungiSezioneNote(sb, "EDIZIONE", l.getListaNoteEdizione());
 
-    if (sb.length() == 0) return "Nessuna nota per questo libro.";
-    return sb.toString();
+        if (sb.length() == 0) return "Nessuna nota per questo libro.";
+            return sb.toString();
 }
 
+/**
+ * Aggiunge una sezione di note con titolo e punti elenco, se la lista non è vuota.
+ *
+ * @param sb builder su cui scrivere
+ * @param titolo titolo della sezione
+ * @param lista note da aggiungere
+ */
 private void aggiungiSezioneNote(StringBuilder sb, String titolo, LinkedList<String> lista) {
     if (lista == null || lista.isEmpty()) return;
 

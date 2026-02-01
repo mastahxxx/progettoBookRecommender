@@ -1,3 +1,14 @@
+
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
+
+
+
 package ClientBR.Controllers;
 
 import javafx.collections.FXCollections;
@@ -37,7 +48,7 @@ public class CercaLibroController {
     @FXML private TableColumn<Libro, String> tAutore;
     @FXML private TableColumn<Libro, String> tAnno;
 
-    /** Lista osservabile usata dalla TableView per mostrare i risultati. */
+    /** Lista observable usata dalla TableView per mostrare i risultati. */
     private final ObservableList<Libro> risultati = FXCollections.observableArrayList();
 
     /**
@@ -46,7 +57,6 @@ public class CercaLibroController {
      */
     @FXML
     private void initialize() {
-        // binding colonne -> getter del model
         tTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         tAutore.setCellValueFactory(new PropertyValueFactory<>("autore"));
         tAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));

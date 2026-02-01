@@ -1,5 +1,11 @@
+/**
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
+ * 
+ * 
+ * 
+ */
 package ClientBR.Controllers;
-
 import ClientBR.SceneNavigator;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
