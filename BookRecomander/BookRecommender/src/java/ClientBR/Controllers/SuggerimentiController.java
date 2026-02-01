@@ -33,13 +33,10 @@ public class SuggerimentiController {
     @FXML private ListView<Libro> lvSelezionati;
     @FXML private ListView<Libro> lvDisponibili;
     @FXML private Label lblErr;
+    //** UserId corrente */
     private static final String USERID = SceneNavigator.getUserID();
-    private LinkedList<Libro> libri = new LinkedList<>();
-
-
     /** Numero massimo di suggerimenti consentiti per libro. */
     private static final int LIMITE = 3;
-
     /** Tutti i libri dell’utente (da DB). */
     private ObservableList<Libro> mieiLibri = FXCollections.observableArrayList();
     /** Libri disponibili da aggiungere come suggerimento. */
@@ -55,6 +52,7 @@ public class SuggerimentiController {
      */
     @FXML
     private void initialize() {
+        LinkedList<Libro> libri = new LinkedList<>();
         if (USERID == null) {
             SceneNavigator.logout();
             return;
@@ -75,32 +73,8 @@ public class SuggerimentiController {
         lvDisponibili.setItems(disponibili);
         lvSelezionati.setItems(selezionati);
 
-
-       // ricalcolaDisponibli();
         refreshUI();
     }
-    
-  /*    private boolean controlloLibroCorrente() {
-    	Libro lib = cbLibro.getValue();
-    	UtenteRegistrato ur = new UtenteRegistrato();
-        ur.setUserId(USERID);
-        boolean ok = false;
-    	try {
-            InetAddress addr = InetAddress.getByName(null);
-            Socket socket = new Socket(addr, 8999);
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
-            out.writeObject("");
-            out.writeObject(lib);
-            ok = (boolean) in.readObject();
-            out.close();
-            in.close();
-            socket.close();
-        } catch (Exception e) {
-            System.out.println(1);
-        }
-    	return ok;
-    }  */
     
 
     /**
@@ -195,7 +169,7 @@ public class SuggerimentiController {
     }
 
     /**
-     * Carica i libri dell’utente e resetta le liste locali.
+     * Carica i libri dell’utente.
      * @param userId identificativo dell’utente
      */
     private LinkedList<Libro> caricaLibri(String userId) {
@@ -241,38 +215,6 @@ public class SuggerimentiController {
             lblErr.setStyle("");
 
             selezionati.clear();
-            //caricaSuggeriti(lib);
-            
-            
-            
-       /*       if (lib != null && lib.getLibriConsigliati() != null) {
-                for (Libro l : lib.getLibriConsigliati()) {
-                	try {
-                        InetAddress addr = InetAddress.getByName(null);
-                        Socket socket = new Socket(addr, 8999);
-                        ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-                        ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
-                        UtenteRegistrato ur = new UtenteRegistrato();
-                        ur.setUserId(USERID);
-                        out.writeObject("RIEMPI SUGGERITI");
-                        out.writeObject(ur);
-                        out.writeObject(l);
-                        List<Libro> normalList = new LinkedList<Libro>(selezionati);
-                        normalList = (List<Libro>) in.readObject();
-                        selezionati = FXCollections.observableArrayList(normalList);
-                        out.close();
-                        in.close();
-                        socket.close();
-                    } catch (Exception e) {
-                        System.out.println(1);
-                    }
-                    if (selezionati.size() >= LIMITE) {
-                    	Helpers.showError("Hai già effettuato i suggerimenti per il libro");
-                    	break;
-                    }
-                    if (!selezionati.contains(l)) selezionati.add(l);
-                }
-            } */
             ultimoLibro = lib;
         }  
            
@@ -284,27 +226,6 @@ public class SuggerimentiController {
         }
 
         refreshUI();
-    }
-    private void caricaSuggeriti(Libro l) {
-    	try {
-            InetAddress addr = InetAddress.getByName(null);
-            Socket socket = new Socket(addr, 8999);
-            ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
-            ObjectInputStream in   = new ObjectInputStream(socket.getInputStream());
-            UtenteRegistrato ur = new UtenteRegistrato();
-            ur.setUserId(USERID);
-            out.writeObject("RIEMPI SUGGERITI");
-            out.writeObject(ur);
-            out.writeObject(l);
-            List<Libro> normalList = new LinkedList<Libro>(selezionati);
-            normalList = (List<Libro>) in.readObject();
-            selezionati = FXCollections.observableArrayList(normalList);
-            out.close();
-            in.close();
-            socket.close();
-        } catch (Exception e) {
-            System.out.println(1);
-        }
     }
 
     /** Aggiorna stato pulsante Salva (testo e abilitazione). */

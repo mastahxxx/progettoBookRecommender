@@ -130,6 +130,7 @@ public class VisualizzaLibrerieController {
         refreshUI();
     }
 
+    //** Salva le librerie nel db */
     @FXML
     private void onSalva() {  
         String nomelibreria = SceneNavigator.libreria.getNome();    
@@ -154,7 +155,6 @@ public class VisualizzaLibrerieController {
         } catch (Exception e) {
             
         } 
-        //lascia di default
         SceneNavigator.listaLibri.clear();
         SceneNavigator.libreria = null;
         SceneNavigator.switchToLibrerie();

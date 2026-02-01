@@ -37,7 +37,7 @@ public class CercaLibroController {
     @FXML private TableColumn<Libro, String> tAutore;
     @FXML private TableColumn<Libro, String> tAnno;
 
-    /** Lista osservabile usata dalla TableView per mostrare i risultati. */
+    /** Lista observable usata dalla TableView per mostrare i risultati. */
     private final ObservableList<Libro> risultati = FXCollections.observableArrayList();
 
     /**
@@ -46,7 +46,6 @@ public class CercaLibroController {
      */
     @FXML
     private void initialize() {
-        // binding colonne -> getter del model
         tTitolo.setCellValueFactory(new PropertyValueFactory<>("titolo"));
         tAutore.setCellValueFactory(new PropertyValueFactory<>("autore"));
         tAnno.setCellValueFactory(new PropertyValueFactory<>("annoPubblicazione"));
