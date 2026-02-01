@@ -1,6 +1,6 @@
 /**
- * @author Adrian Gabriel Soare 749483
- * 
+ * @author Adrian Gabriel Soare n: 749483
+ * @author Matteo Sorrentino n: 753775
  * 
  * 
  * 

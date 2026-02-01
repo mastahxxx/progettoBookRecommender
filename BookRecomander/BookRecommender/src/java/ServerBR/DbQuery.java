@@ -1,3 +1,6 @@
+/**
+ * @author Andrea Boaretto n: 754274
+ */
 package ServerBR;
 
 import java.sql.*;

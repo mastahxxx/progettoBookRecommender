@@ -1,13 +1,8 @@
  /**
  * @author Adrian Gabriel Soare 749483
  * @author Abdullah Waheed Malik 756789
- * 
- * 
- * 
+ * @author Matteo Sorrentino n: 753775
  */
-
-
-
 package ClassiCondivise;
 
 import java.io.Serializable;
