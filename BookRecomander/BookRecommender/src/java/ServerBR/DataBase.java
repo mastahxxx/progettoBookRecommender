@@ -1,3 +1,6 @@
+/**
+ * @author Matteo Sorrentino n: 753775
+ */
 package ServerBR;
 
 import java.util.LinkedList;
